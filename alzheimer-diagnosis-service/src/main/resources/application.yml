@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  liquibase:
+    change-log: classpath:db/liquibase-changelog.xml
+  datasource:
+    url: jdbc:postgresql://localhost:5432/adadb
+    username: ada
+    password: ada
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        use_sql_comments: true

@@ -7,7 +7,6 @@ section {
     justify-content: flex-start;
     padding: 1rem;
     margin: 2rem 11rem;
-    /*background-color: rgba(0,0,0,0.4);*/
     background-color: white;
     align-items: flex-start;
 }
@@ -25,10 +24,14 @@ h3 {
     padding: 0;
 }
 
-button {
+.signUpButton {
     width: 350px;
 }
 
 .textField {
+    width: 350px;
+}
+
+.datePicker {
     width: 350px;
 }
