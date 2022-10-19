@@ -23,9 +23,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputMask from "react-input-mask";
 import "./Register.css";
+import CustomTextField from "./CustomTextField";
 
 //const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const PWD_REGEX = /^.{6, 24}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
 const TCNO_REGEX = /^[1-9]{1}[0-9]{9}[02468]{1}$/;
 const PHONE_NUMBER_REGEX =
   /^(5)([0-9]{2})\s?([0-9]{3})\s?([0-9]{2})\s?([0-9]{2})$/;
@@ -77,7 +78,7 @@ const Register = () => {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const result = TCNO_REGEX.test(password);
+    const result = TCNO_REGEX.test(tckn);
     setValidTckn(result);
   }, [tckn]);
 
@@ -121,148 +122,62 @@ const Register = () => {
       <h1>Üye Ol</h1>
       <h3>Tüm alanların doldurulması zorunludur.</h3>
 
-      <TextField
-        className="textField"
+      <CustomTextField
         id="tckno"
         label="TC-Kimlik No"
-        margin="normal"
-        variant="outlined"
-        type="text"
-        autoComplete="off"
-        size="small"
-        inputProps={{ style: { fontSize: 14 } }} // font size of input text
-        InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
-        onChange={(e) => setTckn(e.target.value)}
-        required
-        onFocus={() => setTcknFocus(true)}
-        onBlur={() => setTcknFocus(false)}
-        error={!validTckn && tcknFocus}
-        helperText={
-          !validTckn && tcknFocus ? (
-            <p>
-              <FontAwesomeIcon icon={faInfoCircle} />
-              11 character numbers. <br />
-              It must be real Tc Kimlik No
-            </p>
-          ) : (
-            ""
-          )
-        }
+        setState={setTckn}
+        setFocus={setTcknFocus}
+        validProp={validTckn}
+        focusProp={tcknFocus}
+        helperText=" Gerçek bir Tc-Kimlik numarası girmelisiniz"
       />
 
-      <TextField
-        className="textField"
+      <CustomTextField
         id="firstName"
         label="Ad"
-        margin="normal"
-        variant="outlined"
-        size="small"
-        autoComplete="off"
-        inputProps={{ style: { fontSize: 14 } }} // font size of input text
-        InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
-        onChange={(e) => setFirstName(e.target.value)}
-        required
-        onFocus={() => setFirstNameFocus(true)}
-        onBlur={() => setFirstNameFocus(false)}
+        setState={setFirstName}
+        setFocus={setFirstNameFocus}
+        focusProp={firstNameFocus}
       />
 
-      <TextField
-        className="textField"
+      <CustomTextField
         id="lastName"
         label="Soyad"
-        margin="normal"
-        variant="outlined"
-        size="small"
-        autoComplete="off"
-        inputProps={{ style: { fontSize: 14 } }} // font size of input text
-        InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
-        onChange={(e) => setLastName(e.target.value)}
-        required
-        onFocus={() => setLastNameFocus(true)}
-        onBlur={() => setLastNameFocus(false)}
+        setState={setLastName}
+        setFocus={setLastNameFocus}
+        focusProp={lastNameFocus}
       />
 
-      <TextField
-        className="textField"
+      <CustomTextField
         id="email"
         label="E-mail"
-        margin="normal"
-        variant="outlined"
-        size="small"
-        autoComplete="off"
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        inputProps={{ style: { fontSize: 14 } }} // font size of input text
-        InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
-        onFocus={() => setEmailFocus(true)}
-        onBlur={() => setEmailFocus(false)}
-        error={!validEmail && emailFocus}
-        helperText={
-          !validEmail && emailFocus ? (
-            <p>
-              <FontAwesomeIcon icon={faInfoCircle} />
-              It must be real email address
-            </p>
-          ) : (
-            ""
-          )
-        }
+        setState={setEmail}
+        setFocus={setEmailFocus}
+        validProp={validEmail}
+        focusProp={emailFocus}
+        helperText=" Gerçek bir email girmelisiniz"
       />
 
-      <TextField
-        className="textField"
+      <CustomTextField
         id="password"
         label="Şifre"
-        margin="normal"
-        variant="outlined"
-        size="small"
+        setState={setPassword}
+        setFocus={setPasswordFocus}
+        validProp={validPassword}
+        focusProp={passwordFocus}
+        helperText=" Şifre en az 6 karakterli olmalı"
         type="password"
-        autoComplete="off"
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        inputProps={{ style: { fontSize: 14 } }} // font size of input text
-        InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
-        onFocus={() => setPasswordFocus(true)}
-        onBlur={() => setPasswordFocus(false)}
-        error={!validPassword && passwordFocus}
-        helperText={
-          !validPassword && passwordFocus ? (
-            <p>
-              <FontAwesomeIcon icon={faInfoCircle} />
-              Şifreniz en az 6 karakterli olmalı
-            </p>
-          ) : (
-            ""
-          )
-        }
       />
 
-      <TextField
-        className="textField"
+      <CustomTextField
         id="matchPassword"
         label="Şifrenizi tekrar giriniz"
-        margin="normal"
-        variant="outlined"
-        size="small"
+        setState={setMatchPassword}
+        setFocus={setMatchPasswordFocus}
+        validProp={validMatchPassword}
+        focusProp={matchPasswordFocus}
+        helperText=" Şifreler eşleşmeli"
         type="password"
-        autoComplete="off"
-        onChange={(e) => setMatchPassword(e.target.value)}
-        required
-        inputProps={{ style: { fontSize: 14 } }} // font size of input text
-        InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
-        onFocus={() => setMatchPasswordFocus(true)}
-        onBlur={() => setMatchPasswordFocus(false)}
-        error={!validMatchPassword && matchPasswordFocus}
-        helperText={
-          !validMatchPassword && matchPasswordFocus ? (
-            <p>
-              <FontAwesomeIcon icon={faInfoCircle} />
-              Şifreler eşleşmedi
-            </p>
-          ) : (
-            ""
-          )
-        }
       />
 
       <InputMask
@@ -273,57 +188,26 @@ const Register = () => {
         required
       >
         {(inputProps) => (
-          <TextField
-            className="textField"
+          <CustomTextField
             id="phone"
             label="Cep Telefonu"
-            margin="normal"
-            variant="outlined"
-            autoComplete="off"
-            size="small"
+            setState={setPhone}
+            setFocus={setPhoneFocus}
+            validProp={validPhone}
+            focusProp={phoneFocus}
+            helperText=" 10 haneli olmalı ve 5 ile başlamalı"
             maxLength={10}
-            error={!validPhone && phoneFocus}
-            inputProps={{ style: { fontSize: 14 } }} // font size of input text
-            InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
-            helperText={
-              !validPhone && phoneFocus ? (
-                <p>
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                  10 character numbers. <br />
-                  It must be start with 5
-                </p>
-              ) : (
-                ""
-              )
-            }
           />
         )}
       </InputMask>
 
-      <TextField
-        className="textField"
-        id="birthYear"
+      <CustomTextField
+        id="birthDate"
         label="Doğum Tarihi"
-        margin="normal"
-        variant="outlined"
-        size="small"
-        autoComplete="off"
-        onChange={(e) => setBirthDate(e.target.value)}
-        required
-        onFocus={() => setBirthDateFocus(true)}
-        onBlur={() => setBirthDateFocus(false)}
-        error={!validBirthDate && birthDateFocus}
-        inputProps={{ style: { fontSize: 14 } }} // font size of input text
-        InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
-        helperText={
-          !validBirthDate && birthDateFocus ? (
-            <p>
-              <FontAwesomeIcon icon={faInfoCircle} />4 character numbers
-            </p>
-          ) : (
-            ""
-          )
-        }
+        setState={setBirthDate}
+        setFocus={setBirthDateFocus}
+        validProp={validBirthDate}
+        focusProp={birthDateFocus}
       />
 
       <br></br>
@@ -342,22 +226,6 @@ const Register = () => {
       >
         Kayıt Ol
       </Button>
-
-      {/*<Snackbar
-        //open={open}
-        autoHideDuration={6000}
-        //onClose={handleSnackbarClose}
-        //anchorOrigin={{ vertical, horizontal }}
-        //key={vertical + horizontal}
-      >
-        <Alert
-          //onClose={handleSnackbarClose}
-          severity={snackbar.status}
-          sx={{ width: "100%" }}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>*/}
     </section>
   );
 };
