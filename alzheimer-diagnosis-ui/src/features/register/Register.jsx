@@ -24,6 +24,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputMask from "react-input-mask";
 import "./Register.css";
 import CustomTextField from "./CustomTextField";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { format } from "date-fns";
 
 //const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
@@ -35,6 +41,8 @@ const BIRTH_YEAR_REGEX = /^(19|20)\d{2}$/;
 
 const Register = () => {
   const errRef = useRef();
+
+  const [selectedDate, setSelectedDate] = useState(null);
 
   // Name
   const [firstName, setFirstName] = useState("");
@@ -70,7 +78,7 @@ const Register = () => {
   const [phoneFocus, setPhoneFocus] = useState(false);
 
   // Birth Year
-  const [birthDate, setBirthDate] = useState("");
+  const [birthDate, setBirthDate] = useState(null);
   const [validBirthDate, setValidBirthDate] = useState(false);
   const [birthDateFocus, setBirthDateFocus] = useState(false);
 
@@ -88,13 +96,28 @@ const Register = () => {
   }, [email]);
 
   useEffect(() => {
-    const result = PHONE_NUMBER_REGEX.test(phone);
+    var result = false;
+    var phoneNumber = "";
+
+    if (phone.length == 14) {
+      phoneNumber =
+        phone.substring(1, 4) + phone.substring(6, 9) + phone.substring(10, 14);
+      result = PHONE_NUMBER_REGEX.test(phoneNumber);
+    }
+
     setValidPhone(result);
+
+    // TODO:: give phoneNumber to backend
   }, [phone]);
 
   useEffect(() => {
-    const result = BIRTH_YEAR_REGEX.test(birthDate);
-    setValidBirthDate(result);
+    var date = new Date(birthDate).toLocaleDateString();
+
+    var day = date.substring(0, 2);
+    var month = date.substring(3, 5);
+    var year = date.substring(6, 10);
+
+    // TODO:: give day, month and year to backend
   }, [birthDate]);
 
   useEffect(() => {
@@ -116,6 +139,8 @@ const Register = () => {
     phone,
     birthDate,
   ]);
+
+  const handleSignUp = async (e) => {};
 
   return (
     <section>
@@ -188,41 +213,70 @@ const Register = () => {
         required
       >
         {(inputProps) => (
-          <CustomTextField
+          <TextField
+            className="textField"
             id="phone"
             label="Cep Telefonu"
-            setState={setPhone}
-            setFocus={setPhoneFocus}
-            validProp={validPhone}
-            focusProp={phoneFocus}
-            helperText=" 10 haneli olmalı ve 5 ile başlamalı"
-            maxLength={10}
+            margin="normal"
+            variant="outlined"
+            autoComplete="off"
+            size="small"
+            error={!validPhone && phoneFocus}
+            inputProps={{ style: { fontSize: 14 } }} // font size of input text
+            InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
+            helperText={
+              !validPhone && phoneFocus ? (
+                <p>
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                  Telefon numarası 5 ile başlamalı
+                </p>
+              ) : (
+                ""
+              )
+            }
           />
         )}
       </InputMask>
 
-      <CustomTextField
-        id="birthDate"
-        label="Doğum Tarihi"
-        setState={setBirthDate}
-        setFocus={setBirthDateFocus}
-        validProp={validBirthDate}
-        focusProp={birthDateFocus}
-      />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          className="datePicker"
+          label="Doğum Tarihi"
+          inputFormat="DD-MM-YYYY"
+          value={birthDate}
+          onChange={(date) => setBirthDate(date)}
+          maxDate={new Date()}
+          onFocus={() => setBirthDateFocus(true)}
+          onBlur={() => setBirthDateFocus(false)}
+          renderInput={(params) => (
+            <TextField
+              size="small"
+              margin="normal"
+              inputProps={{ style: { fontSize: 14 } }} // font size of input text
+              InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
+              {...params}
+            />
+          )}
+        />
+      </LocalizationProvider>
 
       <br></br>
       <Button
+        className="signUpButton"
         disabled={
           firstName === "" ||
           lastName === "" ||
           email === "" ||
           phone === "" ||
-          tckn === ""
+          tckn === "" ||
+          birthDate === "" ||
+          password === "" ||
+          matchPassword === ""
             ? true
             : false
         }
         variant="outlined"
-        //onClick={handleCheckInfo}
+        onClick={handleSignUp}
       >
         Kayıt Ol
       </Button>
