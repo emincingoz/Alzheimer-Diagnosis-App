@@ -1,35 +1,14 @@
 import { useRef, useState, useEffect } from "react";
-import {
-  IconButton,
-  Button,
-  OutlinedInput,
-  InputLabel,
-  FormControl,
-  TextField,
-  InputAdornment,
-  FormHelperText,
-  Snackbar,
-  Alert,
-  Dialog,
-  DialogTitle,
-} from "@mui/material";
-import {
-  faCheck,
-  faTimes,
-  faInfoCircle,
-  faSolid,
-  faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { Button, TextField, Snackbar, Alert } from "@mui/material";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputMask from "react-input-mask";
 import "./Register.css";
 import CustomTextField from "./CustomTextField";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { format } from "date-fns";
+import axios from "../../services/axios";
 
 //const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
@@ -37,13 +16,11 @@ const TCNO_REGEX = /^[1-9]{1}[0-9]{9}[02468]{1}$/;
 const PHONE_NUMBER_REGEX =
   /^(5)([0-9]{2})\s?([0-9]{3})\s?([0-9]{2})\s?([0-9]{2})$/;
 const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const BIRTH_YEAR_REGEX = /^(19|20)\d{2}$/;
+
+const BASE_URL = "/api/user";
+const REGISTER_URL = BASE_URL + "/register";
 
 const Register = () => {
-  const errRef = useRef();
-
-  const [selectedDate, setSelectedDate] = useState(null);
-
   // Name
   const [firstName, setFirstName] = useState("");
   const [firstNameFocus, setFirstNameFocus] = useState(false);
@@ -79,11 +56,16 @@ const Register = () => {
 
   // Birth Year
   const [birthDate, setBirthDate] = useState(null);
-  const [validBirthDate, setValidBirthDate] = useState(false);
-  const [birthDateFocus, setBirthDateFocus] = useState(false);
 
-  const [errMessage, setErrMessage] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    message: "",
+    status: "error",
+  });
+
+  const { vertical, horizontal, open } = snackbar;
 
   useEffect(() => {
     const result = TCNO_REGEX.test(tckn);
@@ -96,6 +78,13 @@ const Register = () => {
   }, [email]);
 
   useEffect(() => {
+    const result = PWD_REGEX.test(password);
+    setValidPassword(result);
+    const match = password == matchPassword;
+    setValidMatchPassword(match);
+  }, [password, matchPassword]);
+
+  const handlePhoneNumber = (phone) => {
     var result = false;
     var phoneNumber = "";
 
@@ -105,42 +94,75 @@ const Register = () => {
       result = PHONE_NUMBER_REGEX.test(phoneNumber);
     }
 
-    setValidPhone(result);
+    return phoneNumber;
+  };
 
-    // TODO:: give phoneNumber to backend
-  }, [phone]);
+  const handleSnackbarClose = () => {
+    setSnackbar({ open: false, vertical: "top", horizontal: "center" });
+  };
 
-  useEffect(() => {
+  const handleSignUp = async (e) => {
     var date = new Date(birthDate).toLocaleDateString();
 
-    var day = date.substring(0, 2);
+    // Note
+    /*var day = date.substring(0, 2);
     var month = date.substring(3, 5);
-    var year = date.substring(6, 10);
+    var year = date.substring(6, 10);*/
 
-    // TODO:: give day, month and year to backend
-  }, [birthDate]);
+    var dateWithFormat =
+      date.substring(6, 10) +
+      "-" +
+      date.substring(3, 5) +
+      "-" +
+      date.substring(0, 2);
 
-  useEffect(() => {
-    const result = PWD_REGEX.test(password);
-    setValidPassword(result);
-    const match = password == matchPassword;
-    setValidMatchPassword(match);
-  }, [password, matchPassword]);
+    var phoneNumber = handlePhoneNumber(phone);
 
-  useEffect(() => {
-    setErrMessage("");
-  }, [
-    firstName,
-    lastName,
-    password,
-    matchPassword,
-    tckn,
-    email,
-    phone,
-    birthDate,
-  ]);
+    try {
+      const response = await axios.post(
+        REGISTER_URL,
+        JSON.stringify({
+          firstName,
+          lastName,
+          password: password,
+          email: email,
+          phoneNumber: phoneNumber,
+          tckn: tckn,
+          birthDate: dateWithFormat,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: false,
+        }
+      );
 
-  const handleSignUp = async (e) => {};
+      setSnackbar({
+        open: true,
+        vertical: "top",
+        horizontal: "right",
+        message: "Kullanıcı Kaydı Başarılı. Giriş Yapabilirsiniz",
+        status: "success",
+      });
+    } catch (e) {
+      if (e.response?.status === 409) {
+        setSnackbar({
+          open: true,
+          vertical: "top",
+          horizontal: "right",
+          message: "Kullanıcı zaten kayıtlı",
+          status: "error",
+        });
+      } else {
+        setSnackbar({
+          open: true,
+          vertical: "top",
+          horizontal: "right",
+          message: "Kullanıcı Bilgileri Hatalı. Tekrar Giriniz.",
+          status: "error",
+        });
+      }
+    }
+  };
 
   return (
     <section>
@@ -163,6 +185,7 @@ const Register = () => {
         setState={setFirstName}
         setFocus={setFirstNameFocus}
         focusProp={firstNameFocus}
+        validProp={true}
       />
 
       <CustomTextField
@@ -171,6 +194,7 @@ const Register = () => {
         setState={setLastName}
         setFocus={setLastNameFocus}
         focusProp={lastNameFocus}
+        validProp={true}
       />
 
       <CustomTextField
@@ -208,8 +232,6 @@ const Register = () => {
       <InputMask
         mask="(999) 999-9999"
         onChange={(e) => setPhone(e.target.value)}
-        onBlur={() => setPhoneFocus(false)}
-        onFocus={() => setPhoneFocus(true)}
         required
       >
         {(inputProps) => (
@@ -221,19 +243,8 @@ const Register = () => {
             variant="outlined"
             autoComplete="off"
             size="small"
-            error={!validPhone && phoneFocus}
             inputProps={{ style: { fontSize: 14 } }} // font size of input text
             InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
-            helperText={
-              !validPhone && phoneFocus ? (
-                <p>
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                  Telefon numarası 5 ile başlamalı
-                </p>
-              ) : (
-                ""
-              )
-            }
           />
         )}
       </InputMask>
@@ -246,8 +257,6 @@ const Register = () => {
           value={birthDate}
           onChange={(date) => setBirthDate(date)}
           maxDate={new Date()}
-          onFocus={() => setBirthDateFocus(true)}
-          onBlur={() => setBirthDateFocus(false)}
           renderInput={(params) => (
             <TextField
               size="small"
@@ -280,6 +289,22 @@ const Register = () => {
       >
         Kayıt Ol
       </Button>
+
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical, horizontal }}
+        key={vertical + horizontal}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbar.status}
+          sx={{ width: "100%" }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </section>
   );
 };
