@@ -1,4 +1,11 @@
-# Getting Started with Create React App
+# Alzheimer Diagnosis App
+
+**Project**
+
+1. Swagger Url: `http://localhost:8080/swagger-ui/`
+
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
