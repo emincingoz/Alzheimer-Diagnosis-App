@@ -3,12 +3,13 @@ import { Button, TextField, Snackbar, Alert } from "@mui/material";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputMask from "react-input-mask";
-import "./Register.css";
-import CustomTextField from "./CustomTextField";
+import "../../styles/Register.css";
+import CustomTextField from "../../components/CustomTextField";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "../../services/axios";
+import { Link } from "react-router-dom";
 
 //const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
@@ -289,6 +290,10 @@ const Register = () => {
       >
         Kayıt Ol
       </Button>
+
+      <p style={{ fontSize: 13 }}>
+        Hesabınız varsa <Link to="/login">giriş</Link> yapınız
+      </p>
 
       <Snackbar
         open={open}
