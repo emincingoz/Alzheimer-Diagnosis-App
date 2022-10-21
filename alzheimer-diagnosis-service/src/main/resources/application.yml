@@ -2,6 +2,11 @@ server:
   port: 8080
 
 spring:
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+  main:
+    allow-circular-references: true
   liquibase:
     change-log: classpath:db/liquibase-changelog.xml
   datasource:
@@ -15,3 +20,19 @@ spring:
         format_sql: true
         show_sql: true
         use_sql_comments: true
+        default_schema: rest
+    hibernate:
+      ddl-auto: update
+
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 600
+  refreshTokenExpiration: 86400
+  route:
+    authentication:
+      path: auth
+      logout: logout
+      refresh: refresh
+      forgetPassword: forgetPassword
+      changePassword: changePassword

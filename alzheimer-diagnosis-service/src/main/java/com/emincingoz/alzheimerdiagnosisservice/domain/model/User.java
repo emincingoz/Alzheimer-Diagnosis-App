@@ -6,8 +6,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(schema = "rest", name = "ada_user")
@@ -15,16 +16,15 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class User {
 
     @Id
+    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1, schema = "rest")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
-    @SequenceGenerator(name = "user_sequence", allocationSize = 1)
     private Long id;
 
     @NotNull
-    //@Size(min = 11, max = 11)
+    @Size(min = 11, max = 11)
     @Column(name = "tckn", length = 11, nullable = false)
     private String tckn;
 
@@ -53,7 +53,17 @@ public class User {
 
     @JsonIgnore
     @NotNull
-    //@Size(min = 60, max = 60)
+    @Size(min = 60, max = 60)
     @Column(name = "password_hash", length = 60, nullable = false)
     private String password;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_user_id"), referencedColumnName = "id", name = "user_id")
+    private List<UserAuthority> roles;
+
+    @Column(name = "refresh_token_expiration_date")
+    private Instant refreshTokenExpirationDate;
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
 }

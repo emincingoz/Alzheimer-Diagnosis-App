@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
@@ -54,6 +56,11 @@ public class UserManager implements IUserService {
                     HttpStatus.EXPECTATION_FAILED);
 
         User user = modelMapper.map(userRegisterRequest, User.class);
+
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(userRegisterRequest.getPassword()).substring(8);
+
+        user.setPassword(encodedPassword);
 
         userRepository.save(user);
         return new ResponseEntity<>(new SuccessResult(UserMessageConstants.USER_REGISTER_SUCCESS), HttpStatus.ACCEPTED);
