@@ -1,7 +1,7 @@
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TextField } from "@mui/material";
-import "./Register.css";
+import "../styles/Register.css";
 
 const CustomTextField = (props) => {
   // id
