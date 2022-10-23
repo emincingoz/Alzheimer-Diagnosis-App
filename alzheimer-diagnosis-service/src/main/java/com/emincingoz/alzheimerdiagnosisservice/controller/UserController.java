@@ -16,7 +16,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegisterRequest userRegisterRequest) throws UnirestException {
-        System.out.println(userRegisterRequest.toString());
         return userService.register(userRegisterRequest);
     }
 }

@@ -1,5 +1,33 @@
+import { useNavigate, Link, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthProvider";
+import useAuth from "../../hooks/useAuth";
+
 const Home = () => {
-  return <div>Hello Worldsssd</div>;
+  const { auth } = useAuth();
+  const { setAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const logout = async () => {
+    // if used in more components, this should be in context
+    // axios to /logout endpoint
+    setAuth({});
+    navigate("/linkpage");
+  };
+
+  return (
+    <section>
+      {auth?.roles?.find((role) => role == "PATIENT") ? (
+        <Navigate to="/patient" replace={true} />
+      ) : auth?.roles?.find((role) => role == "DOCTOR") ? (
+        <Navigate to="/doctor" replace={true} />
+      ) : auth?.roles?.find((role) => role == "ADMIN") ? (
+        <Navigate to="/admin" replace={true} />
+      ) : (
+        <Navigate to="/unauthorized" replace={true} />
+      )}
+    </section>
+  );
 };
 
 export default Home;

@@ -94,6 +94,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/forgetPassword").permitAll()
                 .antMatchers("/public/**/").permitAll()
                 .antMatchers("/api/user/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/api/user/register").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
 
                 .anyRequest().authenticated();
@@ -144,7 +145,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*");
+                //registry.addMapping("/**").allowedOrigins("*").allowedMethods("*").allowedHeaders("*");
+                registry.addMapping("/api/auth/login")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("POST")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+
+                registry.addMapping("/api/user/**").allowedOrigins("http://localhost:3000").allowedMethods("*").allowedHeaders("*");
             }
         };
     }
