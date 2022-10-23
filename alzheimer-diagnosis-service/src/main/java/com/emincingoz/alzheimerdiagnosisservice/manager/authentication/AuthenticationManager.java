@@ -4,7 +4,9 @@ import com.emincingoz.alzheimerdiagnosisservice.core.utils.BusinessRules;
 import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.*;
 import com.emincingoz.alzheimerdiagnosisservice.domain.dtos.authentication.RefreshTokenDTO;
 import com.emincingoz.alzheimerdiagnosisservice.domain.dtos.authentication.TokenDTO;
+import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
+import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.authentication.UserLoginRequest;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IUserRepository;
 import com.emincingoz.alzheimerdiagnosisservice.security.JwtTokenProvider;
@@ -16,6 +18,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,7 +50,12 @@ public class AuthenticationManager implements IAuthenticationService{
 
         this.userRepository.save(user.get());
 
-        TokenDTO tokenDTO = new TokenDTO(token, refreshTokenDto.getToken());
+        //List<UserRolesEnum> roles = user.get().getRoles().get().getAuthorityName().getName();
+
+        List<UserRolesEnum> roles = new ArrayList<>();
+        user.get().getRoles().stream().forEach(userAuthority -> roles.add(userAuthority.getAuthorityName().getName()));
+
+        TokenDTO tokenDTO = new TokenDTO(token, refreshTokenDto.getToken(), roles);
 
         return new SuccessDataResult<>(tokenDTO);
     }

@@ -1,17 +1,22 @@
 import { useRef, useState, useEffect } from "react";
+import useAuth from "../../hooks/useAuth";
 import { Button, TextField, Snackbar, Alert } from "@mui/material";
 import CustomTextField from "../../components/CustomTextField";
 import axios from "../../services/axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { HttpStatusCode } from "axios";
 
-const BASE_URL = "/api/user";
+const BASE_URL = "/api/auth";
 const LOGIN_URL = BASE_URL + "/login";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
 const TCNO_REGEX = /^[1-9]{1}[0-9]{9}[02468]{1}$/;
 
 const Login = () => {
+  const { setAuth } = useAuth();
+
   // Tc No
   const [tckn, setTckn] = useState("");
   const [validTckn, setValidTckn] = useState(false);
@@ -23,6 +28,8 @@ const Login = () => {
   const [passwordFocus, setPasswordFocus] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
 
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -68,12 +75,29 @@ const Login = () => {
         }),
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: false,
+          //headers: {},
+          withCredentials: true,
         }
       );
 
+      console.log(JSON.stringify(response?.data));
+      console.log(JSON.stringify(response));
+
+      const token = response?.data?.data.token;
+      const roles = response?.data?.data.roles;
+
+      console.log(token);
+      console.log(roles);
+
+      console.log("tckn: ", tckn);
+      console.log("pass: ", password);
+      console.log("roles: ", roles);
+      console.log("token: ", token);
+
+      setAuth({ tckn, password, roles, token });
+
       // Navigate to home page if login is successfull
-      navigate("/home");
+      navigate(from, { replace: true });
     } catch (e) {
       if (e.response?.status === 409) {
         setSnackbar({
