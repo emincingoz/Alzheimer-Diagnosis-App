@@ -1,5 +1,6 @@
 package com.emincingoz.alzheimerdiagnosisservice.config;
 
+import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.security.JwtAuthenticationEntryPoint;
 import com.emincingoz.alzheimerdiagnosisservice.security.JwtAuthorizationTokenFilter;
 import com.emincingoz.alzheimerdiagnosisservice.security.service.JwtUserDetailsService;
@@ -94,6 +95,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/forgetPassword").permitAll()
                 .antMatchers("/public/**/").permitAll()
                 .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/api/doctor/**").hasAuthority(UserRolesEnum.DOCTOR.toString())
+                .antMatchers("/api/admin/**").hasAuthority(UserRolesEnum.ADMIN.toString())
+                .antMatchers("/api/patient/**").hasAuthority(UserRolesEnum.PATIENT.toString())
                 .antMatchers(HttpMethod.OPTIONS, "/api/user/register").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
 
