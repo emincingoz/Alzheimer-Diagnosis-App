@@ -1,10 +1,7 @@
 package com.emincingoz.alzheimerdiagnosisservice.security;
 
 import com.emincingoz.alzheimerdiagnosisservice.domain.dtos.authentication.RefreshTokenDTO;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Clock;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.impl.DefaultClock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -100,6 +97,11 @@ public class JwtTokenProvider implements Serializable {
                         && !isTokenExpired(token)
                         && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate())
         );
+    }
+
+    Long getUserIdFromJwt(String token) {
+        Claims claims = Jwts.parser().setSigningKey(CLAIM_KEY_USERNAME).parseClaimsJws(token).getBody();
+        return Long.parseLong(claims.getSubject());
     }
 
     private Boolean isTokenExpired(String token) {

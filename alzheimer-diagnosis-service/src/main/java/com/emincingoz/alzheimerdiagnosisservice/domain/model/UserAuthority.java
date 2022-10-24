@@ -1,5 +1,6 @@
 package com.emincingoz.alzheimerdiagnosisservice.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,4 +26,9 @@ public class UserAuthority implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "authority_name", nullable = false)
     private Authority authorityName;
+
+    @JsonBackReference
+    public User getUser(){
+        return user;
+    }
 }

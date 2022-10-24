@@ -1,6 +1,7 @@
 package com.emincingoz.alzheimerdiagnosisservice.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import lombok.*;
 
@@ -67,4 +68,9 @@ public class User {
 
     @Column(name = "refresh_token")
     private String refreshToken;
+
+    @JsonManagedReference
+    public List<UserAuthority> getRoles(){
+        return roles;
+    }
 }
