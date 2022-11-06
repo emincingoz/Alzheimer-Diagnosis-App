@@ -1,8 +1,10 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
+import Navbar from "../navbar/Navbar";
+import "../../App.css";
 
-const AdminPage = () => {
+const DoctorPage = () => {
   const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -15,7 +17,7 @@ const AdminPage = () => {
 
   return (
     <section>
-      <h1>Admin Page</h1>
+      <h1>Doctor Page</h1>
       <br />
       <p>You are logged in!</p>
       <br />
@@ -33,4 +35,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default DoctorPage;

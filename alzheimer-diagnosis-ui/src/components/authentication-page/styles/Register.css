@@ -1,0 +1,94 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    /*text-align: center;*/
+}
+
+body {
+    min-height: 100vh;
+    /*background-color: #e5e8ef;*/
+    /*background-image: url("../../../assets/images/register-background-3.png");*/
+}
+
+.register-page {
+    min-height: 100vh;
+    width: 100%;
+    background-image: url("../../../assets/images/register-background-3.png");
+}
+
+.main-section {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.register-section {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /*padding: 1rem;*/
+    /*margin: 0.5rem 11rem;*/
+    align-items: flex-start;
+    margin: 2rem;
+}
+
+.register-h1 {
+    font-size: 40px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    text-align: start;
+    margin-left: 2rem;
+}
+
+h3 {
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+}
+
+.signInButton {
+    width: 250px;
+    height: 45px;
+}
+
+.textField .MuiOutlinedInput-root {
+    width: 300px;
+    border-radius: 25px;
+    background-color: white;
+}
+
+.datePicker .MuiOutlinedInput-root {
+    width: 300px;
+    border-radius: 25px;
+    background-color: white;
+}
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*margin: 0 1.8em*/
+}
+
+img {
+    width: 190px;
+    height: 100px;
+}
+
+.top {
+    display: flex;
+}
+
+.h1-text {
+    align-self: flex-end;
+    width: 90%;
+}

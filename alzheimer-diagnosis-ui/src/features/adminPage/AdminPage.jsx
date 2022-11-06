@@ -1,8 +1,9 @@
 import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../../context/AuthProvider";
+import Navbar from "../navbar/Navbar";
 
-const PatientPage = () => {
+const AdminPage = () => {
   const { setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -15,7 +16,8 @@ const PatientPage = () => {
 
   return (
     <section>
-      <h1>Patient Page</h1>
+      <Navbar />
+      <h1>Admin Page</h1>
       <br />
       <p>You are logged in!</p>
       <br />
@@ -33,4 +35,4 @@ const PatientPage = () => {
   );
 };
 
-export default PatientPage;
+export default AdminPage;
