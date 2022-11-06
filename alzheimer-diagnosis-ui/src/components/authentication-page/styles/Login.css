@@ -1,0 +1,59 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    /*text-align: center;*/
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.login-page {
+    min-height: 100vh;
+    width: 100%;
+    background-image: url("../../../assets/images/login-background-2.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    
+}
+
+.login-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /*padding: 1rem;*/
+    /*margin: 0.5rem 11rem;*/
+    align-items: flex-start;
+    /*margin: 2rem;*/
+    margin-left: 15%;
+    align-items: center;
+}
+
+.buttons {
+    display: flex;
+}
+
+.signUpButton {
+    width: 120px;
+    border-radius: 25px;
+    margin: 30px, 15px;
+}
+
+/*.login-textfield {
+    width: 400px;
+}*/
+
+.login-h1 {
+    font-size: 35px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
