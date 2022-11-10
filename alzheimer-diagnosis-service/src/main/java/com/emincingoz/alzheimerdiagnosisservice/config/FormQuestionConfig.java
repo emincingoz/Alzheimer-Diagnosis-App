@@ -22,8 +22,10 @@ public class FormQuestionConfig {
             FormQuestion question8 = new FormQuestion(8l, "Karar Vermekte Zorlanıyor musunuz?");
             FormQuestion question9 = new FormQuestion(9l, "Sosyal Aktivitelerden Sık Sık Uzaklaştığınız Oluyor mu?");
             FormQuestion question10 = new FormQuestion(10l, "Kendinizi, Şüpheci veya Korku İçerisinde Olarak Nitelendirebilir misiniz?");
+            FormQuestion question11 = new FormQuestion(11l, "Kullanmayı Bildiğiniz Bir Cihazı Kullanmakta Sıkıntı Yaşıyormusunuz?");
+            FormQuestion question12 = new FormQuestion(12l, "Daha Önce Alzheimer Tanısı Konulan Herhangi Bir Yakınınız Var mı?");
 
-            formQuestionRepository.saveAll(List.of(question1, question2, question3, question4, question5, question6, question7, question8, question9, question10));
+            formQuestionRepository.saveAll(List.of(question1, question2, question3, question4, question5, question6, question7, question8, question9, question10, question11, question12));
         };
     }
 }

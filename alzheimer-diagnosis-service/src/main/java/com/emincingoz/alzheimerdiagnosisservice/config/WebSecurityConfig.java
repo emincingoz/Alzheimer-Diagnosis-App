@@ -97,7 +97,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/api/doctor/**").hasAuthority(UserRolesEnum.DOCTOR.toString())
                 .antMatchers("/api/admin/**").hasAuthority(UserRolesEnum.ADMIN.toString())
-                .antMatchers("/api/patient/**").hasAuthority(UserRolesEnum.PATIENT.toString())
+                //.antMatchers("/api/patient/**").hasAuthority(UserRolesEnum.PATIENT.toString())
+                .antMatchers("/api/user-form-question/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/api/user/register").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
 
@@ -159,6 +160,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 registry.addMapping("/api/user/**").allowedOrigins("http://localhost:3000").allowedMethods("*").allowedHeaders("*");
 
                 registry.addMapping("/**").allowedOrigins("http://localhost:3000").allowedMethods("*").allowedHeaders("*").allowCredentials(true);
+
+                registry.addMapping("/api/user-form-question")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("*")
+                        .allowedHeaders("*")
+                        .allowCredentials(false);
             }
         };
     }
