@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(schema = "rest", name = "ada_user")
@@ -62,6 +63,9 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_user_id"), referencedColumnName = "id", name = "user_id")
     private List<UserAuthority> roles;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserFormQuestion> userFormQuestions;
 
     @Column(name = "refresh_token_expiration_date")
     private Instant refreshTokenExpirationDate;
