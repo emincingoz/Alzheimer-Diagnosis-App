@@ -12,33 +12,22 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import "./styles/PatientPageForm.css";
 
-const FormQuestion = () => {
-  const [selected, setSelected] = useState(false);
-  const [alignment, setAlignment] = useState("");
+const FormQuestion = (props) => {
+  const [alignment, setAlignment] = useState(
+    props.answer == null ? "" : props.answer == false ? "false" : "true"
+  );
 
   const handleAlignment = (event, newAlignment) => {
+    var ans = newAlignment === "true";
+    props.list[props.id - 1].answer = ans;
+    props.setAnswer(props.list);
     setAlignment(newAlignment);
   };
 
   return (
     <div className="question">
-      <div>1.</div>
-      <div>
-        Yeni Öğrendiğiniz Bilgileri Hatırlamakta Güçlük Çekiyor musunuz?
-      </div>
-      {/*<div className="patient-form-buttons">
-            <div>
-                <IconButton color="primary" aria-label="add to shopping cart">
-                <AddShoppingCartIcon />
-                </IconButton>
-            </div>
-            <div>
-                <IconButton color="primary" aria-label="add to shopping cart">
-                    <AddShoppingCartIcon />
-                    </IconButton>
-            </div>
-            </div>
-        </div>*/}
+      <div>{props.id}</div>
+      <div>{props.question}</div>
       <div className="patient-form-buttons">
         <ToggleButtonGroup
           value={alignment}
@@ -47,10 +36,10 @@ const FormQuestion = () => {
           aria-label="text alignment"
           size="small"
         >
-          <ToggleButton value="left" style={{ borderRadius: "50%" }}>
+          <ToggleButton value="true" style={{ borderRadius: "50%" }}>
             <CheckIcon />
           </ToggleButton>
-          <ToggleButton value="right" style={{ borderRadius: "50%" }}>
+          <ToggleButton value="false" style={{ borderRadius: "50%" }}>
             <CloseIcon />
           </ToggleButton>
         </ToggleButtonGroup>

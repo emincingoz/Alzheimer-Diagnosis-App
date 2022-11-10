@@ -21,14 +21,48 @@
 .question {
     width: 90%;
     /*height: 30px;*/
-    margin: auto;
     /*padding-left: 15px;
     padding-right: 15px;*/
     padding: 3px 15px;
-    background-color: #a4c7cd;
+    background-color: #a4c7cd; 
     display: flex;
     align-items: center;
     justify-content:space-between;
     border-radius: 20px;
     color: white;
+    margin: 10px auto;
+}
+
+.patient-form-questions {
+    height: 450px;
+    /*background-color: saddlebrown;*/
+}
+
+.patient-form-pagination-box {
+    display: flex;
+    justify-content: center;
+}
+
+.form-pagination-button {
+    width: 25px;
+    height: 25px;
+    background-color: hotpink;
+    margin: 3px;
+    text-align: center;
+    border-radius: 50%;
+    border: 1px solid black;
+    font-size: 13px;
+}
+
+.form-pagination-button:hover {
+    background-color: aquamarine;
+}
+
+.active {
+    background-color: brown;
+}
+
+.patient-page-submit {
+    display: flex;
+    justify-content: space-around;
 }
