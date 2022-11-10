@@ -14,4 +14,7 @@
     <!--  2022 - 10   -->
     <include file="db/changelog/2022/10/20-changelog.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/2022/10/21-changelog.xml" relativeToChangelogFile="false"/>
+
+    <!-- 2022 - 11 -->
+    <include file="db/changelog/2022/11/10-changelog.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>
