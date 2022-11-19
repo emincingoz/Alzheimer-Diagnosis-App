@@ -4,6 +4,7 @@ import "./styles/PatientPage.css";
 import PatientPageTopBar from "./PatientPageTopBar";
 import PatientPageAnasayfa from "./PatientPageAnasayfa";
 import PatientPageForm from "./PatientPageForm";
+import PatientPageMessage from "./PatientPageMessage";
 
 const PatientPage = () => {
   return (
@@ -11,7 +12,8 @@ const PatientPage = () => {
       <PatientPageTopBar />
       <div className="patient-page-inside">
         {/*<PatientPageAnasayfa />*/}
-        <PatientPageForm />
+        {/*<PatientPageForm />*/}
+        <PatientPageMessage />
       </div>
     </div>
   );
