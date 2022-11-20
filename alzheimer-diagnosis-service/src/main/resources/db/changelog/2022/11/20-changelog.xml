@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="ada221120-0001" author="emin.cingoz">
+        <dropPrimaryKey  constraintName="ada_user_authority_pkey"
+                               schemaName="rest"
+                               tableName="ada_user_authority"/>
+
+        <addColumn tableName="ada_user_authority" schemaName="rest">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ada_user_authority_new_pkey"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

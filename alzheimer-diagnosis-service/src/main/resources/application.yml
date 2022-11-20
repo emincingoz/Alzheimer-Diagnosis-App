@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  jackson:
+     serialization:
+       fail-on-empty-beans: false
   mvc:
     path match:
       matching-strategy: ant_path_matcher

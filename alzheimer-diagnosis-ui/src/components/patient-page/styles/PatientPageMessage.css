@@ -105,6 +105,9 @@
     height: 50px;
     background-color: #f2f1f8;
     border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .message-textfield {
@@ -119,6 +122,17 @@
 
 .message-textfield:focus {
     outline: none;
+}
+
+.message-send-icon-button {
+    width: 35px;
+    height: 35px;
+}
+
+.message-send-icon {
+    width: 100px;
+    height: 60px;
+    margin-right: 70%;
 }
 
 @media screen and ( min-height: 700px ) {

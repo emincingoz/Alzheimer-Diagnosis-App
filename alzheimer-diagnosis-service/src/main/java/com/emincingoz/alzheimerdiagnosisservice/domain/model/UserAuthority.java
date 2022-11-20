@@ -18,12 +18,14 @@ public class UserAuthority implements Serializable {
     private static final long serialVersionUID = 5353767713955462660L;
 
     @Id
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Id
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "authority_name", nullable = false)
     private Authority authorityName;
 
