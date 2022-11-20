@@ -167,6 +167,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(false);
+
+                registry.addMapping("/api/patient/**").allowedOrigins("http://localhost:3000").allowedMethods("*").allowedHeaders("*");
             }
         };
     }
