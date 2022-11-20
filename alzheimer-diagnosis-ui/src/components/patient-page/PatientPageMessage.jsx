@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import MessageBubble from "./MessageBubble";
 import MessageContact from "./MessageContact";
+import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 import { TextField } from "@mui/material";
 import "./styles/PatientPageMessage.css";
+import sendIcon from "../../assets/images/message-send-icon.png";
 
 const PatientPageMessage = () => {
   return (
@@ -58,7 +60,9 @@ const PatientPageMessage = () => {
           <div className="message-write-field">
             <input className="message-textfield"></input>
             {/* TODO:: Change icon button */}
-            <SendIcon />
+            <IconButton className="message-send-icon-button" color="primary" aria-label="add to shopping cart">
+              <img className="message-send-icon" src={sendIcon} alt="send-icon" />
+            </IconButton>
           </div>
         </div>
       </div>

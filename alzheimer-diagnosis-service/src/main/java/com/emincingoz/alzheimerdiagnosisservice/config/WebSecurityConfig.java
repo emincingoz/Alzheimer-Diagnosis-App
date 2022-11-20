@@ -98,6 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/doctor/**").hasAuthority(UserRolesEnum.DOCTOR.toString())
                 .antMatchers("/api/admin/**").hasAuthority(UserRolesEnum.ADMIN.toString())
                 //.antMatchers("/api/patient/**").hasAuthority(UserRolesEnum.PATIENT.toString())
+                .antMatchers("/api/patient/**").permitAll()
                 .antMatchers("/api/user-form-question/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/api/user/register").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
