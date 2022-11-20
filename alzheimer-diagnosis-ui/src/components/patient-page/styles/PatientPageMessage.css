@@ -32,7 +32,11 @@
 
 .patient-message-left-title {
     text-align: center;
-    margin: 20px 0;
+    margin: 20px 0 15px 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5%;
+    align-items: center;
 }
 
 .patient-message-contacts, .message-messages-body {
@@ -48,7 +52,7 @@
   }
 
 .message-contact {
-    margin: 3%;
+    margin: 2% 3%;
     width: 93%;
     height: 63px;
     border: none;
@@ -133,6 +137,20 @@
     width: 100px;
     height: 60px;
     margin-right: 70%;
+}
+
+.person-add-icon-button.MuiIconButton-root {
+    margin: 0;
+    padding: 1%;
+    color: black;
+}
+
+.doctor-rozet {
+    display: flex;
+}
+
+.hidden {
+    display: none;
 }
 
 @media screen and ( min-height: 700px ) {

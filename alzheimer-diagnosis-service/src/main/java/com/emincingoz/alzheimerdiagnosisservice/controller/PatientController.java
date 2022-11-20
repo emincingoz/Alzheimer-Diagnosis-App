@@ -17,7 +17,6 @@ public class PatientController {
 
     @GetMapping("get-doctors")
     public ResponseEntity<?> getDoctors() {
-        System.out.println("ulaştı");
         return new ResponseEntity<>(patientService.getAllDoctors(), HttpStatus.ACCEPTED);
     }
 

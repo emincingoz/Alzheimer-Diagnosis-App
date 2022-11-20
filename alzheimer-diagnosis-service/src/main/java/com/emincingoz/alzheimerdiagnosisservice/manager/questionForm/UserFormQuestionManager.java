@@ -21,7 +21,7 @@ public class UserFormQuestionManager implements IUserFormQuestionService {
     @Override
     public Result getAllQuestions() {
         List<FormQuestionGetResponse> formQuestionGetResponse = modelMapper.map(formQuestionRepository.findAll(), new TypeToken<List<FormQuestionGetResponse>>() {}.getType());
-        System.out.println("ans: " + formQuestionGetResponse.toString());
+
         return new SuccessDataResult<>(formQuestionGetResponse);
     }
 }
