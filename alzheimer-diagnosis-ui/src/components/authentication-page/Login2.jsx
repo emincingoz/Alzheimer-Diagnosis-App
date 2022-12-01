@@ -96,6 +96,9 @@ const Login = () => {
       console.log("roles: ", roles);
       console.log("token: ", token);
 
+      let userInfo = { tckn: tckn, roles: roles };
+      localStorage.setItem("user", JSON.stringify(userInfo));
+
       //setAuth({ tckn, password, roles, token });
 
       // Navigate to home page if login is successfull

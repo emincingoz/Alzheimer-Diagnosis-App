@@ -36,6 +36,7 @@ public class PatientManager implements IPatientService {
         userAuthorities.forEach(auth -> {users.add(auth.getUser());});
 
         List<DoctorsGetResponse> doctorsGetResponses = modelMapper.map(users, new TypeToken<List<DoctorsGetResponse>>() {}.getType());
+        System.out.println("asddsf: " + doctorsGetResponses.get(0).toString());
 
         return new SuccessDataResult<>(doctorsGetResponses);
     }

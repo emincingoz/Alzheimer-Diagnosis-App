@@ -103,6 +103,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS, "/api/user/register").permitAll()
                 .antMatchers(AUTH_WHITELIST).permitAll()
 
+                .antMatchers("/ws/**").permitAll()
+                .antMatchers("/user/**").permitAll()
+                .antMatchers("/message-app/**").permitAll()
+
+                .antMatchers(HttpMethod.OPTIONS,"/ws/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS,"/message-app/**").permitAll()
+
                 .anyRequest().authenticated();
 
         httpSecurity.cors();

@@ -37,6 +37,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.mashape.unirest/unirest-java
 	implementation group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
 
+	// Web Socket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
