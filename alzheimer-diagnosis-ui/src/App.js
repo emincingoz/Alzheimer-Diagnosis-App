@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Register2 from "./components/authentication-page/Register2";
 import Login2 from "./components/authentication-page/Login2";
 import PatientPage from "./components/patient-page/PatientPage";
+import DoctorPage from "./components/doctor-page/DoctorPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route exact path="/login" element={<Login2 />}></Route>
           <Route exact path="/register" element={<Register2 />}></Route>
           <Route exact path="/patient" element={<PatientPage />}></Route>
+          <Route exact path="/doctor" element={<DoctorPage />}></Route>
         </Routes>
       </BrowserRouter>
       {/*<BrowserRouter>
