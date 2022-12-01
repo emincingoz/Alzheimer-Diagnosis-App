@@ -40,6 +40,9 @@ dependencies {
 	// Web Socket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
