@@ -43,3 +43,7 @@ jwt:
       refresh: refresh
       forgetPassword: forgetPassword
       changePassword: changePassword
+
+
+prediction-service:
+    upload-mri-uri: "http://127.0.0.1:8000/upload-mri-file/"
