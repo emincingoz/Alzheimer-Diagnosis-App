@@ -1,6 +1,15 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.doctor;
 
+import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.DataResult;
+import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.SuccessDataResult;
+import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
+import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
+import com.emincingoz.alzheimerdiagnosisservice.domain.responses.doctor.PatientsGetResponse;
+import com.emincingoz.alzheimerdiagnosisservice.repository.IDoctorRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
@@ -15,9 +24,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DoctorManager implements IDoctorService {
+
+    private final IDoctorRepository doctorRepository;
+
+    private final ModelMapper modelMapper;
+
     private static final String imageDirectory = System.getProperty("user.dir") + "/images/";
 
     @Value("${prediction-service.upload-mri-uri}")
@@ -41,6 +57,18 @@ public class DoctorManager implements IDoctorService {
                 IOException ex) {
             return new ResponseEntity<>("Image is not uploaded", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Override
+    public DataResult getAllPatients() {
+
+        List<User> patientList = doctorRepository.findAllByRole(UserRolesEnum.PATIENT);
+
+        List<PatientsGetResponse> patientsGetResponses = modelMapper.map(patientList, new TypeToken<List<PatientsGetResponse>>() {}.getType());
+
+        System.out.println(patientsGetResponses.toString());
+
+        return new SuccessDataResult(patientsGetResponses);
     }
 
     private void makeDirectoryIfNotExist(String imageDirectory) {
