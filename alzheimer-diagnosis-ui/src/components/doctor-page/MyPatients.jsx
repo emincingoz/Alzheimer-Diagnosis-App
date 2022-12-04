@@ -11,7 +11,7 @@ import messageBubbleIcon from "../../assets/images/message-bubble-icon.png";
 const BASE_URL = "/api/doctor";
 const GET_PATIENTS_URL = BASE_URL + "/get-allpatients";
 
-const paginationCounts = [2, 3, 5];
+const paginationCounts = [5, 8, 10];
 
 const MyPatients = () => {
   const [allPatients, setAllPatients] = useState([]);
