@@ -1,10 +1,12 @@
 import { useRef, useState, useEffect } from "react";
-import { Button, TextField, Snackbar, Alert } from "@mui/material";
+import { Button, TextField, Snackbar, Alert, IconButton } from "@mui/material";
 import axios from "../../services/axios";
 import "./styles/MyPatients.css";
 import { tr } from "date-fns/locale";
 import { hover } from "@testing-library/user-event/dist/hover";
 import { useCallback } from "react";
+import formIcon from "../../assets/images/form-icon.png";
+import messageBubbleIcon from "../../assets/images/message-bubble-icon.png";
 
 const BASE_URL = "/api/doctor";
 const GET_PATIENTS_URL = BASE_URL + "/get-allpatients";
@@ -98,17 +100,49 @@ const MyPatients = () => {
               " " +
               capitalizeFirstLetter(item.lastName)}
           </td>
-          <td>{item.tckn}</td>
-          <td>{handlePatientAge(item.birthDate)}</td>
-          <td>{item.email}</td>
-          <td>{item.phoneNumber}</td>
-          <td>form</td>
-          <td>mesaj</td>
+          <td className="doctor-mypatients-small-screen-hide">{item.tckn}</td>
+          <td className="doctor-mypatients-small-screen-hide">
+            {handlePatientAge(item.birthDate)}
+          </td>
+          <td className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+            {item.email}
+          </td>
+          <td className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+            {item.phoneNumber}
+          </td>
+          <td>
+            <img
+              className="doctor-mypatients-form-icon"
+              src={formIcon}
+              alt="form-icon"
+              onClick={() => handleShowForm(item)}
+            />
+          </td>
+          <td>
+            <img
+              className="doctor-mypatients-message-icon"
+              src={messageBubbleIcon}
+              alt="message bubble"
+              onClick={() => handleChangeMessageScreen(item)}
+            />
+          </td>
         </tr>
       );
     });
 
     return array;
+  };
+
+  // TODO:: Show patinets' form
+  const handleShowForm = (patient) => {
+    console.log("asdas");
+    return <div>hello</div>;
+  };
+
+  // TODO:: Show message page with selected patient
+  const handleChangeMessageScreen = (patient) => {
+    console.log("aasdas");
+    return <div>hello all</div>;
   };
 
   const RenderCurrentShowedPatientsInfo = () => {
@@ -132,9 +166,10 @@ const MyPatients = () => {
   const RenderPaginationCounts = () => {
     let array = [];
 
-    paginationCounts.map((item) => {
+    paginationCounts.map((item, index) => {
       array.push(
         <div
+          key={index}
           className={`doctor-mypatients-pagination-counts ${
             numPatientsPerPage === item ? "active-pagination-count" : ""
           }`}
@@ -170,11 +205,17 @@ const MyPatients = () => {
           <thead>
             <tr>
               <th>Ad Soyad</th>
-              <th>TC-Kimlik No</th>
-              <th>Yaş</th>
-              <th>E-Mail</th>
-              <th>Telefon</th>
-              <th>Hikaye Formu</th>
+              <th className="doctor-mypatients-small-screen-hide">
+                TC-Kimlik No
+              </th>
+              <th className="doctor-mypatients-small-screen-hide">Yaş</th>
+              <th className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+                E-Mail
+              </th>
+              <th className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+                Telefon
+              </th>
+              <th>Form</th>
               <th>Mesaj</th>
             </tr>
           </thead>
