@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useRef } from "react";
 import "./styles/PatientPageMessage.css";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
@@ -7,13 +8,13 @@ const MessageContact = (props) => {
       <AccountCircleIcon style={{ color: "black" }} sx={{ fontSize: 65 }} />
       <div className="message-contact-person">
         <div className="message-contact-person-info">
-          <h4>{props.name}</h4>
+          <h4>{props.receiverName}</h4>
           <p
             className={`last-message ${
               props.lastMessage == "false" ? "hidden" : ""
             }`}
           >
-            nasıl olmuş ama değil mi?
+            {props.lastMessage}
           </p>
         </div>
         <div
@@ -21,7 +22,7 @@ const MessageContact = (props) => {
             props.lastSeen == "false" ? "hidden" : ""
           }`}
         >
-          <h5>22.22</h5>
+          <h5>{props.lastMessageTime}</h5>
         </div>
       </div>
     </div>

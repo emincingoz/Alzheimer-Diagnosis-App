@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="ada22124-0001" author="emin.cingoz">
+        <createTable tableName="ada_active_message_contact" schemaName="rest">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ada_active_message_contact_pkey"/>
+            </column>
+
+            <column name="sender_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="ada_active_message_contact_sender_fk"/>
+            </column>
+
+            <column name="receiver_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="ada_active_message_contact_receiver_fk"/>
+            </column>
+
+            <column name="sender_last_seen" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="receiver_last_seen" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="ada221204-0002" author="emin.cingoz">
+        <addForeignKeyConstraint baseColumnNames="sender_id" baseTableName="ada_active_message_contact" baseTableSchemaName="rest"
+                                 constraintName="fk_active_message_contact_sender" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="ada_user" referencedTableSchemaName="rest"/>
+
+        <addForeignKeyConstraint baseColumnNames="receiver_id" baseTableName="ada_active_message_contact" baseTableSchemaName="rest"
+                                 constraintName="fk_active_message_contact_receiver" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="ada_user" referencedTableSchemaName="rest"/>
+    </changeSet>
+
+    <changeSet id="ada221204-0003" author="emin.cingoz">
+        <addColumn tableName="ada_active_message_contact" schemaName="rest">
+            <column name="last_message" type="varchar(255)"/>
+            <column name="last_message_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_message_by_receiver" type="boolean"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

@@ -25,8 +25,12 @@ import SockJS from "sockjs-client";
 import { counter } from "@fortawesome/fontawesome-svg-core";
 import { useCallback } from "react";
 
-const BASE_URL = "/api/patient";
-const GET_DOCTORS_URL = BASE_URL + "/get-doctors";
+const PATIENT_BASE_URL = "/api/patient";
+const GET_DOCTORS_URL = PATIENT_BASE_URL + "/get-doctors";
+
+const MESSAGE_CONTACT_BASE_URL = "/api/message-contact";
+const ADD_NEW_CONTACT_URL = MESSAGE_CONTACT_BASE_URL + "/add-contact";
+const GET_CONTACTS_URL = MESSAGE_CONTACT_BASE_URL + "/get-contacts";
 
 var stompClient = null;
 
@@ -34,6 +38,7 @@ const PatientPageMessage = () => {
   const [myMessage, setMyMessage] = useState("");
   const [dialog, setDialog] = useState(false);
   const [allDoctors, setAllDoctors] = useState([]);
+  const [contacts, setContacts] = useState([]);
   const [currentDoctor, setCurrentDoctor] = useState(null);
   const [currentDoctorFlag, setCurrentDoctorFlag] = useState(false);
   const [currentDoctorFullName, setCurrentDoctorFullName] = useState("");
@@ -142,6 +147,7 @@ const PatientPageMessage = () => {
 
   useEffect(() => {
     getUser();
+    getContacts();
     //console.log("map: " + privateChats.get("53401215078").chat.message);
   }, []);
 
@@ -165,6 +171,10 @@ const PatientPageMessage = () => {
     getAllDoctors();
   }, []);*/
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   const getAllDoctors = async (e) => {
     try {
       const response = await axios.get(GET_DOCTORS_URL, {
@@ -174,6 +184,47 @@ const PatientPageMessage = () => {
       });
 
       setAllDoctors(response.data.data);
+    } catch (e) {}
+  };
+
+  const addNewContact = async (e) => {
+    try {
+      const response = await axios.post(
+        ADD_NEW_CONTACT_URL,
+        JSON.stringify({
+          senderTckn: userInfo.tckn,
+          receiverTckn: currentDoctor.tckn,
+          lastMessage: myMessage,
+          lastMessageByReceiver: false,
+          senderLastSeen: "",
+          receiverLastSeen: "",
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          //headers: {},
+          withCredentials: true,
+        }
+      );
+
+      console.log("contact: " + currentDoctor.tckn);
+    } catch (e) {}
+  };
+
+  const getContacts = async (e) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const url = GET_CONTACTS_URL + "/" + user.tckn;
+      console.log("uelr: " + url);
+      const response = await axios.get(url, {
+        headers: { "Content-Type": "application/json" },
+        //headers: {},
+        withCredentials: true,
+      });
+
+      setContacts(response.data.data);
+
+      console.log("asdasdsdfsdfdgfdg: " + response.data.data["1"].senderTckn);
+      //console.log("fsdfds: " + contacts["1"].senderTckn);
     } catch (e) {}
   };
 
@@ -232,6 +283,10 @@ const PatientPageMessage = () => {
   const handleMessageSend = () => {
     sendPrivateMessage();
 
+    console.log("Before addNewContact work");
+    addNewContact();
+    console.log("After addNewContact work");
+
     setMyMessage("");
   };
 
@@ -256,11 +311,11 @@ const PatientPageMessage = () => {
       <Dialog onClose={handleDialogClose} open={dialog}>
         <DialogTitle>Bir Doktor Seç</DialogTitle>
         <List sx={{ pt: 0 }}>
-          {allDoctors.map((doctor) => (
+          {allDoctors.map((doctor, index) => (
             <ListItem
+              key={index}
               button
               onClick={() => handleDialogItemClick(doctor)}
-              key={doctor}
             >
               <ListItemAvatar>
                 <Avatar sx={{ bgcolor: "#919bab", color: blue[600] }}>
@@ -286,7 +341,69 @@ const PatientPageMessage = () => {
     );
   };
 
-  const RenderMessageContacts = () => {};
+  /*useEffect(() => {
+    console.log("contacstsfsd: " + contacts);
+    /*console.log("keys:: " + contacts["0"]);
+    /*console.log("keys:: " + Object.keys(contacts));
+
+    console.log("nolur:: " + contacts[0]["senderTckn"]);
+
+    let newObject = contacts["0"];
+    console.log("keys:: " + Object.keys(newObject));*/
+  /*let contact = contacts[0]["receiverTckn"];
+    console.log("contacstsfsd: " + contact);*/
+  /*}, [contacts]);*/
+
+  const RenderMessageContacts = () => {
+    //console.log("contacstsfsd: " + contacts[1].receiverTckn);
+    //console.log("contacstsfsd: " + contacts);
+    /*console.log("keys:: " + contacts["0"]);
+    console.log("keys:: " + Object.keys(contacts));
+
+    console.log("nolur:: " + contacts[0]["senderTckn"]);
+
+    let newObject = contacts["0"];
+    console.log("keys:: " + Object.keys(newObject));*/
+
+    let array = [];
+
+    /*for (let i = contacts.length - 1; i >= 0; i++) {
+      let contact = contacts[i];
+      array.push(
+        <MessageContact
+          key={i}
+          receiverName={
+            capitalizeFirstLetter(contact.receiverFirstName) +
+            " " +
+            capitalizeFirstLetter(contact.receiverLastName)
+          }
+          lastMessage={contact.lastMessage}
+          lastMessageTime={new Date(
+            contact.lastMessageTime
+          ).toLocaleTimeString()}
+          lastSeen={contact.receiverLastSeen}
+        />
+      );
+    }*/
+
+    contacts.map((item, index) => {
+      array.push(
+        <MessageContact
+          key={index}
+          receiverName={
+            capitalizeFirstLetter(item.receiverFirstName) +
+            " " +
+            capitalizeFirstLetter(item.receiverLastName)
+          }
+          lastMessage={item.lastMessage}
+          lastMessageTime={new Date(item.lastMessageTime).toLocaleTimeString()}
+          lastSeen={item.receiverLastSeen}
+        />
+      );
+    });
+
+    return array;
+  };
 
   return (
     <div className="patient-message">
@@ -304,24 +421,6 @@ const PatientPageMessage = () => {
         </div>
         <div className="patient-message-contacts">
           <RenderMessageContacts />
-          {/*<MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />
-          <MessageContact />*/}
         </div>
       </div>
       <>
