@@ -7,17 +7,20 @@ const MessageBubble = (props) => {
   }, [props.sentTime]);
 
   return (
-    <div className="message-bubble">
-      <div className="bubble-contact-pp">
+    <div
+      className="message-bubble"
+      style={props.isMyMessage && { justifyContent: "end" }}
+    >
+      <div
+        className="bubble-contact-pp"
+        style={props.isMyMessage && { display: "none" }}
+      >
         <AccountCircleIcon sx={{ fontSize: 33 }} />
       </div>
-      {/*<div className="message-body">
-        <div className="message-bubble-text">
-          <p>nasıl olmuş ama, bu kesinlikle mükemmel.</p>
-        </div>
-        <div className="message-bubble-sent-time">23.03</div>
-      </div>*/}
-      <div className="message-body">
+      <div
+        className="message-body"
+        style={props.isMyMessage && { borderRadius: "15px 15px 0 15px" }}
+      >
         <div className="message-bubble-text">
           <p>{props.message}</p>
         </div>

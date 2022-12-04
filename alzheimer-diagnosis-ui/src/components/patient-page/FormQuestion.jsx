@@ -26,7 +26,7 @@ const FormQuestion = (props) => {
 
   return (
     <div className="question">
-      <div>{props.id}</div>
+      <div style={{ paddingRight: "1%" }}>{props.id}</div>
       <div>{props.question}</div>
       <div className="patient-form-buttons">
         <ToggleButtonGroup

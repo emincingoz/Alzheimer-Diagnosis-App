@@ -23,6 +23,7 @@ import { SignalCellularNull } from "@mui/icons-material";
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
 import { counter } from "@fortawesome/fontawesome-svg-core";
+import { useCallback } from "react";
 
 const BASE_URL = "/api/patient";
 const GET_DOCTORS_URL = BASE_URL + "/get-doctors";
@@ -30,6 +31,7 @@ const GET_DOCTORS_URL = BASE_URL + "/get-doctors";
 var stompClient = null;
 
 const PatientPageMessage = () => {
+  const [myMessage, setMyMessage] = useState("");
   const [dialog, setDialog] = useState(false);
   const [allDoctors, setAllDoctors] = useState([]);
   const [currentDoctor, setCurrentDoctor] = useState(null);
@@ -42,13 +44,6 @@ const PatientPageMessage = () => {
 
   const [privateChats, setPrivateChats] = useState(new Map());
   const [messages, setMessages] = useState([]);
-  const [userData, setUserData] = useState({
-    senderTckn: "",
-    receiverTckn: "",
-    connected: false,
-    message: "",
-    sentTime: "",
-  });
 
   useEffect(() => {
     console.log("setState completed2: ", userInfo.tckn);
@@ -78,10 +73,6 @@ const PatientPageMessage = () => {
   };
 
   const onConnected = () => {
-    setUserData({ ...userData, connected: true });
-
-    console.log("user: " + userInfo.tckn);
-
     stompClient.subscribe(
       "/user/" + userInfo.tckn + "/private",
       onPrivateMessageReceived
@@ -90,7 +81,6 @@ const PatientPageMessage = () => {
 
   const onError = (err) => {
     console.log("asdsdfhhhh: " + err);
-    setUserData({ ...userData, connected: false });
   };
 
   const onPrivateMessageReceived = (payload) => {
@@ -127,96 +117,16 @@ const PatientPageMessage = () => {
       let chatMessage = {
         senderTckn: userInfo.tckn,
         receiverTckn: currentDoctor.tckn,
-        message: "Hello World",
+        message: myMessage,
         sentTime: new Date().toLocaleTimeString(),
       };
 
-      /*let chatMessage = {
-        senderTckn: currentDoctor.tckn,
-        receiverTckn: userInfo.tckn,
-        message: "Hello World",
-        sentTime: null,
-      };*/
-
-      if (userInfo.tckn !== currentDoctor.tckn) {
-        /*privateChats.get(currentDoctor.tckn).push(chatMessage);
-        setPrivateChats(new Map(privateChats));*/
-
-        /*let before = [];
-
-        before.push(privateChats.get(currentDoctor.tckn));
-        before.push(chatMessage);
-
-        setPrivateChats(
-          (prev) => new Map([...prev, [currentDoctor.tckn, chatMessage]])
-        );*/
-
-        /*privateChats.forEach((value, key) =>
-          console.log("chats: " + value.message)
-        );*/
-
+      if (userInfo.tckn !== currentDoctor.tckn && myMessage !== "") {
         let docTckn = currentDoctor.tckn;
-        let messageKey = chatMessage.sentTime;
 
-        //localStorage.removeItem(docTckn);
-        /*localStorage.clear();*/
-
-        let messageArray = JSON.parse(localStorage.getItem(docTckn));
-
-        //console.log("messageArray: " + messageArray.messageKey.message);
-        console.log("messageArra: " + messageArray);
-
-        //let arr = messageArray != null ? Object.entries(messageArray) : null;
-
-        //console.log("arr: " + arr);
-
-        var data = [];
-        //data.push(messageArray);
-
-        //let myItems = [];
-        if (messageArray != null) {
-          let result = Object.entries(messageArray).map(([k, v]) => ({
-            [k]: v,
-          }));
-          result.forEach((item) => {
-            var key = Object.keys(item)[0];
-            /*let items = item[key];
-            items.forEach((sub) => {
-              data.push({
-                senderTckn: sub.senderTckn,
-                receiverTckn: sub.receiverTckn,
-                message: sub.message,
-                sentTime: sub.sentTime,
-              });
-            });*/
-
-            data.push({
-              senderTckn: item[key].senderTckn,
-              receiverTckn: item[key].receiverTckn,
-              message: item[key].message,
-              sentTime: item[key].sentTime,
-            });
-
-            console.log("key: " + key);
-            console.log("item: " + item[key].sentTime);
-          });
-        }
-        //arr != null && data.push(...arr);
-        //data.push(chatMessage);
-
-        //console.log("chatMessage: " + chatMessage.sentTime);
-
-        //messageArray.push(chatMessage);
-
-        //let messageType = { chatMessage };
+        let data = getMessagesFromLocalStorage(docTckn);
 
         data.push(chatMessage);
-
-        for (let i = 0; i < data.length; i++) {
-          console.log("hcas: " + data[i]);
-          console.log("hcasas: " + data[i].sentTime);
-        }
-        //console.log("mwasdasd: " + messageType.messageKey.message);
 
         localStorage.setItem(docTckn, JSON.stringify(data));
         setMessages(data);
@@ -227,14 +137,7 @@ const PatientPageMessage = () => {
         {},
         JSON.stringify(chatMessage)
       );
-      setUserData({ ...userData, message: "" });
     }
-  };
-
-  const handleValue = (event) => {
-    const { value, name } = event.target;
-
-    setUserData({ ...userData, [name]: value });
   };
 
   useEffect(() => {
@@ -284,6 +187,8 @@ const PatientPageMessage = () => {
   };
 
   const handleDialogItemClick = (doctor) => {
+    handleDialogClose();
+
     console.log("doct: " + doctor.tckn);
     setCurrentDoctor(doctor);
     console.log("doct1: " + doctor.tckn);
@@ -295,15 +200,93 @@ const PatientPageMessage = () => {
         doctor.lastName.substring(1)
     );
 
-    /*let item = { tckn: "53401215078", name: "Emin Cingöz" };
-    localStorage.setItem("user", JSON.stringify(item));*/
+    getMessagesFromLocalStorage(doctor.tckn);
+  };
 
-    //registerUser();
+  const getMessagesFromLocalStorage = (doctorTckn) => {
+    let messageArray = JSON.parse(localStorage.getItem(doctorTckn));
+
+    var data = [];
+
+    if (messageArray != null) {
+      let result = Object.entries(messageArray).map(([k, v]) => ({
+        [k]: v,
+      }));
+      result.forEach((item) => {
+        var key = Object.keys(item)[0];
+
+        data.push({
+          senderTckn: item[key].senderTckn,
+          receiverTckn: item[key].receiverTckn,
+          message: item[key].message,
+          sentTime: item[key].sentTime,
+        });
+      });
+    }
+
+    setMessages(data);
+
+    return data;
   };
 
   const handleMessageSend = () => {
     sendPrivateMessage();
+
+    setMyMessage("");
   };
+
+  const RenderMessageBubbles = () => {
+    let array = [];
+
+    messages.map((k) =>
+      array.push(
+        <MessageBubble
+          message={k.message}
+          sentTime={k.sentTime}
+          isMyMessage={k.senderTckn === userInfo.tckn ? true : false}
+        />
+      )
+    );
+
+    return array;
+  };
+
+  const RenderSelectDoctorDialogBox = () => {
+    return (
+      <Dialog onClose={handleDialogClose} open={dialog}>
+        <DialogTitle>Bir Doktor Seç</DialogTitle>
+        <List sx={{ pt: 0 }}>
+          {allDoctors.map((doctor) => (
+            <ListItem
+              button
+              onClick={() => handleDialogItemClick(doctor)}
+              key={doctor}
+            >
+              <ListItemAvatar>
+                <Avatar sx={{ bgcolor: "#919bab", color: blue[600] }}>
+                  <AccountCircleIcon
+                    style={{ color: "black" }}
+                    sx={{ fontSize: 50 }}
+                  />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary={
+                  doctor.firstName[0].toUpperCase() +
+                  doctor.firstName.substring(1) +
+                  " " +
+                  doctor.lastName[0].toUpperCase() +
+                  doctor.lastName.substring(1)
+                }
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Dialog>
+    );
+  };
+
+  const RenderMessageContacts = () => {};
 
   return (
     <div className="patient-message">
@@ -317,38 +300,10 @@ const PatientPageMessage = () => {
             <PersonAddAlt1Icon />
           </IconButton>
 
-          <Dialog onClose={handleDialogClose} open={dialog}>
-            <DialogTitle>Bir Doktor Seç</DialogTitle>
-            <List sx={{ pt: 0 }}>
-              {allDoctors.map((doctor) => (
-                <ListItem
-                  button
-                  onClick={() => handleDialogItemClick(doctor)}
-                  key={doctor}
-                >
-                  <ListItemAvatar>
-                    <Avatar sx={{ bgcolor: "#919bab", color: blue[600] }}>
-                      <AccountCircleIcon
-                        style={{ color: "black" }}
-                        sx={{ fontSize: 50 }}
-                      />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      doctor.firstName[0].toUpperCase() +
-                      doctor.firstName.substring(1) +
-                      " " +
-                      doctor.lastName[0].toUpperCase() +
-                      doctor.lastName.substring(1)
-                    }
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Dialog>
+          <RenderSelectDoctorDialogBox />
         </div>
         <div className="patient-message-contacts">
+          <RenderMessageContacts />
           {/*<MessageContact />
           <MessageContact />
           <MessageContact />
@@ -381,71 +336,20 @@ const PatientPageMessage = () => {
               />
             </div>
             <div className="message-messages-body">
-              {/*TODO:: MessageBubble gelmesi gerekiyor içerisine mesaj parametresi verilecek*/}
-              {/*{[...privateChats.get(currentDoctor.tckn)].map((chat, index) => (
-                <MessageBubble message={chat} />
-              ))}*/}
-              {/*{[...privateChats.get(currentDoctor.tckn)].map(
-                  (chat, index) => (
-                    <MessageBubble message={chat.message} />
-                  )
-                )}*/}
-              {/*{[...privateChats.keys()].map((k) => (
-                <MessageBubble message={privateChats.get(k).message} />
-              ))}*/}
-
-              {/*{[...privateChats.keys()].map((k) =>
-                [k].map((l, index) => (
-                  <MessageBubble
-                    message={privateChats.get(l).message}
-                    key={index}
-                  />
-                ))
-              )}*/}
-
-              {/*{[...privateChats.keys()].map((k) => (
-                /*console.log("k: " + k);
-                console.log("currentDoct: " + currentDoctor.tckn);*/
-              /*if (k === currentDoctor.tckn) {
-                  console.log("currentmess: " + privateChats.get(k).message);
-                  <MessageBubble message={privateChats.get(k).message} />;
-                }*/
-              /*<MessageBubble
-                  message={privateChats.get(k).message}
-                  sentTime={privateChats.get(k).sentTime}
-                />
-                /*k === currentDoctor.tckn ? (
-                  <MessageBubble message={privateChats.get(k).message} />
-                ) : (
-                  <></>
-                );*/
-              /* ))}*/}
-              {messages.map(
-                (k) => (
-                  <MessageBubble message={k.message} sentTime={k.sentTime} />
-                ) /*{
-                /*console.log("k: " + k);
-                console.log("k: " + k.sentTime);*/
-                /*console.log("currentDoct: " + currentDoctor.tckn);*/
-                /*if (k === currentDoctor.tckn) {
-                  //console.log("currentmess: " + privateChats.get(k).message);
-                  /*<MessageBubble message={privateChats.get(k).message} />;
-                }*/
-                /*<MessageBubble
-                  message={privateChats.get(k).message}
-                  sentTime={privateChats.get(k).sentTime}
-                />;*/
-                /*k === currentDoctor.tckn ? (
-                  <MessageBubble message={privateChats.get(k).message} />
-                ) : (
-                  <></>
-                );*/
-                /*}*/
-              )}
+              <RenderMessageBubbles />
             </div>
             <div className="message-send-container">
               <div className="message-write-field">
-                <input className="message-textfield"></input>
+                <input
+                  type="text"
+                  className="message-textfield"
+                  placeholder="Bir mesaj yazın"
+                  value={myMessage}
+                  onChange={(e) => setMyMessage(e.target.value)}
+                  onKeyUp={(event) =>
+                    event.key === "Enter" ? handleMessageSend() : null
+                  }
+                ></input>
                 <IconButton
                   className="message-send-icon-button"
                   color="primary"
@@ -459,6 +363,7 @@ const PatientPageMessage = () => {
                   />
                 </IconButton>
               </div>
+              {/*<RenderMessageSendSection />*/}
             </div>
           </div>
         ) : (

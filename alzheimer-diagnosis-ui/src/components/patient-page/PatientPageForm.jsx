@@ -18,9 +18,24 @@ const BASE_URL = "/api/user-form-question";
 const USER_FORM_URL = BASE_URL + "/get-all-questions";
 
 const PatientPageForm = () => {
-  const [list, setList] = useState([""]);
+  const [list, setList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const numQuestionPerPage = 8;
+
+  const [numPages, setNumPages] = useState(0);
+  const [numQuestionPerPage, setNumQuestionPerPage] = useState(8);
+
+  useEffect(() => {
+    setNumPages(Math.ceil(list.length / numQuestionPerPage));
+  }, [list]);
+
+  useEffect(() => {
+    let pageCount = Math.ceil(list.length / numQuestionPerPage);
+    setNumPages(pageCount);
+
+    if (currentPage > pageCount) {
+      setCurrentPage(1);
+    }
+  }, [numQuestionPerPage]);
 
   useEffect(() => {
     getUserFormQuestions();
@@ -43,55 +58,62 @@ const PatientPageForm = () => {
   // TODO:: Check answer there is any null answer
   function handleSubmit() {}
 
+  const HandlePaginationButtons = () => {
+    var array = [];
+
+    for (let i = 1; i <= numPages; i++) {
+      array.push(
+        <button
+          style={
+            i === currentPage
+              ? { backgroundColor: "#ccc", pointerEvents: "none" }
+              : {}
+          }
+          key={i}
+          className="doctor-mypatients-pagination-button"
+          onClick={() => setCurrentPage(i)}
+        >
+          {i}
+        </button>
+      );
+    }
+
+    return <div style={{ width: "33%", textAlign: "center" }}>{array}</div>;
+  };
+
+  const RenderFormQuestions = () => {
+    const lastItemIndex = currentPage * numQuestionPerPage;
+    const firsItemIndex = lastItemIndex - numQuestionPerPage;
+    const items = list.slice(firsItemIndex, lastItemIndex);
+
+    var array = [];
+
+    items.forEach((item, index) => {
+      array.push(
+        <FormQuestion
+          key={index + 1}
+          question={item.question}
+          id={firsItemIndex + index + 1}
+          answer={item.answer}
+          list={list}
+          setAnswer={setList}
+        />
+      );
+    });
+
+    return array;
+  };
+
   return (
     <div className="patient-form">
       <div className="patient-form-title">
         <h1>Hasta Hikaye Formu</h1>
       </div>
       <div className="patient-form-questions">
-        {list.map((item, index) => {
-          return (
-            <>
-              {(index < numQuestionPerPage && currentPage == 1) ||
-              (index >= numQuestionPerPage && currentPage == 2) ? (
-                <FormQuestion
-                  key={index + 1}
-                  question={item.question}
-                  id={index + 1}
-                  answer={item.answer}
-                  list={list}
-                  setAnswer={setList}
-                />
-              ) : (
-                <></>
-              )}
-            </>
-          );
-        })}
+        <RenderFormQuestions />
       </div>
       <div className="patient-form-pagination-box">
-        <div className="patient-form-pagination">
-          <button
-            className={
-              currentPage === 1
-                ? "active form-pagination-button"
-                : "form-pagination-button"
-            }
-            onClick={() => setCurrentPage(1)}
-          >
-            1
-          </button>
-          <button
-            className={
-              currentPage === 2
-                ? "active form-pagination-button"
-                : "form-pagination-button"
-            }
-            onClick={() => setCurrentPage(2)}
-          >
-            2
-          </button>
-        </div>
+        <HandlePaginationButtons />
       </div>
     </div>
   );
