@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
+import javax.management.InstanceNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,6 +78,14 @@ public class UserManager implements IUserService {
 
         userRepository.save(user);
         return new ResponseEntity<>(new SuccessResult(UserMessageConstants.USER_REGISTER_SUCCESS), HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    public User findUserByTckn(String senderTckn) throws InstanceNotFoundException {
+        Optional<User> user = userRepository.findByTckn(senderTckn);
+        if (user.isPresent())
+            return user.get();
+        throw new InstanceNotFoundException();
     }
 
     private Result isUserExists(String tckn) {

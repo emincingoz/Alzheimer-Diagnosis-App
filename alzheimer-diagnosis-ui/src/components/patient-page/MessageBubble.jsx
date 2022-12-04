@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 const MessageBubble = (props) => {
   useEffect(() => {
-    console.log("sentTime: ", props.sentTime);
+    //console.log("sentTime: ", props.sentTime);
   }, [props.sentTime]);
 
   return (

@@ -65,6 +65,16 @@ public class User implements Serializable {
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_user_id"), referencedColumnName = "id", name = "user_id")
     private List<UserAuthority> roles;
 
+    // User as sender
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_active_message_sender"), referencedColumnName = "id", name = "user_id")
+    private List<ActiveMessageContact> receivers;
+
+    // User as receiver
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(foreignKey = @ForeignKey(name = "fk_active_message_receiver"), referencedColumnName = "id", name = "user_id")
+    private List<ActiveMessageContact> senders;
+
     @OneToMany(mappedBy = "user")
     private Set<UserFormQuestion> userFormQuestions;
 
