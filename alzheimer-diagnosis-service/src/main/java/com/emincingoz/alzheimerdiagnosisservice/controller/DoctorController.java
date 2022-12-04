@@ -16,10 +16,11 @@ public class DoctorController {
     private final IUserRepository userRepository;
     private final IDoctorService doctorService;
 
-    @GetMapping("/patients")
-    public ResponseEntity<?> getPatients() {
+    @GetMapping("/get-allpatients")
+    public ResponseEntity<?> getAllPatients() {
         System.out.println("asdasd: " + UserRolesEnum.PATIENT.toString());
-        return ResponseEntity.ok(userRepository.findByRole(UserRolesEnum.PATIENT));
+        return ResponseEntity.ok(doctorService.getAllPatients());
+        /*return ResponseEntity.ok(userRepository.findByRole(UserRolesEnum.PATIENT));*/
     }
 
     @PostMapping(value = "doctor-teshis/upload-image", produces = {MediaType.IMAGE_PNG_VALUE, "application/json"})

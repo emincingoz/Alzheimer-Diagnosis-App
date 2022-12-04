@@ -17,8 +17,8 @@ body {
     min-height: 100vh;
     width: 100%;
     /*background-image: url("../../../assets/images/patient-page-background-2.png");*/
-    background-size: cover;
-    background-repeat: no-repeat;
+    /*background-size: cover;
+    background-repeat: no-repeat;*/
     margin: 0;
     padding: 0;
     /*display: flex;*/
@@ -27,7 +27,7 @@ body {
 }
 
 .doctor-page-inside {
-    height: 100vh;
+    /*min-height: 100vh;*/
     display: flex;
     align-items: center;
     justify-content: start;
