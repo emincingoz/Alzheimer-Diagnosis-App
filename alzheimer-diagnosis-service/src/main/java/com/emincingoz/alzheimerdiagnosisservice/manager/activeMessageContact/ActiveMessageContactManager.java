@@ -6,7 +6,8 @@ import com.emincingoz.alzheimerdiagnosisservice.domain.model.ActiveMessageContac
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
-import com.emincingoz.alzheimerdiagnosisservice.domain.requests.ActiveMessageContactNewRequest;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.activeMessageRequest.ActiveMessageContactNewRequest;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.activeMessageRequest.ActiveMessageContactUpdateLastMessageRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.activeMessageContact.ActiveMessageContactGetResponse;
 import com.emincingoz.alzheimerdiagnosisservice.manager.user.IUserService;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IActiveMessageContactRepository;
@@ -15,8 +16,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceNotFoundException;
+import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +55,7 @@ public class ActiveMessageContactManager implements IActiveMessageContactService
     }
 
     @Override
-    public DataResult getAllActiveContacts(String senderTckn) throws InstanceNotFoundException {
+    public DataResult getAllActiveContacts(String senderTckn, UserRolesEnum role) throws InstanceNotFoundException {
 
         User senderUser = userService.findUserByTckn(senderTckn);
 
@@ -68,7 +69,7 @@ public class ActiveMessageContactManager implements IActiveMessageContactService
             for (UserAuthority receiverAuth : receiverAuths) {
                 Authority receiverAuthority = receiverAuth.getAuthorityName();
 
-                if (receiverAuthority.getName().equals(UserRolesEnum.DOCTOR)) {
+                if (receiverAuthority.getName().equals(role)) {
                     filteredContacts.add(
                             new ActiveMessageContactGetResponse(
                                     contact.getSender().getTckn(),
@@ -88,10 +89,32 @@ public class ActiveMessageContactManager implements IActiveMessageContactService
         Comparator<ActiveMessageContactGetResponse> comparatorAsc = (contact1, contact2) -> contact2.getLastMessageTime()
                 .compareTo(contact1.getLastMessageTime());
 
-
         // pass above Comparator and sort in descending order
         Collections.sort(filteredContacts, comparatorAsc);
 
         return new SuccessDataResult(filteredContacts);
+    }
+
+    @Override
+    public Result updateLastMessageAndTime(ActiveMessageContactUpdateLastMessageRequest request) throws InstanceNotFoundException {
+
+        ActiveMessageContact contact = getActiveMessageContact(request.getSenderTckn(), request.getReceiverTckn());
+
+        contact.setLastMessage(request.getLastMessage());
+        contact.setLastMessageTime(LocalDateTime.now());
+
+        repository.save(contact);
+        return new SuccessResult();
+    }
+
+    private ActiveMessageContact getActiveMessageContact(String senderTckn, String receiverTckn) throws InstanceNotFoundException {
+        User sender = userService.findUserByTckn(senderTckn);
+        User receiver = userService.findUserByTckn(receiverTckn);
+
+        Optional<ActiveMessageContact> contact = repository.getActiveMessageContactBySenderAndReceiver(sender, receiver);
+
+        if (contact.isPresent())
+            return contact.get();
+        throw new InstanceNotFoundException();
     }
 }

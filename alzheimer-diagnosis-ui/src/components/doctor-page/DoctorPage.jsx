@@ -4,6 +4,7 @@ import "./styles/DoctorPage.css";
 import DoctorPageTopBar from "./DoctorPageTopBar";
 import DoctorPageTeshis from "./DoctorPageTeshis";
 import MyPatients from "./MyPatients";
+import DoctorPageMessage from "./DoctorPageMessage";
 
 const DoctorPage = () => {
   return (
@@ -11,7 +12,8 @@ const DoctorPage = () => {
       <DoctorPageTopBar />
       <div className="doctor-page-inside">
         {/*<DoctorPageTeshis />*/}
-        <MyPatients />
+        {/*<MyPatients />*/}
+        <DoctorPageMessage />
       </div>
     </div>
   );
