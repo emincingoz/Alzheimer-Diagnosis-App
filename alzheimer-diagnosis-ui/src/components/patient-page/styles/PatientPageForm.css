@@ -33,11 +33,6 @@
     margin: 10px auto;
 }
 
-.patient-form-questions {
-    /*height: 450px;*/
-    /*background-color: saddlebrown;*/
-}
-
 .patient-form-pagination-box {
     display: flex;
     justify-content: center;

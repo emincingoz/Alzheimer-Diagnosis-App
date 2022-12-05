@@ -8,5 +8,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IDoctorService {
     ResponseEntity<?> uploadMRIImageFromClient(MultipartFile file, String name);
 
-    DataResult getAllPatients();
+    Result getAllPatients();
 }

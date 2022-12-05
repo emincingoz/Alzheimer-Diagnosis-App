@@ -4,11 +4,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const MessageContact = (props) => {
   return (
-    <div className="message-contact">
+    <div
+      className={`message-contact ${props.className}`}
+      onClick={props.onClick}
+    >
       <AccountCircleIcon style={{ color: "black" }} sx={{ fontSize: 65 }} />
       <div className="message-contact-person">
         <div className="message-contact-person-info">
-          <h4>{props.receiverName}</h4>
+          <h4>{props.name}</h4>
           <p
             className={`last-message ${
               props.lastMessage == "false" ? "hidden" : ""

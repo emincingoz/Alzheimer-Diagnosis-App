@@ -2,24 +2,26 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useEffect } from "react";
 
 const MessageBubble = (props) => {
-  useEffect(() => {
+  /*useEffect(() => {
     //console.log("sentTime: ", props.sentTime);
-  }, [props.sentTime]);
+  }, [props.sentTime]);*/
 
   return (
     <div
       className="message-bubble"
-      style={props.isMyMessage && { justifyContent: "end" }}
+      style={props.isMyMessage === true ? { justifyContent: "end" } : {}}
     >
       <div
         className="bubble-contact-pp"
-        style={props.isMyMessage && { display: "none" }}
+        style={props.isMyMessage === true ? { display: "none" } : {}}
       >
         <AccountCircleIcon sx={{ fontSize: 33 }} />
       </div>
       <div
         className="message-body"
-        style={props.isMyMessage && { borderRadius: "15px 15px 0 15px" }}
+        style={
+          props.isMyMessage === true ? { borderRadius: "15px 15px 0 15px" } : {}
+        }
       >
         <div className="message-bubble-text">
           <p>{props.message}</p>

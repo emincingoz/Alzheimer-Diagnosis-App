@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import MessageBubble from "./MessageBubble";
-import MessageContact from "./MessageContact";
+// TODO:: change directory, i mean extract these components to general space
+import MessageBubble from "../patient-page/MessageBubble";
+import MessageContact from "../patient-page/MessageContact";
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 import { TextField } from "@mui/material";
-import "./styles/PatientPageMessage.css";
+// TODO:: exctract this css file also general space
+import "../patient-page/styles/PatientPageMessage.css";
 import sendIcon from "../../assets/images/message-send-icon.png";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import Box from "@mui/material/Box";
@@ -25,8 +27,8 @@ import SockJS from "sockjs-client";
 import { counter } from "@fortawesome/fontawesome-svg-core";
 import { useCallback } from "react";
 
-const PATIENT_BASE_URL = "/api/patient";
-const GET_DOCTORS_URL = PATIENT_BASE_URL + "/get-doctors";
+const DOCTOR_BASE_URL = "/api/doctor";
+const GET_PATIENTS_URL = DOCTOR_BASE_URL + "/get-allpatients";
 
 const MESSAGE_CONTACT_BASE_URL = "/api/message-contact";
 const ADD_NEW_CONTACT_URL = MESSAGE_CONTACT_BASE_URL + "/add-contact";
@@ -36,13 +38,13 @@ const UPDATE_LAST_MESSAGE_AND_TIME =
 
 var stompClient = null;
 
-const PatientPageMessage = () => {
+const DoctorPageMessage = () => {
   const [myMessage, setMyMessage] = useState("");
   const [dialog, setDialog] = useState(false);
-  const [allDoctors, setAllDoctors] = useState([]);
+  const [allPatients, setAllPatients] = useState([]);
   const [contacts, setContacts] = useState([]);
-  const [currentDoctor, setCurrentDoctor] = useState(null);
-  const [currentDoctorFlag, setCurrentDoctorFlag] = useState(false);
+  const [currentPatient, setcurrentPatient] = useState(null);
+  const [currentPatientFlag, setcurrentPatientFlag] = useState(false);
   const [userInfo, setUserInfo] = useState({
     tckn: "",
     roles: [],
@@ -55,8 +57,12 @@ const PatientPageMessage = () => {
   }, [userInfo]);
 
   useEffect(() => {
-    setCurrentDoctorFlag(true);
-  }, [currentDoctor]);
+    setcurrentPatientFlag(true);
+  }, [currentPatient]);
+
+  useEffect(() => {
+    getContacts();
+  }, [messages]);
 
   const connect = () => {
     let Sock = new SockJS("http://localhost:8080/ws");
@@ -80,7 +86,9 @@ const PatientPageMessage = () => {
     );
   };
 
-  const onError = (err) => {};
+  const onError = (err) => {
+    console.log("asdsdfhhhh: " + err);
+  };
 
   const onPrivateMessageReceived = (payload) => {
     var payloadData = JSON.parse(payload.body);
@@ -97,19 +105,19 @@ const PatientPageMessage = () => {
     if (stompClient) {
       let chatMessage = {
         senderTckn: userInfo.tckn,
-        receiverTckn: currentDoctor.tckn,
+        receiverTckn: currentPatient.tckn,
         message: myMessage,
         sentTime: new Date().toLocaleTimeString(),
       };
 
-      if (userInfo.tckn !== currentDoctor.tckn && myMessage !== "") {
-        let docTckn = currentDoctor.tckn;
+      if (userInfo.tckn !== currentPatient.tckn && myMessage !== "") {
+        let patientTckn = currentPatient.tckn;
 
-        let data = getMessagesFromLocalStorage(docTckn);
+        let data = getMessagesFromLocalStorage(patientTckn);
 
         data.push(chatMessage);
 
-        localStorage.setItem(docTckn, JSON.stringify(data));
+        localStorage.setItem(patientTckn, JSON.stringify(data));
         setMessages(data);
       }
 
@@ -126,23 +134,19 @@ const PatientPageMessage = () => {
     getContacts();
   }, []);
 
-  useEffect(() => {
-    getContacts();
-  }, [messages]);
-
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  const getAllDoctors = async (e) => {
+  const getAllPatients = async (e) => {
     try {
-      const response = await axios.get(GET_DOCTORS_URL, {
+      const response = await axios.get(GET_PATIENTS_URL, {
         headers: { "Content-Type": "application/json" },
         //headers: {},
         withCredentials: true,
       });
 
-      setAllDoctors(response.data.data);
+      setAllPatients(response.data.data);
     } catch (e) {}
   };
 
@@ -152,7 +156,7 @@ const PatientPageMessage = () => {
         ADD_NEW_CONTACT_URL,
         JSON.stringify({
           senderTckn: userInfo.tckn,
-          receiverTckn: currentDoctor.tckn,
+          receiverTckn: currentPatient.tckn,
           lastMessage: myMessage,
           lastMessageByReceiver: false,
           senderLastSeen: "",
@@ -170,7 +174,9 @@ const PatientPageMessage = () => {
   const getContacts = async (e) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
-      const url = GET_CONTACTS_URL + "/" + user.tckn + "/DOCTOR";
+
+      const url = GET_CONTACTS_URL + "/" + user.tckn + "/PATIENT";
+
       const response = await axios.get(url, {
         headers: { "Content-Type": "application/json" },
         //headers: {},
@@ -182,7 +188,7 @@ const PatientPageMessage = () => {
   };
 
   const handleDialogOpen = () => {
-    getAllDoctors();
+    getAllPatients();
     setDialog(true);
   };
 
@@ -193,13 +199,13 @@ const PatientPageMessage = () => {
   const handleDialogItemClick = (doctor) => {
     handleDialogClose();
 
-    setCurrentDoctor(doctor);
+    setcurrentPatient(doctor);
 
     getMessagesFromLocalStorage(doctor.tckn);
   };
 
-  const getMessagesFromLocalStorage = (doctorTckn) => {
-    let messageArray = JSON.parse(localStorage.getItem(doctorTckn));
+  const getMessagesFromLocalStorage = (patientTckn) => {
+    let messageArray = JSON.parse(localStorage.getItem(patientTckn));
 
     var data = [];
 
@@ -229,38 +235,42 @@ const PatientPageMessage = () => {
 
     addNewContact();
 
-    updateLastMessageAndTime(currentDoctor, myMessage);
+    updateLastMessageAndTime(currentPatient, myMessage);
 
     setMyMessage("");
   };
 
   const RenderMessageBubbles = () => {
+    //localStorage.clear();
     let array = [];
 
-    messages.map((k, index) =>
+    messages.map((k, index) => {
+      let whoIsResponsibleFromMessage =
+        k.senderTckn !== null && k.senderTckn == userInfo.tckn ? true : false;
+
       array.push(
         <MessageBubble
           key={index}
           message={k.message}
           sentTime={k.sentTime}
-          isMyMessage={k.senderTckn === userInfo.tckn ? true : false}
+          isMyMessage={whoIsResponsibleFromMessage}
         />
-      )
-    );
+      );
+    });
 
     return array;
   };
 
-  const RenderSelectDoctorDialogBox = () => {
+  const RenderSelectPatientDialogBox = () => {
     return (
       <Dialog onClose={handleDialogClose} open={dialog}>
-        <DialogTitle>Bir Doktor Seç</DialogTitle>
+        <DialogTitle>Bir Hasta Seç</DialogTitle>
         <List sx={{ pt: 0 }}>
-          {allDoctors.map((doctor, index) => (
+          {allPatients.map((patient, index) => (
             <ListItem
               key={index}
               button
-              onClick={() => handleDialogItemClick(doctor)}
+              onClick={() => handleDialogItemClick(patient)}
             >
               <ListItemAvatar>
                 <Avatar sx={{ bgcolor: "#919bab", color: blue[600] }}>
@@ -272,11 +282,11 @@ const PatientPageMessage = () => {
               </ListItemAvatar>
               <ListItemText
                 primary={
-                  doctor.firstName[0].toUpperCase() +
-                  doctor.firstName.substring(1) +
+                  patient.firstName[0].toUpperCase() +
+                  patient.firstName.substring(1) +
                   " " +
-                  doctor.lastName[0].toUpperCase() +
-                  doctor.lastName.substring(1)
+                  patient.lastName[0].toUpperCase() +
+                  patient.lastName.substring(1)
                 }
               />
             </ListItem>
@@ -293,8 +303,8 @@ const PatientPageMessage = () => {
       array.push(
         <MessageContact
           className={
-            currentDoctor !== null &&
-            item.receiverTckn === currentDoctor.tckn &&
+            currentPatient !== null &&
+            item.receiverTckn === currentPatient.tckn &&
             "selected-message-contact"
           }
           key={index}
@@ -320,14 +330,18 @@ const PatientPageMessage = () => {
     return array;
   };
 
-  const getMessageBubble = (doctorTckn, doctorFirstName, doctorLastName) => {
-    let doctor = {
-      tckn: doctorTckn,
-      firstName: doctorFirstName,
-      lastName: doctorLastName,
+  const getMessageBubble = (
+    receiverTckn,
+    receiverFirstName,
+    receiverLastName
+  ) => {
+    let receiver = {
+      tckn: receiverTckn,
+      firstName: receiverFirstName,
+      lastName: receiverLastName,
     };
 
-    handleDialogItemClick(doctor);
+    handleDialogItemClick(receiver);
   };
 
   const updateLastMessageAndTime = async (doctor, message) => {
@@ -351,7 +365,7 @@ const PatientPageMessage = () => {
     <div className="patient-message">
       <div className="patient-message-left-container">
         <div className="patient-message-left-title">
-          <h3>Doktorlarım</h3>
+          <h3>Hastalarım</h3>
           <IconButton
             className="person-add-icon-button"
             onClick={handleDialogOpen}
@@ -359,22 +373,22 @@ const PatientPageMessage = () => {
             <PersonAddAlt1Icon />
           </IconButton>
 
-          <RenderSelectDoctorDialogBox />
+          <RenderSelectPatientDialogBox />
         </div>
         <div className="patient-message-contacts">
           <RenderMessageContacts />
         </div>
       </div>
       <>
-        {currentDoctor != null ? (
+        {currentPatient != null ? (
           <div className="patient-message-right-container">
             <div className="message-right-top-contact-info">
               <MessageContact
-                key={currentDoctor.id}
+                key={currentPatient.id}
                 name={
-                  capitalizeFirstLetter(currentDoctor.firstName) +
+                  capitalizeFirstLetter(currentPatient.firstName) +
                   " " +
-                  capitalizeFirstLetter(currentDoctor.lastName)
+                  capitalizeFirstLetter(currentPatient.lastName)
                 }
                 lastMessage="false"
                 lastSeen="false"
@@ -399,7 +413,7 @@ const PatientPageMessage = () => {
                   className="message-send-icon-button"
                   color="primary"
                   onClick={handleMessageSend}
-                  disabled={currentDoctorFlag ? false : true}
+                  disabled={currentPatientFlag ? false : true}
                 >
                   <img
                     className="message-send-icon"
@@ -419,4 +433,4 @@ const PatientPageMessage = () => {
   );
 };
 
-export default PatientPageMessage;
+export default DoctorPageMessage;

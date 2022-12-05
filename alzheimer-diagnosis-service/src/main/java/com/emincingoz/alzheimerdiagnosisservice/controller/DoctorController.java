@@ -12,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("api/doctor")
 @RequiredArgsConstructor
 public class DoctorController {
-
-    private final IUserRepository userRepository;
     private final IDoctorService doctorService;
 
     @GetMapping("/get-allpatients")

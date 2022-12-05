@@ -1,6 +1,8 @@
 package com.emincingoz.alzheimerdiagnosisservice.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -14,5 +16,9 @@ public class Message {
     private String senderTckn;
     private String receiverTckn;
     private String message;
-    private LocalDateTime sentTime;
+
+    //@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    //@DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    //@JsonFormat(pattern = "HH:mm:ss")
+    private String sentTime;
 }
