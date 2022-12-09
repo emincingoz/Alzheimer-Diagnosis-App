@@ -18,7 +18,7 @@ const Home = () => {
 
   return (
     <main className="App">
-      <Navbar />
+      {/*<Navbar />*/}
       <section>
         {auth?.roles?.find((role) => role == "PATIENT") ? (
           <Navigate to="/patient" replace={true} />

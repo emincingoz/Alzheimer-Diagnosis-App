@@ -97,7 +97,7 @@ const Login = () => {
 
       // Navigate to home page if login is successfull
       //navigate(from, { replace: true });
-      navigate("/patient");
+      //navigate("/patient");
     } catch (e) {
       if (e.response?.status === 409) {
         setSnackbar({

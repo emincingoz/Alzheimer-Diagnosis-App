@@ -11,6 +11,7 @@ import "./styles/Login.css";
 import PersonIcon from "@mui/icons-material/Person";
 import InputAdornment from "@mui/material/InputAdornment";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import useAuth from "../../hooks/useAuth";
 
 const BASE_URL = "/api/auth";
 const LOGIN_URL = BASE_URL + "/login";
@@ -18,11 +19,13 @@ const LOGIN_URL = BASE_URL + "/login";
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
 const TCNO_REGEX = /^[1-9]{1}[0-9]{9}[02468]{1}$/;
 
-const Login = () => {
+const Login2 = () => {
   // Tc No
   const [tckn, setTckn] = useState("");
   const [validTckn, setValidTckn] = useState(false);
   const [tcknFocus, setTcknFocus] = useState(false);
+
+  const { setAuth } = useAuth();
 
   // Password
   const [password, setPassword] = useState("");
@@ -99,11 +102,12 @@ const Login = () => {
       let userInfo = { tckn: tckn, roles: roles };
       localStorage.setItem("user", JSON.stringify(userInfo));
 
-      //setAuth({ tckn, password, roles, token });
+      setAuth({ tckn, password, roles, token });
 
       // Navigate to home page if login is successfull
       //navigate(from, { replace: true });
-      navigate("/patient");
+      navigate("/");
+      console.log("why");
     } catch (e) {
       if (e.response?.status === 409) {
         setSnackbar({
@@ -174,7 +178,7 @@ const Login = () => {
         <TextField
           placeholder="Şifre"
           className="textField"
-          id="tckn"
+          id="pass"
           //label="TC-Kimlik No"
           margin="normal"
           variant="outlined"
@@ -276,4 +280,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login2;
