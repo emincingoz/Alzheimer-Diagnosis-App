@@ -7,7 +7,6 @@ import DoctorPage from "./components/doctor-page/DoctorPage";
 import Layout from "./components/Layout";
 import Unauthorized from "./components/Unauthorized";
 import Missing from "./components/Missing";
-import LinkPage from "./components/LinkPage";
 import RequireAuth from "./components/RequireAuth";
 import Home from "./features/home/Home";
 
@@ -18,15 +17,40 @@ const ROLES = {
 };
 
 function App() {
+  /*const [accToken, setAccToken] = useState();
+  const [loggedIn, setLoggedIn] = useState(false);*/
+
+  /*useEffect(() => {
+    setTimeout(() => {
+      console.log(localStorage.getItem("accToken"));
+      if (
+        localStorage.getItem("accToken") !== null &&
+        localStorage.getItem("accToken") === `"${accToken}"`
+      ) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    }, 50);
+  }, []);*/
+
   return (
     <div className="App">
       <Routes>
         {/*<Route path="/" element={<Layout />}></Route>*/}
         {/* public routes */}
         {/*<Route path="/" element={<Navigate to="/login" />}></Route>*/}
-        <Route path="/login" element={<Login2 />} />
+        <Route
+          path="/login"
+          element={
+            <Login2
+            /*setLoggedIn={setLoggedIn}
+              setAccToken={setAccToken}
+              accToken={accToken}*/
+            />
+          }
+        />
         <Route path="/register" element={<Register2 />} />
-        <Route path="/linkpage" element={<LinkPage />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         {/* we want to protect these routes */}
         <Route
