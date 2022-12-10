@@ -19,7 +19,7 @@ const LOGIN_URL = BASE_URL + "/login";
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
 const TCNO_REGEX = /^[1-9]{1}[0-9]{9}[02468]{1}$/;
 
-const Login2 = () => {
+const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
   // Tc No
   const [tckn, setTckn] = useState("");
   const [validTckn, setValidTckn] = useState(false);
@@ -90,6 +90,12 @@ const Login2 = () => {
 
       const token = response?.data?.data.token;
       const roles = response?.data?.data.roles;
+
+      //setAccToken(token);
+      //setLoggedIn(true);
+
+      localStorage.setItem("accToken", JSON.stringify(token));
+      localStorage.setItem("roles", JSON.stringify(roles));
 
       console.log(token);
       console.log(roles);

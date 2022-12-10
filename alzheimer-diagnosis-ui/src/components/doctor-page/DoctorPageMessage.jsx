@@ -139,10 +139,14 @@ const DoctorPageMessage = () => {
   };
 
   const getAllPatients = async (e) => {
+    let tokenWithoutBearer = localStorage.getItem("accToken").toString();
+    let token =
+      "Bearer " +
+      tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
     try {
       const response = await axios.get(GET_PATIENTS_URL, {
         headers: { "Content-Type": "application/json" },
-        //headers: {},
+        headers: { Authorization: token },
         withCredentials: true,
       });
 

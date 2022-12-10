@@ -135,10 +135,18 @@ const PatientPageMessage = () => {
   };
 
   const getAllDoctors = async (e) => {
+    console.log("accasdtoken: " + localStorage.getItem("accToken"));
+    let tokenWithoutBearer = localStorage.getItem("accToken").toString();
+    let token =
+      "Bearer " +
+      tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
+    console.log("tokena: " + token.toString());
     try {
       const response = await axios.get(GET_DOCTORS_URL, {
         headers: { "Content-Type": "application/json" },
-        //headers: {},
+        headers: {
+          authorization: token,
+        },
         withCredentials: true,
       });
 
