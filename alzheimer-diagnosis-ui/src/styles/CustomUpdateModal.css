@@ -1,0 +1,42 @@
+.update-dialog-body {
+    width: 100%;
+    height: 100%;
+    margin-top: -3%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.update-dialog-body-left-side {
+    width: 20%;
+}
+
+.update-medium-user-icon {
+    width: 170%;
+    height: 50%;
+    margin: 50% -35%;
+}
+
+.update-medium-user-icon:hover {
+    opacity: 0.3;
+}
+
+.update-dialog-body-right-side {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.update-dialog-textfield {
+    width: 50%;
+    height: 40%;
+    /*padding: 3%;*/
+    margin: 4% 0;
+}
+
+.update-dialog-textfield .MuiOutlinedInput-root {
+    width: 200px;
+    height: 35px;
+    margin: 3% 0;
+}

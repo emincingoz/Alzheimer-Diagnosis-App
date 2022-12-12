@@ -9,6 +9,9 @@ import Unauthorized from "./components/Unauthorized";
 import Missing from "./components/Missing";
 import RequireAuth from "./components/RequireAuth";
 import Home from "./features/home/Home";
+import { useEffect, useState } from "react";
+import useAuth from "./hooks/useAuth";
+import AdminPage from "./components/admin-page/AdminPage";
 
 const ROLES = {
   Patient: "PATIENT",
@@ -17,6 +20,8 @@ const ROLES = {
 };
 
 function App() {
+  //const [setAuth] = useState();
+  //const { auth, setAuth } = useAuth();
   /*const [accToken, setAccToken] = useState();
   const [loggedIn, setLoggedIn] = useState(false);*/
 
@@ -82,7 +87,7 @@ function App() {
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          {/*<Route path="/admin" element={<AdminPage />} />*/}
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
 
         {/*<Route element={<RequireAuth allowedRoles={[ROLES.Doctor]} />}>

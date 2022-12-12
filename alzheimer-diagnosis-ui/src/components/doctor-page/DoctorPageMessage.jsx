@@ -155,6 +155,10 @@ const DoctorPageMessage = () => {
   };
 
   const addNewContact = async (e) => {
+    let tokenWithoutBearer = localStorage.getItem("accToken").toString();
+    let token =
+      "Bearer " +
+      tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
     try {
       const response = await axios.post(
         ADD_NEW_CONTACT_URL,
@@ -167,7 +171,7 @@ const DoctorPageMessage = () => {
           receiverLastSeen: "",
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Authorization: token },
           //headers: {},
           withCredentials: true,
         }
@@ -176,13 +180,17 @@ const DoctorPageMessage = () => {
   };
 
   const getContacts = async (e) => {
+    let tokenWithoutBearer = localStorage.getItem("accToken").toString();
+    let token =
+      "Bearer " +
+      tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
     try {
       const user = JSON.parse(localStorage.getItem("user"));
 
       const url = GET_CONTACTS_URL + "/" + user.tckn + "/PATIENT";
 
       const response = await axios.get(url, {
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", Authorization: token },
         //headers: {},
         withCredentials: true,
       });
@@ -349,6 +357,10 @@ const DoctorPageMessage = () => {
   };
 
   const updateLastMessageAndTime = async (doctor, message) => {
+    let tokenWithoutBearer = localStorage.getItem("accToken").toString();
+    let token =
+      "Bearer " +
+      tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
     try {
       const response = await axios.put(
         UPDATE_LAST_MESSAGE_AND_TIME,
@@ -358,7 +370,7 @@ const DoctorPageMessage = () => {
           lastMessage: message,
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Authorization: token },
           withCredentials: true,
         }
       );

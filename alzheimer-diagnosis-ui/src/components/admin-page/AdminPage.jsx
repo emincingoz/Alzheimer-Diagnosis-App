@@ -1,30 +1,29 @@
 import { useRef, useState, useEffect } from "react";
 import { Button, TextField, Snackbar, Alert } from "@mui/material";
-import "./styles/DoctorPage.css";
-import DoctorPageTopBar from "./DoctorPageTopBar";
-import DoctorPageTeshis from "./DoctorPageTeshis";
-import MyPatients from "./MyPatients";
-import DoctorPageMessage from "./DoctorPageMessage";
-import DoctorSettingsPage from "./DoctorSettingsPage";
+import "./styles/AdminPage.css";
+import AdminPageTopBar from "./AdminPageTopBar";
+import AdminPageAnasayfa from "./AdminPageAnasayfa";
+import AdminPagePatients from "./AdminPagePatients";
+import AdminPageDoctors from "./AdminPageDoctors";
 
-const DoctorPage = () => {
+const AdminPage = () => {
   const [clickedPage, setClickedPage] = useState(0);
 
   function RenderShowedPage() {
     if (clickedPage === 0) {
-      return <DoctorPageTeshis />;
+      return <AdminPageAnasayfa />;
     } else if (clickedPage === 1) {
-      return <MyPatients />;
+      return <AdminPagePatients />;
     } else if (clickedPage === 2) {
-      return <DoctorPageMessage />;
-    } else if (clickedPage === 3) {
+      return <AdminPageDoctors />;
+    } /*else if (clickedPage === 3) {
       return <DoctorSettingsPage />;
-    }
+    }*/
   }
 
   return (
     <div className="doctor-page">
-      <DoctorPageTopBar
+      <AdminPageTopBar
         clickedPage={clickedPage}
         setClickedPage={setClickedPage}
       />
@@ -39,4 +38,4 @@ const DoctorPage = () => {
   );
 };
 
-export default DoctorPage;
+export default AdminPage;

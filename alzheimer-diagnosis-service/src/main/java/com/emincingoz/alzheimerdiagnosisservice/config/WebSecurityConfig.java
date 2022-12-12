@@ -94,10 +94,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/logout").permitAll()
                 .antMatchers("/api/forgetPassword").permitAll()
                 .antMatchers("/public/**/").permitAll()
-                .antMatchers("/api/user/**").permitAll()
+                .antMatchers("/api/user/register").permitAll()
+                .antMatchers("/api/user/get-user-infos/**").hasAnyAuthority(UserRolesEnum.DOCTOR.toString(), UserRolesEnum.PATIENT.toString(), UserRolesEnum.ADMIN.toString())
                 .antMatchers("/api/doctor/**").hasAuthority(UserRolesEnum.DOCTOR.toString())
                 //.antMatchers("/api/doctor/**").permitAll()
-                //.antMatchers("/api/admin/**").hasAuthority(UserRolesEnum.ADMIN.toString())
+                .antMatchers("/api/admin/**").hasAuthority(UserRolesEnum.ADMIN.toString())
                 .antMatchers("/api/patient/**").hasAuthority(UserRolesEnum.PATIENT.toString())
                 //.antMatchers("/api/patient/**").permitAll()
                 .antMatchers("/api/user-form-question/**").permitAll()
@@ -168,15 +169,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .allowedHeaders("*")
                         .allowCredentials(true);
 
-                registry.addMapping("/api/user/**").allowedOrigins("http://localhost:3000").allowedMethods("*").allowedHeaders("*");
+                registry.addMapping("/api/user/register/**").allowedOrigins("http://localhost:3000").allowedMethods("*").allowedHeaders("*");
 
                 registry.addMapping("/**").allowedOrigins("http://localhost:3000").allowedMethods("*").allowedHeaders("*").allowCredentials(true);
 
+
+                // TODO:: change allowCredentials to true
                 registry.addMapping("/api/user-form-question")
                         .allowedOrigins("http://localhost:3000")
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(false);
+
+                registry.addMapping("/api/user/get-user-infos/**").allowedOrigins("http://localhost:3000").allowedMethods("*").allowedHeaders("*").allowCredentials(true);
 
                 registry.addMapping("/api/patient/**").allowedOrigins("http://localhost:3000").allowedMethods("*").allowedHeaders("*");
             }
