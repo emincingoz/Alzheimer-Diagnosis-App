@@ -31,10 +31,11 @@ spring:
     hibernate:
       ddl-auto: update
 
+# expiration: 600
 jwt:
   header: Authorization
   secret: mySecret
-  expiration: 600
+  expiration: 600000
   refreshTokenExpiration: 86400
   route:
     authentication:

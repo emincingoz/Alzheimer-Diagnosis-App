@@ -1,61 +1,75 @@
 import { useRef, useState, useEffect } from "react";
 import { Button, TextField, Snackbar, Alert, IconButton } from "@mui/material";
 import axios from "../../services/axios";
-import "./styles/MyPatients.css";
+import "./styles/AdminPagePatients.css";
 import { tr } from "date-fns/locale";
 import { hover } from "@testing-library/user-event/dist/hover";
 import { useCallback } from "react";
 import formIcon from "../../assets/images/form-icon.png";
 import messageBubbleIcon from "../../assets/images/message-bubble-icon.png";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import CloseIcon from "@mui/icons-material/Close";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import PropTypes from "prop-types";
+import CustomUpdateModal from "../CustomUpdateModal";
 
-const BASE_URL = "/api/doctor";
-const GET_PATIENTS_URL = BASE_URL + "/get-allpatients";
+const BASE_URL = "/api/admin";
+const GET_DOCTORS_URL = BASE_URL + "/get-alldoctors";
 
 const paginationCounts = [5, 8, 10];
 
-const MyPatients = () => {
-  const [allPatients, setAllPatients] = useState([]);
+const AdminPageDoctors = () => {
+  const [allDoctors, setallDoctors] = useState([]);
   const [numPages, setNumPages] = useState(0);
   const [currPage, setCurrPage] = useState(1);
-  const [numPatientsPerPage, setNumPatientsPerPage] = useState(
+  const [numDoctorsPerPage, setnumDoctorsPerPage] = useState(
     paginationCounts[1]
   );
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   useEffect(() => {
-    getMyAllPatients();
+    getMyAllDoctors();
   }, []);
 
   useEffect(() => {
-    setNumPages(Math.ceil(allPatients.length / numPatientsPerPage));
-  }, [allPatients]);
+    setNumPages(Math.ceil(allDoctors.length / numDoctorsPerPage));
+  }, [allDoctors]);
 
   useEffect(() => {
-    let pageCount = Math.ceil(allPatients.length / numPatientsPerPage);
+    let pageCount = Math.ceil(allDoctors.length / numDoctorsPerPage);
     setNumPages(pageCount);
 
     if (currPage > pageCount) {
       setCurrPage(1);
     }
-  }, [numPatientsPerPage]);
+  }, [numDoctorsPerPage]);
 
-  const getMyAllPatients = async (e) => {
+  const getMyAllDoctors = async (e) => {
     try {
       let tokenWithoutBearer = localStorage.getItem("accToken").toString();
       let token =
         "Bearer " +
         tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
 
-      const response = await axios.get(GET_PATIENTS_URL, {
+      const response = await axios.get(GET_DOCTORS_URL, {
         headers: { "Content-Type": "application/json" },
         headers: { Authorization: token },
         withCredentials: true,
       });
 
-      setAllPatients(response.data.data);
+      setallDoctors(response.data.data);
     } catch (e) {}
   };
 
-  const handlePatientAge = (birthTime) => {
+  const handleDoctorAge = (birthTime) => {
     const birthDate = new Date(birthTime);
     const difference = Date.now() - birthDate.getTime();
     const age = new Date(difference);
@@ -79,7 +93,7 @@ const MyPatients = () => {
               : {}
           }
           key={i}
-          className="doctor-mypatients-pagination-button"
+          className="admin-mypatients-pagination-button"
           onClick={() => setCurrPage(i)}
         >
           {i}
@@ -90,10 +104,12 @@ const MyPatients = () => {
     return <div style={{ width: "33%", textAlign: "center" }}>{array}</div>;
   };
 
+  const handleDoctorUpdate = () => {};
+
   const RenderPatients = () => {
-    const lastItemIndex = currPage * numPatientsPerPage;
-    const firsItemIndex = lastItemIndex - numPatientsPerPage;
-    const items = allPatients.slice(firsItemIndex, lastItemIndex);
+    const lastItemIndex = currPage * numDoctorsPerPage;
+    const firsItemIndex = lastItemIndex - numDoctorsPerPage;
+    const items = allDoctors.slice(firsItemIndex, lastItemIndex);
 
     var array = [];
 
@@ -105,31 +121,25 @@ const MyPatients = () => {
               " " +
               capitalizeFirstLetter(item.lastName)}
           </td>
-          <td className="doctor-mypatients-small-screen-hide">{item.tckn}</td>
-          <td className="doctor-mypatients-small-screen-hide">
-            {handlePatientAge(item.birthDate)}
+          <td className="admin-mypatients-small-screen-hide">{item.tckn}</td>
+          <td className="admin-mypatients-small-screen-hide">
+            {handleDoctorAge(item.birthDate)}
           </td>
-          <td className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+          <td className="admin-mypatients-medium-screen-hide admin-mypatients-small-screen-hide">
             {item.email}
           </td>
-          <td className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+          <td className="admin-mypatients-medium-screen-hide admin-mypatients-small-screen-hide">
             {item.phoneNumber}
           </td>
-          <td>
-            <img
-              className="doctor-mypatients-form-icon"
-              src={formIcon}
-              alt="form-icon"
-              onClick={() => handleShowForm(item)}
-            />
-          </td>
-          <td>
-            <img
-              className="doctor-mypatients-message-icon"
-              src={messageBubbleIcon}
-              alt="message bubble"
-              onClick={() => handleChangeMessageScreen(item)}
-            />
+          <td className="admin-doctor-update-td">
+            <div className="admin-doctor-update-button">
+              <Button onClick={handleShow}>Güncelle</Button>
+              <CustomUpdateModal
+                handleClose={handleClose}
+                handleShow={handleShow}
+                show={show}
+              />
+            </div>
           </td>
         </tr>
       );
@@ -138,30 +148,18 @@ const MyPatients = () => {
     return array;
   };
 
-  // TODO:: Show patinets' form
-  const handleShowForm = (patient) => {
-    console.log("asdas");
-    return <div>hello</div>;
-  };
-
-  // TODO:: Show message page with selected patient
-  const handleChangeMessageScreen = (patient) => {
-    console.log("aasdas");
-    return <div>hello all</div>;
-  };
-
   const RenderCurrentShowedPatientsInfo = () => {
     return (
       <div style={{ width: "33%" }}>
-        <span style={{ fontWeight: "bold" }}>{allPatients.length}</span>{" "}
+        <span style={{ fontWeight: "bold" }}>{allDoctors.length}</span>{" "}
         {" hastadan "}{" "}
         <span style={{ fontWeight: "bold" }}>
-          {currPage * numPatientsPerPage - numPatientsPerPage + 1}
+          {currPage * numDoctorsPerPage - numDoctorsPerPage + 1}
         </span>
         {"-"}
         {""}
         <span style={{ fontWeight: "bold" }}>
-          {currPage * numPatientsPerPage}
+          {currPage * numDoctorsPerPage}
         </span>{" "}
         {" arası gösteriliyor"}
       </div>
@@ -175,10 +173,10 @@ const MyPatients = () => {
       array.push(
         <div
           key={index}
-          className={`doctor-mypatients-pagination-counts ${
-            numPatientsPerPage === item ? "active-pagination-count" : ""
+          className={`admin-mypatients-pagination-counts ${
+            numDoctorsPerPage === item ? "active-pagination-count" : ""
           }`}
-          onClick={() => changeNumPatientsPerPage(item)}
+          onClick={() => changenumDoctorsPerPage(item)}
         >
           {item}
         </div>
@@ -194,34 +192,33 @@ const MyPatients = () => {
           paddingRight: "2%",
         }}
       >
-        <div className="doctor-mypatients-counts-box">{array}</div>
+        <div className="admin-mypatients-counts-box">{array}</div>
       </div>
     );
   };
 
-  const changeNumPatientsPerPage = (count) => {
-    setNumPatientsPerPage(count);
+  const changenumDoctorsPerPage = (count) => {
+    setnumDoctorsPerPage(count);
   };
 
   return (
-    <div className="doctor-mypatients">
-      <div className="doctor-mypatients-table-div">
-        <table className="doctor-mypatients-table">
+    <div className="admin-mypatients">
+      <div className="admin-mypatients-table-div">
+        <table className="admin-mypatients-table">
           <thead>
             <tr>
               <th>Ad Soyad</th>
-              <th className="doctor-mypatients-small-screen-hide">
+              <th className="admin-mypatients-small-screen-hide">
                 TC-Kimlik No
               </th>
-              <th className="doctor-mypatients-small-screen-hide">Yaş</th>
-              <th className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+              <th className="admin-mypatients-small-screen-hide">Yaş</th>
+              <th className="admin-mypatients-medium-screen-hide admin-mypatients-small-screen-hide">
                 E-Mail
               </th>
-              <th className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+              <th className="admin-mypatients-medium-screen-hide admin-mypatients-small-screen-hide">
                 Telefon
               </th>
-              <th>Form</th>
-              <th>Mesaj</th>
+              <th>Güncelle</th>
             </tr>
           </thead>
           <tbody>
@@ -248,4 +245,4 @@ const MyPatients = () => {
   );
 };
 
-export default MyPatients;
+export default AdminPageDoctors;

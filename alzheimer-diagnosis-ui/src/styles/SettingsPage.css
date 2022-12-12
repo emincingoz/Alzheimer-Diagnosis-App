@@ -1,0 +1,98 @@
+.settings-page {
+    /*height: calc(100vh - 70px);*/
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    background-color: #f2f1f8;
+}
+
+.settings-page-left-side {
+    width: 25%;
+}
+
+.settings-page-right-side {
+    width: 75%;
+    padding: 5%;
+}
+
+.big-user-icon {
+    margin-top: 10%;
+    width: 103%;
+    height: 30%;
+}
+
+.settings-page-two-button {
+    margin-top: 5%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.settings-page-update-button .MuiButton-root, 
+.settings-page-cancel-button .MuiButton-root {
+    color: white;
+    width: 150px;
+    background-color: #d9d9d9;
+    color: black;
+    border: none;
+    border-radius: 19px;
+    padding: 7%;
+    margin: 7% auto;
+}
+
+.settings-page-update-button .MuiButton-root {
+    background-color: #1c1645;
+    color: white;
+}
+
+.settings-page-update-button .MuiButton-root:hover {
+    background-color: #999;
+    color: black;
+}
+
+.settings-page-logout-button .MuiButton-root {
+    width: 150px;
+    background-color: #d9d9d9;
+    color: black;
+    border: none;
+    border-radius: 19px;
+    padding: 3%;
+    margin: 20% auto;
+}
+
+.settings-page-logout-button .MuiButton-root:hover, 
+.settings-page-cancel-button .MuiButton-root:hover {
+    background-color: #999;
+}
+
+.settings-page-header {
+    font-size: xx-large;
+    /*font-weight: bold;*/
+    text-align: start;
+}
+
+.settings-page-textfields {
+    width: 100%;
+    margin-top: 3%;
+    display: flex;
+    justify-content: start;   
+    flex-wrap: wrap;
+}
+
+.settings-page-unchangeable-textfields, .settings-page-changeable-textfields {
+    width: 50%;
+}
+
+.settings-page-textfield {
+    width: 50%;
+    text-align: start;
+    margin-bottom: 3%;
+}
+
+.settings-page-textfield .MuiOutlinedInput-root {
+    width: 300px;
+    height: 35px;
+    border: none;
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+}

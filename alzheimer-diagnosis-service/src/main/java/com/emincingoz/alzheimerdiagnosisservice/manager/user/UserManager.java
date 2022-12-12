@@ -5,6 +5,7 @@ import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.SuccessResult
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
+import com.emincingoz.alzheimerdiagnosisservice.domain.responses.user.UserInfoGetResponse;
 import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleModel;
 import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleValidator;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IUserRepository;
@@ -81,11 +82,21 @@ public class UserManager implements IUserService {
     }
 
     @Override
-    public User findUserByTckn(String senderTckn) throws InstanceNotFoundException {
-        Optional<User> user = userRepository.findByTckn(senderTckn);
+    public User findUserByTckn(String userTckn) throws InstanceNotFoundException {
+        Optional<User> user = userRepository.findByTckn(userTckn);
         if (user.isPresent())
             return user.get();
         throw new InstanceNotFoundException();
+    }
+
+    @Override
+    public UserInfoGetResponse getUserInfosByTckn(String tckn) throws InstanceNotFoundException {
+        User user = findUserByTckn(tckn);
+
+        UserInfoGetResponse userInfo = modelMapper.map(user, UserInfoGetResponse.class);
+        System.out.println("useraInfo: " + userInfo.toString());
+
+        return userInfo;
     }
 
     private Result isUserExists(String tckn) {

@@ -1,13 +1,13 @@
 import { useRef, useState, useEffect } from "react";
 import { Button, TextField, Snackbar, Alert } from "@mui/material";
-import "./styles/PatientPage.css";
+import "./styles/AdminPageTopBar.css";
 
-const PatientPageTopBar = ({ clickedPage, setClickedPage }) => {
+const AdminPageTopBar = ({ clickedPage, setClickedPage }) => {
   return (
-    <div className="patient-top-bar">
-      <div className="patient-anasayfa-button">
+    <div className="admin-top-bar">
+      <div className="admin-topbar-button">
         <Button
-          className="patient-anasayfa-button"
+          className="admin-topbar-button"
           style={
             clickedPage === 0
               ? { backgroundColor: "#999", pointerEvents: "none" }
@@ -18,9 +18,9 @@ const PatientPageTopBar = ({ clickedPage, setClickedPage }) => {
           Anasayfa
         </Button>
       </div>
-      <div className="patient-form-button">
+      <div className="admin-topbar-button">
         <Button
-          className="patient-form-button"
+          className="admin-topbar-button"
           style={
             clickedPage === 1
               ? { backgroundColor: "#999", pointerEvents: "none" }
@@ -28,12 +28,12 @@ const PatientPageTopBar = ({ clickedPage, setClickedPage }) => {
           }
           onClick={() => setClickedPage(1)}
         >
-          Hikaye Formu
+          Hastalar
         </Button>
       </div>
-      <div className="patient-messages-button">
+      <div className="admin-topbar-button">
         <Button
-          className="patient-messages-button"
+          className="admin-topbar-button"
           style={
             clickedPage === 2
               ? { backgroundColor: "#999", pointerEvents: "none" }
@@ -41,12 +41,12 @@ const PatientPageTopBar = ({ clickedPage, setClickedPage }) => {
           }
           onClick={() => setClickedPage(2)}
         >
-          Mesajlar
+          Doktorlar
         </Button>
       </div>
-      <div className="patient-settings-button">
+      <div className="admin-topbar-button">
         <Button
-          className="patient-settings-button"
+          className="admin-topbar-button"
           style={
             clickedPage === 3
               ? { backgroundColor: "#999", pointerEvents: "none" }
@@ -54,13 +54,13 @@ const PatientPageTopBar = ({ clickedPage, setClickedPage }) => {
           }
           onClick={() => setClickedPage(3)}
         >
-          Ayarlar
+          Yeni Doktor
         </Button>
       </div>
 
-      <div className="patient-user"></div>
+      <div className="admin-user"></div>
     </div>
   );
 };
 
-export default PatientPageTopBar;
+export default AdminPageTopBar;

@@ -1,0 +1,128 @@
+.admin-mypatients {
+    width: 100%;
+    /*height: 100vh;*/
+    height: calc(100vh - 70px);    /* 70px is mean top bar height */
+    margin: 0;
+    padding: 0;
+    text-align: start;
+    font-size: 20px;
+    background-color: #f2f1f8;
+    display: flex;
+}
+
+.admin-mypatients-table-div {
+    width: 100%;
+    margin: 3% 3%;
+    /*background-color: aquamarine;*/
+    /*border: 2px solid black;*/
+}
+
+.admin-mypatients-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /*border: 2px solid black;*/
+}
+
+th { 
+    height: 50px;
+    background-color: #9b9999;
+}
+
+td {
+    height: 45px;
+    padding-left: 1%;
+}
+
+table, tr, td, th {
+    border: 2px solid black;
+}
+
+.admin-mypatients-pagination-button {
+    width: 25px;
+    height: 25px;
+    border: 1px solid grey;
+    background-color: white;
+    margin-right: 1%;
+    border-radius: 3px;
+}
+
+button:hover, .admin-mypatients-pagination-counts:hover {
+    background-color: #555;
+    color: white;
+}
+
+.admin-mypatients-counts-box {
+    display: flex;
+    justify-content: space-evenly;
+    border-radius: 5px;
+    border: 1px solid gray;
+    /*width: 80px;*/
+    padding: 0 1%;
+    text-align: center;
+}
+
+.admin-mypatients-pagination-counts {
+    width: 25px;
+    height: 25px;
+}
+
+.active-pagination-count {
+    background-color: #ccc;
+    pointer-events: none;
+}
+
+.admin-mypatients-form-icon {
+    width: 100px;
+    height: 60px;
+    display: flex;
+    margin: auto;
+}
+
+.admin-mypatients-message-icon {
+    width: 80px;
+    height: 50px;
+    display: flex;
+    margin: auto;
+}
+
+.admin-doctor-update-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-left: -3%;
+}
+
+.admin-doctor-update-button .MuiButton-root {
+    width: 100px;
+    height: 35px;
+    background-color: #1c1645;
+    color: white;
+    border: none;
+    border-radius: 20px;
+}
+
+.admin-doctor-update-button .MuiButton-root:hover {
+    background-color: #555;
+    /*color: black;*/
+}
+
+@media screen and (min-width: 992px) {
+    
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .admin-mypatients-medium-screen-hide {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .admin-mypatients-small-screen-hide {
+        display: none;
+    }
+}

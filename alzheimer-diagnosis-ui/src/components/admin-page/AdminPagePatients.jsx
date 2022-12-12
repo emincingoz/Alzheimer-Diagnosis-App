@@ -1,19 +1,19 @@
 import { useRef, useState, useEffect } from "react";
 import { Button, TextField, Snackbar, Alert, IconButton } from "@mui/material";
 import axios from "../../services/axios";
-import "./styles/MyPatients.css";
+import "./styles/AdminPagePatients.css";
 import { tr } from "date-fns/locale";
 import { hover } from "@testing-library/user-event/dist/hover";
 import { useCallback } from "react";
 import formIcon from "../../assets/images/form-icon.png";
 import messageBubbleIcon from "../../assets/images/message-bubble-icon.png";
 
-const BASE_URL = "/api/doctor";
+const BASE_URL = "/api/admin";
 const GET_PATIENTS_URL = BASE_URL + "/get-allpatients";
 
 const paginationCounts = [5, 8, 10];
 
-const MyPatients = () => {
+const AdminPagePatients = () => {
   const [allPatients, setAllPatients] = useState([]);
   const [numPages, setNumPages] = useState(0);
   const [currPage, setCurrPage] = useState(1);
@@ -79,7 +79,7 @@ const MyPatients = () => {
               : {}
           }
           key={i}
-          className="doctor-mypatients-pagination-button"
+          className="admin-mypatients-pagination-button"
           onClick={() => setCurrPage(i)}
         >
           {i}
@@ -105,49 +105,21 @@ const MyPatients = () => {
               " " +
               capitalizeFirstLetter(item.lastName)}
           </td>
-          <td className="doctor-mypatients-small-screen-hide">{item.tckn}</td>
-          <td className="doctor-mypatients-small-screen-hide">
+          <td className="admin-mypatients-small-screen-hide">{item.tckn}</td>
+          <td className="admin-mypatients-small-screen-hide">
             {handlePatientAge(item.birthDate)}
           </td>
-          <td className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+          <td className="admin-mypatients-medium-screen-hide admin-mypatients-small-screen-hide">
             {item.email}
           </td>
-          <td className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+          <td className="admin-mypatients-medium-screen-hide admin-mypatients-small-screen-hide">
             {item.phoneNumber}
-          </td>
-          <td>
-            <img
-              className="doctor-mypatients-form-icon"
-              src={formIcon}
-              alt="form-icon"
-              onClick={() => handleShowForm(item)}
-            />
-          </td>
-          <td>
-            <img
-              className="doctor-mypatients-message-icon"
-              src={messageBubbleIcon}
-              alt="message bubble"
-              onClick={() => handleChangeMessageScreen(item)}
-            />
           </td>
         </tr>
       );
     });
 
     return array;
-  };
-
-  // TODO:: Show patinets' form
-  const handleShowForm = (patient) => {
-    console.log("asdas");
-    return <div>hello</div>;
-  };
-
-  // TODO:: Show message page with selected patient
-  const handleChangeMessageScreen = (patient) => {
-    console.log("aasdas");
-    return <div>hello all</div>;
   };
 
   const RenderCurrentShowedPatientsInfo = () => {
@@ -175,7 +147,7 @@ const MyPatients = () => {
       array.push(
         <div
           key={index}
-          className={`doctor-mypatients-pagination-counts ${
+          className={`admin-mypatients-pagination-counts ${
             numPatientsPerPage === item ? "active-pagination-count" : ""
           }`}
           onClick={() => changeNumPatientsPerPage(item)}
@@ -194,7 +166,7 @@ const MyPatients = () => {
           paddingRight: "2%",
         }}
       >
-        <div className="doctor-mypatients-counts-box">{array}</div>
+        <div className="admin-mypatients-counts-box">{array}</div>
       </div>
     );
   };
@@ -204,24 +176,22 @@ const MyPatients = () => {
   };
 
   return (
-    <div className="doctor-mypatients">
-      <div className="doctor-mypatients-table-div">
-        <table className="doctor-mypatients-table">
+    <div className="admin-mypatients">
+      <div className="admin-mypatients-table-div">
+        <table className="admin-mypatients-table">
           <thead>
             <tr>
               <th>Ad Soyad</th>
-              <th className="doctor-mypatients-small-screen-hide">
+              <th className="admin-mypatients-small-screen-hide">
                 TC-Kimlik No
               </th>
-              <th className="doctor-mypatients-small-screen-hide">Yaş</th>
-              <th className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+              <th className="admin-mypatients-small-screen-hide">Yaş</th>
+              <th className="admin-mypatients-medium-screen-hide admin-mypatients-small-screen-hide">
                 E-Mail
               </th>
-              <th className="doctor-mypatients-medium-screen-hide doctor-mypatients-small-screen-hide">
+              <th className="admin-mypatients-medium-screen-hide admin-mypatients-small-screen-hide">
                 Telefon
               </th>
-              <th>Form</th>
-              <th>Mesaj</th>
             </tr>
           </thead>
           <tbody>
@@ -248,4 +218,4 @@ const MyPatients = () => {
   );
 };
 
-export default MyPatients;
+export default AdminPagePatients;
