@@ -1,13 +1,12 @@
 package com.emincingoz.alzheimerdiagnosisservice.controller;
 
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.admin.AdminNewDoctorRequest;
 import com.emincingoz.alzheimerdiagnosisservice.manager.admin.IAdminService;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/admin")
@@ -17,7 +16,6 @@ public class AdminController {
 
     @GetMapping("/get-alldoctors")
     public ResponseEntity<?> getDoctors() {
-        System.out.println("asdasd: " + UserRolesEnum.DOCTOR.toString());
         return ResponseEntity.ok(adminService.getAllDoctors());
     }
 
@@ -25,5 +23,11 @@ public class AdminController {
     public ResponseEntity<?> getAllPatients() {
         return ResponseEntity.ok(adminService.getAllPatients());
         /*return ResponseEntity.ok(userRepository.findByRole(UserRolesEnum.PATIENT));*/
+    }
+
+    @PostMapping(value = "add-newdoctor", consumes = "application/json")
+    public ResponseEntity<?> addNewDoctor(@RequestBody AdminNewDoctorRequest adminNewDoctorRequest) {
+        System.out.println("usfsdg: " + adminNewDoctorRequest.toString());
+        return adminService.addNewDoctor(adminNewDoctorRequest);
     }
 }
