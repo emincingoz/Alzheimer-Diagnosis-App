@@ -21,6 +21,18 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="ada221021-00011" author="emin.cingoz">
+        <insert tableName="ada_authority" schemaName="rest">
+            <column name="name" value="ADMIN" />
+        </insert>
+        <insert tableName="ada_authority" schemaName="rest">
+            <column name="name" value="DOCTOR" />
+        </insert>
+        <insert tableName="ada_authority" schemaName="rest">
+            <column name="name" value="PATIENT" />
+        </insert>
+    </changeSet>
+
     <changeSet id="ada221021-0002" author="emin.cingoz">
         <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="ada_user_authority" baseTableSchemaName="rest"
                              constraintName="fk4psxl0jtx6nr7rhqbynr6itoc" deferrable="false"

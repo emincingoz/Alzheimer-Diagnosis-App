@@ -24,15 +24,33 @@ const DoctorPageTeshis = () => {
     imageData.append("imageName", "imagenamebu");
 
     if (imageData.entries().next().value[1] !== null) {
-      const response = await axios.post(UPLOAD_IMAGE, imageData, {
-        onUploadProgress: (progressEvent) => {
-          console.log(
-            "Uploading : " +
-              ((progressEvent.loaded / progressEvent.total) * 100).toString() +
-              "%"
-          );
+      let tokenWithoutBearer = localStorage.getItem("accToken").toString();
+      let token =
+        "Bearer " +
+        tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
+
+      let tckn = JSON.parse(localStorage.getItem("user")).tckn;
+
+      const response = await axios.post(
+        UPLOAD_IMAGE,
+        imageData,
+        {
+          headers: { Authorization: token },
+          withCredentials: true,
         },
-      });
+        {
+          onUploadProgress: (progressEvent) => {
+            console.log(
+              "Uploading : " +
+                (
+                  (progressEvent.loaded / progressEvent.total) *
+                  100
+                ).toString() +
+                "%"
+            );
+          },
+        }
+      );
       /*dispatch({
         type: UPLOAD_IMAGE,
         payload: response.data,

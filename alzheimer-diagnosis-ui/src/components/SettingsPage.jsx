@@ -130,10 +130,12 @@ const SettingsPage = () => {
     changeableInfos.forEach((info, index) => {
       if (
         (info.type === "Cep Telefonu" &&
-          info.value === phoneNumber.toString()) ||
-        (info.type === "E-Mail" && info.value === email) ||
-        (info.type === "Şifre" && info.value === password) ||
-        (info.type === "Şifrenizi Tekrar Giriniz" &&
+          info.value === phoneNumber.toString() &&
+          info.type === "E-Mail" &&
+          info.value === email &&
+          info.type === "Şifre" &&
+          info.value === password &&
+          info.type === "Şifrenizi Tekrar Giriniz" &&
           info.value === passwordAgain) ||
         !validPhoneNumber ||
         !validEmail ||
