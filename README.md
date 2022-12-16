@@ -3,6 +3,7 @@
 **Project**
 
 1. Swagger Url: `http://localhost:8080/swagger-ui/`
+2. Fastapi Service Swagger Url: `http://127.0.0.1/docs`
 
 
 ## Getting Started with Create React App
