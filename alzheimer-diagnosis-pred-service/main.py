@@ -19,7 +19,7 @@ async def create_upload_file(file: UploadFile):
     finally:
         file.file.close()
 
-    show_saved_image(completeName)
+    #show_saved_image(completeName)
 
     return {"message": f"Successfully uploaded {file.filename}"}
 

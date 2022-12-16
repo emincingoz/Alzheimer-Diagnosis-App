@@ -26,5 +26,15 @@ services:
       PGADMIN_DEFAULT_PASSWORD: adaadadb
     restart: always
 
+  # ---------------  Python Service ---------------
+  python:
+    build:
+      context: ../alzheimer-diagnosis-pred-service
+      dockerfile: Dockerfile
+    #command: uvicorn main:app
+    restart: always
+    ports:
+      - "80:80"
+
 volumes:
   postgre_volume:
