@@ -5,6 +5,7 @@ import AdminPageTopBar from "./AdminPageTopBar";
 import AdminPageAnasayfa from "./AdminPageAnasayfa";
 import AdminPagePatients from "./AdminPagePatients";
 import AdminPageDoctors from "./AdminPageDoctors";
+import AdminPageNewDoctor from "./AdminPageNewDoctor";
 
 const AdminPage = () => {
   const [clickedPage, setClickedPage] = useState(0);
@@ -16,9 +17,9 @@ const AdminPage = () => {
       return <AdminPagePatients />;
     } else if (clickedPage === 2) {
       return <AdminPageDoctors />;
-    } /*else if (clickedPage === 3) {
-      return <DoctorSettingsPage />;
-    }*/
+    } else if (clickedPage === 3) {
+      return <AdminPageNewDoctor />;
+    }
   }
 
   return (

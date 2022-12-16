@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +46,7 @@ public class DoctorManager implements IDoctorService {
         makeDirectoryIfNotExist(imageDirectory);
 
         Path fileNamePath = Paths.get(imageDirectory,
-                name.concat(".").concat(FilenameUtils.getExtension(file.getOriginalFilename())));
+                name.concat(".").concat(Objects.requireNonNull(FilenameUtils.getExtension(file.getOriginalFilename()))));
         try {
             Files.write(fileNamePath, file.getBytes());
             System.out.println("filepath: " + fileNamePath);

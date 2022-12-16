@@ -1,0 +1,81 @@
+.admin-page-new-doctor {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #f2f1f8;
+}
+
+.main-section {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.register-section {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /*padding: 1rem;*/
+    /*margin: 0.5rem 11rem;*/
+    align-items: flex-start;
+    margin: 2rem;
+}
+
+.register-h1 {
+    font-size: 40px;
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    text-align: start;
+    margin-left: 2rem;
+}
+
+h3 {
+    font-weight: 300;
+    margin: 0;
+    padding: 0;
+}
+
+.signInButton {
+    width: 250px;
+    height: 45px;
+}
+
+.textField .MuiOutlinedInput-root {
+    width: 300px;
+    border-radius: 25px;
+    background-color: white;
+}
+
+.datePicker .MuiOutlinedInput-root {
+    width: 300px;
+    border-radius: 25px;
+    background-color: white;
+}
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*margin: 0 1.8em*/
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.top {
+    display: flex;
+}
+
+.h1-text {
+    align-self: flex-end;
+    width: 90%;
+}
