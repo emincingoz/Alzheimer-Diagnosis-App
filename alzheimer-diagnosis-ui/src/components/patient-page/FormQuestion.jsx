@@ -14,13 +14,22 @@ import "./styles/PatientPageForm.css";
 
 const FormQuestion = (props) => {
   const [alignment, setAlignment] = useState(
-    props.answer == null ? "" : props.answer == false ? "false" : "true"
+    props.answer == null ? null : props.answer == false ? false : true
   );
 
   const handleAlignment = (event, newAlignment) => {
-    var ans = newAlignment === "true";
-    props.list[props.id - 1].answer = ans;
+    //var ans = newAlignment === "true";
+    props.list[props.id - 1].answer = newAlignment;
     props.setAnswer(props.list);
+
+    let flag = true;
+
+    for (let i = 0; i < props.list.length; i++) {
+      if (props.list[i].answer === null) flag = false;
+    }
+    if (flag) props.setFlag(true);
+    else props.setFlag(false);
+
     setAlignment(newAlignment);
   };
 
@@ -36,10 +45,10 @@ const FormQuestion = (props) => {
           aria-label="text alignment"
           size="small"
         >
-          <ToggleButton value="true" style={{ borderRadius: "50%" }}>
+          <ToggleButton value={true} style={{ borderRadius: "50%" }}>
             <CheckIcon />
           </ToggleButton>
-          <ToggleButton value="false" style={{ borderRadius: "50%" }}>
+          <ToggleButton value={false} style={{ borderRadius: "50%" }}>
             <CloseIcon />
           </ToggleButton>
         </ToggleButtonGroup>

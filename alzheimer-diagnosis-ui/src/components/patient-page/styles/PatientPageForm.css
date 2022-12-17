@@ -61,3 +61,19 @@
     display: flex;
     justify-content: space-around;
 }
+
+.patient-form-footer {
+    padding: 3% 7%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.patient-form-send-button .MuiButton-root {
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 15px;
+    background-color: #1c1645;
+    color: white;
+}
+
