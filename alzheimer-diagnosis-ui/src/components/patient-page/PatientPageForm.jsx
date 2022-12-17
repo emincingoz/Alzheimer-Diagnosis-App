@@ -16,6 +16,7 @@ import axios from "../../services/axios";
 
 const BASE_URL = "/api/user-form-question";
 const USER_FORM_URL = BASE_URL + "/get-all-questions";
+const SUBMIT_FORM_URL = BASE_URL + "/submit-form";
 
 const PatientPageForm = () => {
   const [list, setList] = useState([]);
@@ -24,8 +25,19 @@ const PatientPageForm = () => {
   const [numPages, setNumPages] = useState(0);
   const [numQuestionPerPage, setNumQuestionPerPage] = useState(8);
 
+  const [checked, setChecked] = useState(false);
+  const [flag, setFlag] = useState(false);
+
   useEffect(() => {
     setNumPages(Math.ceil(list.length / numQuestionPerPage));
+
+    let flag = true;
+
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].answer === null) flag = false;
+    }
+    if (flag) setFlag(true);
+    else setFlag(false);
   }, [list]);
 
   useEffect(() => {
@@ -56,7 +68,32 @@ const PatientPageForm = () => {
 
   // TODO:: get all answer and send to database
   // TODO:: Check answer there is any null answer
-  function handleSubmit() {}
+  async function handleSendFormAnswers() {
+    try {
+      let tokenWithoutBearer = localStorage.getItem("accToken").toString();
+      let token =
+        "Bearer " +
+        tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
+
+      let tckn = JSON.parse(localStorage.getItem("user")).tckn;
+      console.log("tckn: " + tckn);
+
+      console.log("fgfhgf: " + JSON.stringify(list));
+      console.log("fgfhgf: " + JSON.stringify({ hello: list }));
+
+      const response = await axios.post(
+        SUBMIT_FORM_URL + "/" + tckn,
+        JSON.stringify(list),
+        {
+          headers: { "Content-Type": "application/json" },
+          //headers: { Authorization: token },
+          withCredentials: false,
+        }
+      );
+    } catch (e) {
+      console.log("error: " + e.toString());
+    }
+  }
 
   const HandlePaginationButtons = () => {
     var array = [];
@@ -97,6 +134,7 @@ const PatientPageForm = () => {
           answer={item.answer}
           list={list}
           setAnswer={setList}
+          setFlag={setFlag}
         />
       );
     });
@@ -115,6 +153,42 @@ const PatientPageForm = () => {
       <div className="patient-form-pagination-box">
         <HandlePaginationButtons />
       </div>
+      {currentPage === numPages ? (
+        <div className="patient-form-footer">
+          <div className="kvkk-checkbox" style={{ display: "flex" }}>
+            <input
+              type="checkbox"
+              checked={checked}
+              onChange={() => setChecked(!checked)}
+            ></input>
+            <p
+              style={{
+                fontSize: "14px",
+                paddingLeft: "5px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              KVKK...
+            </p>
+          </div>
+          <div className="patient-form-send-button">
+            <Button
+              disabled={!flag || !checked}
+              style={
+                !flag || !checked
+                  ? { backgroundColor: "#d9d9d9", color: "black" }
+                  : {}
+              }
+              onClick={handleSendFormAnswers}
+            >
+              Gönder
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
