@@ -138,6 +138,9 @@ const AdminPageDoctors = () => {
                 handleClose={handleClose}
                 handleShow={handleShow}
                 show={show}
+                email={item.email}
+                phoneNumber={item.phoneNumber}
+                tckn={item.tckn}
               />
             </div>
           </td>

@@ -66,8 +66,6 @@ const PatientPageForm = () => {
     }
   };
 
-  // TODO:: get all answer and send to database
-  // TODO:: Check answer there is any null answer
   async function handleSendFormAnswers() {
     try {
       let tokenWithoutBearer = localStorage.getItem("accToken").toString();
