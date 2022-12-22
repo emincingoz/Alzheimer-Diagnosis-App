@@ -6,6 +6,7 @@ import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.admin.AdminChangeDoctorInfoRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.admin.AdminNewDoctorRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.doctor.PatientsGetResponse;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.user.UserInfoGetResponse;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.management.InstanceNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,8 +69,6 @@ public class AdminManager implements IAdminService {
 
         User newDoctor = modelMapper.map(request, User.class);
 
-        System.out.println("new Doctor: " + newDoctor.toString());
-
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(request.getPassword()).substring(8);
 
@@ -82,11 +82,26 @@ public class AdminManager implements IAdminService {
 
         newDoctor.setRoles(List.of(userAuthority));
 
-        System.out.println(newDoctor.toString());
-
         adminRepository.save(newDoctor);
         return new ResponseEntity<>(new SuccessResult(AdminMessageConstants.USER_REGISTER_SUCCESS), HttpStatus.ACCEPTED);
 
+    }
+
+    @Override
+    public Result changeDoctorInfo(String tckn, AdminChangeDoctorInfoRequest changeDoctorInfoRequest) {
+        Optional<User> user = adminRepository.findByTckn(tckn);
+        if (user.isEmpty())
+            return new ErrorResult("Doctor Bulunamadı");
+
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(changeDoctorInfoRequest.getPassword()).substring(8);
+
+        user.get().setEmail(changeDoctorInfoRequest.getEmail());
+        user.get().setPassword(encodedPassword);
+        user.get().setPhoneNumber(changeDoctorInfoRequest.getPhoneNumber());
+
+        adminRepository.save(user.get());
+        return new SuccessResult();
     }
 
     private List<UserInfoGetResponse> getAllUsersInfosByRole(UserRolesEnum role) {

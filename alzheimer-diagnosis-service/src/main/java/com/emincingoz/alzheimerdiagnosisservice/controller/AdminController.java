@@ -1,6 +1,7 @@
 package com.emincingoz.alzheimerdiagnosisservice.controller;
 
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.admin.AdminChangeDoctorInfoRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.admin.AdminNewDoctorRequest;
 import com.emincingoz.alzheimerdiagnosisservice.manager.admin.IAdminService;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IUserRepository;
@@ -27,7 +28,11 @@ public class AdminController {
 
     @PostMapping(value = "add-newdoctor", consumes = "application/json")
     public ResponseEntity<?> addNewDoctor(@RequestBody AdminNewDoctorRequest adminNewDoctorRequest) {
-        System.out.println("usfsdg: " + adminNewDoctorRequest.toString());
         return adminService.addNewDoctor(adminNewDoctorRequest);
+    }
+
+    @PutMapping("change-doctor-info/{tckn}")
+    public ResponseEntity<?> changeDoctorInfo(@PathVariable("tckn") String tckn, @RequestBody AdminChangeDoctorInfoRequest changeDoctorInfoRequest) {
+        return ResponseEntity.ok(adminService.changeDoctorInfo(tckn, changeDoctorInfoRequest));
     }
 }
