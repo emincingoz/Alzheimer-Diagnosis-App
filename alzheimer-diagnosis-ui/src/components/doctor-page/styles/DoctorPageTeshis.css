@@ -1,62 +1,64 @@
 .doctor-teshis {
-    align-items: center;
-    width: 100%;
-    height: calc(100vh - 70px);    /* 70px is mean top bar height */
-    /*width: 30%;
+  align-items: center;
+  width: 100%;
+  height: calc(100vh - 70px); /* 70px is mean top bar height */
+  /*width: 30%;
     margin: 9%;
     margin-bottom: 15%;*/
-    text-align: start;
-    font-size: 20px;
-    background-color: #f2f1f8;
-    display: flex;
+  text-align: start;
+  font-size: 20px;
+  background-color: #f2f1f8;
+  display: flex;
 }
 
 .doctor-teshis-mr-section {
-    width: 40%;
-    height: 60%;
-    background-color: #111111;
-    /*align-items: center;*/
-    margin: auto 7%;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  width: 40%;
+  height: 60%;
+  background-color: #111111;
+  /*align-items: center;*/
+  margin: auto 7%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .doctor-teshis-right-section {
-    width: 40%;
-    height: 100%;
+  width: 40%;
+  height: 100%;
 }
 
 .doctor-teshis-result {
-    width: 75%;
-    height: 25%;
-    background-color: #9cb8ca;
-    margin: 10% auto;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
+  width: 75%;
+  height: 25%;
+  background-color: #9cb8ca;
+  margin: 10% auto;
+  margin: 25% auto;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
 .doctor-teshis-button .MuiButton-root {
-    color: black;
-    width: 170px;
-    height: 50px;
-    background-color: #e1e0e7;
-    /*margin: 30px;*/
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 10% auto;
+  color: black;
+  width: 170px;
+  height: 50px;
+  background-color: #e1e0e7;
+  /*margin: 30px;*/
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10% auto;
+  margin: -15% auto;
 }
 
 .doctor-teshis-button .MuiButton-root:hover {
-    background-color: #9b9999;
+  background-color: #9b9999;
 }
 
 .buttton {
-    width: 190px;
+  width: 190px;
 }

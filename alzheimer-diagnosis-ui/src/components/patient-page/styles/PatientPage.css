@@ -1,92 +1,136 @@
 * {
-    font-family: Arial, Helvetica, sans-serif;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    /*text-align: center;*/
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  /*text-align: center;*/
 }
 
 body {
-    min-height: 100vh;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.patient-top-bar-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.pat-small-user-icon {
+  margin-top: 15px;
+  height: 75px;
+}
+
+.pat-top-bar {
+  width: 100%;
+  height: 70px;
+  background-color: black;
+}
+
+.pat-top-bar {
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  justify-content: space-between;
+  padding-right: 7px;
+}
+
+.pat-topbar-button .MuiButton-root {
+  color: black;
+  width: 150px;
+  height: 30px;
+  background-color: #e1e0e7;
+  margin: 30px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pat-top-bar-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.pat-topbar-button .MuiButton-root:hover {
+  background-color: #9b9999;
 }
 
 .patient-page {
-    min-height: 100vh;
-    width: 100%;
-    /*background-image: url("../../../assets/images/patient-page-background-2.png");*/
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin: 0;
-    padding: 0;
-    /*display: flex;*/
-    /*align-items: center;*/
-    
+  min-height: 100vh;
+  width: 100%;
+  /*background-image: url("../../../assets/images/patient-page-background-2.png");*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0;
+  padding: 0;
+  /*display: flex;*/
+  /*align-items: center;*/
 }
 
 .patient-top-bar {
-    width: 100%;
-    height: 70px;
-    background-color: black;
+  width: 100%;
+  height: 70px;
+  background-color: black;
 }
 
 .patient-anasayfa {
-    align-items: center;
-    width: 100%;
-    height: 100vh;
-    /*width: 30%;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  /*width: 30%;
     margin: 9%;
     margin-bottom: 15%;*/
-    text-align: start;
-    font-size: 20px;
-    background-image: url("../../../assets/images/patient-page-background-2.png");
+  text-align: start;
+  font-size: 20px;
+  background-image: url("../../../assets/images/patient-page-background-2.png");
 }
 
 .patient-anasayfa-inside {
-    width: 30%;
-    margin: 9%;
-    margin-bottom: 15%;
+  width: 30%;
+  margin: 9%;
+  margin-bottom: 15%;
 }
 
 .patient-anasayfa-inside > h1 {
-    font-size: 40px;
-    margin-bottom: 30px;
+  font-size: 40px;
+  margin-bottom: 30px;
 }
 
 .patient-top-bar {
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
 }
 
-.patient-anasayfa-button .MuiButton-root, 
-.patient-messages-button .MuiButton-root, 
-.patient-form-button .MuiButton-root, 
+.patient-anasayfa-button .MuiButton-root,
+.patient-messages-button .MuiButton-root,
+.patient-form-button .MuiButton-root,
 .patient-settings-button .MuiButton-root {
-    color: black;
-    width: 150px;
-    height: 30px;
-    background-color: #e1e0e7;
-    margin: 30px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  color: black;
+  width: 150px;
+  height: 30px;
+  background-color: #e1e0e7;
+  margin: 30px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.patient-anasayfa-button .MuiButton-root:hover, 
-.patient-messages-button .MuiButton-root:hover, 
-.patient-form-button .MuiButton-root:hover, 
+.patient-anasayfa-button .MuiButton-root:hover,
+.patient-messages-button .MuiButton-root:hover,
+.patient-form-button .MuiButton-root:hover,
 .patient-settings-button .MuiButton-root:hover {
-    background-color: #9b9999;
+  background-color: #9b9999;
 }
 
 .patient-page-inside {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    /*margin-left: 3.3em;*/
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  /*margin-left: 3.3em;*/
 }
