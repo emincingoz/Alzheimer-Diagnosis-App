@@ -1,12 +1,13 @@
 package com.emincingoz.alzheimerdiagnosisservice.controller;
 
-import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.manager.doctor.IDoctorService;
-import com.emincingoz.alzheimerdiagnosisservice.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.*;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.management.InstanceNotFoundException;
 
 @RestController
 @RequestMapping("api/doctor")
@@ -16,9 +17,7 @@ public class DoctorController {
 
     @GetMapping("/get-allpatients")
     public ResponseEntity<?> getAllPatients() {
-        System.out.println("asdasd: " + UserRolesEnum.PATIENT.toString());
         return ResponseEntity.ok(doctorService.getAllPatients());
-        /*return ResponseEntity.ok(userRepository.findByRole(UserRolesEnum.PATIENT));*/
     }
 
     @PostMapping(value = "doctor-teshis/upload-image", produces = {MediaType.IMAGE_PNG_VALUE, "application/json"})
@@ -28,5 +27,8 @@ public class DoctorController {
         return doctorService.uploadMRIImageFromClient(file, name);
     }
 
-
+    @GetMapping("get-patient-forms/{patient-tckn}")
+    public ResponseEntity<?> getPatientForms(@PathVariable("patient-tckn") String tckn) throws InstanceNotFoundException {
+        return ResponseEntity.ok(doctorService.getPatientForms(tckn));
+    }
 }

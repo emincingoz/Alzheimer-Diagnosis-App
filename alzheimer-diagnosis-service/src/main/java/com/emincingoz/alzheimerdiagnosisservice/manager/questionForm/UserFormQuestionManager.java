@@ -61,4 +61,11 @@ public class UserFormQuestionManager implements IUserFormQuestionService {
 
         return new SuccessResult();
     }
+
+    @Override
+    public List<FormQuestionGetResponse> getAllQuestionByUserTckn(String tckn) throws InstanceNotFoundException {
+        User user = userService.findUserByTckn(tckn);
+        List<FormQuestionGetResponse> formQuestionGetResponse = modelMapper.map(userFormQuestionRepository.findAllUserFormQuestionByUser(user), new TypeToken<List<FormQuestionGetResponse>>() {}.getType());
+        return formQuestionGetResponse;
+    }
 }

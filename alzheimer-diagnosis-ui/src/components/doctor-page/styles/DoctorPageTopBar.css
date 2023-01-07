@@ -1,28 +1,38 @@
 .doctor-top-bar {
-    width: 100%;
-    height: 70px;
-    background-color: black;
+  width: 100%;
+  height: 70px;
+  background-color: black;
 }
 
 .doctor-top-bar {
-    display: flex;
-    align-items: center;
-    padding-left: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  justify-content: space-between;
+  padding-right: 7px;
 }
 
 .doctor-topbar-button .MuiButton-root {
-    color: black;
-    width: 150px;
-    height: 30px;
-    background-color: #e1e0e7;
-    margin: 30px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  color: black;
+  width: 150px;
+  height: 30px;
+  background-color: #e1e0e7;
+  margin: 30px;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doctor-top-bar-buttons {
+  display: flex;
+  justify-content: space-around;
 }
 
 .doctor-topbar-button .MuiButton-root:hover {
-    background-color: #9b9999;
+  background-color: #9b9999;
 }
-
+.doct-small-user-icon {
+  margin-top: 15px;
+  height: 75px;
+}

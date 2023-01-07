@@ -162,6 +162,27 @@
     display: none;
 }
 
+.pat-topbar-button .MuiButton-root {
+    color: black;
+    width: 150px;
+    height: 30px;
+    background-color: #e1e0e7;
+    margin: 30px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pat-top-bar-buttons {
+    display: flex;
+    justify-content: space-around;
+}
+
+.pat-topbar-button .MuiButton-root:hover {
+    background-color: #9b9999;
+}
+
 @media screen and ( min-height: 700px ) {
     .patient-message-left-container {
         max-height: 82vh;
@@ -177,8 +198,9 @@
     }
 
     .message-messages-body {
-        max-height: 55vh;
+        /*max-height: 55vh;*/
         margin-bottom: 10px;
+        height: 55vh;
     }
 
     .message-send-container {

@@ -8,8 +8,14 @@ import { useCallback } from "react";
 import formIcon from "../../assets/images/form-icon.png";
 import messageBubbleIcon from "../../assets/images/message-bubble-icon.png";
 
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import PropTypes from "prop-types";
+import CircularProgress from "@mui/material/CircularProgress";
+
 const BASE_URL = "/api/doctor";
 const GET_PATIENTS_URL = BASE_URL + "/get-allpatients";
+const GET_PATIENT_FORMS = BASE_URL + "/get-patient-forms";
 
 const paginationCounts = [5, 8, 10];
 
@@ -20,6 +26,20 @@ const MyPatients = () => {
   const [numPatientsPerPage, setNumPatientsPerPage] = useState(
     paginationCounts[1]
   );
+
+  const [list, setList] = useState([]);
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = (patient) => {
+    setOpen(true);
+
+    getUserFormQuestions(patient);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     getMyAllPatients();
@@ -75,8 +95,18 @@ const MyPatients = () => {
         <button
           style={
             i === currPage
-              ? { backgroundColor: "#ccc", pointerEvents: "none" }
-              : {}
+              ? {
+                  backgroundColor: "#ccc",
+                  pointerEvents: "none",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }
+              : {
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }
           }
           key={i}
           className="doctor-mypatients-pagination-button"
@@ -87,7 +117,18 @@ const MyPatients = () => {
       );
     }
 
-    return <div style={{ width: "33%", textAlign: "center" }}>{array}</div>;
+    return (
+      <div
+        style={{
+          width: "33%",
+          textAlign: "center",
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {array}
+      </div>
+    );
   };
 
   const RenderPatients = () => {
@@ -123,14 +164,15 @@ const MyPatients = () => {
               onClick={() => handleShowForm(item)}
             />
           </td>
-          <td>
-            <img
-              className="doctor-mypatients-message-icon"
-              src={messageBubbleIcon}
-              alt="message bubble"
-              onClick={() => handleChangeMessageScreen(item)}
-            />
-          </td>
+          {/*<td>
+             <img
+               className="doctor-mypatients-message-icon"
+               src={messageBubbleIcon}
+               alt="message bubble"
+               onClick={() => handleChangeMessageScreen(item)}
+             />
+-          </td>
+          </td>*/}
         </tr>
       );
     });
@@ -138,16 +180,82 @@ const MyPatients = () => {
     return array;
   };
 
-  // TODO:: Show patinets' form
   const handleShowForm = (patient) => {
-    console.log("asdas");
-    return <div>hello</div>;
+    handleClickOpen(patient);
   };
 
-  // TODO:: Show message page with selected patient
-  const handleChangeMessageScreen = (patient) => {
+  /*const handleChangeMessageScreen = (patient) => {
     console.log("aasdas");
     return <div>hello all</div>;
+  };*/
+
+  const getUserFormQuestions = async (patient) => {
+    try {
+      let tokenWithoutBearer = localStorage.getItem("accToken").toString();
+      let token =
+        "Bearer " +
+        tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
+
+      const response = await axios.get(GET_PATIENT_FORMS + "/" + patient.tckn, {
+        headers: { "Content-Type": "application/json", Authorization: token },
+
+        withCredentials: true,
+      });
+
+      setList(response.data.data);
+    } catch (e) {
+      console.log("olmadı be");
+    }
+  };
+
+  function SimpleDialog(props) {
+    return (
+      <Dialog
+        onClose={handleClose}
+        open={props.open}
+        scroll="paper"
+        fullWidth={true}
+        maxWidth="sm"
+      >
+        <DialogTitle>Hasta Formu</DialogTitle>
+        {list.length === 0 ? (
+          <CircularProgress color="inherit" />
+        ) : (
+          list.map((item) => (
+            <RenderSinglePatientForm
+              question={item.question}
+              answer={item.answer}
+            />
+          ))
+        )}
+      </Dialog>
+    );
+  }
+
+  function RenderSinglePatientForm(props) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          margin: "5% 3%",
+          justifyContent: "space-between",
+        }}
+      >
+        <div style={{ width: "90%" }}>{props.question}</div>
+        <div style={{ width: "10%" }}>
+          {props.answer === true ? "- Evet" : "- Hayır"}
+        </div>
+      </div>
+    );
+  }
+
+  SimpleDialog.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
+  };
+
+  const RenderPatientForm = () => {
+    return <SimpleDialog open={open} onClose={handleClose} />;
   };
 
   const RenderCurrentShowedPatientsInfo = () => {
@@ -221,7 +329,7 @@ const MyPatients = () => {
                 Telefon
               </th>
               <th>Form</th>
-              <th>Mesaj</th>
+              {/*<th>Mesaj</th>*/}
             </tr>
           </thead>
           <tbody>
@@ -243,6 +351,7 @@ const MyPatients = () => {
             </tr>
           </tfoot>
         </table>
+        <RenderPatientForm />
       </div>
     </div>
   );
