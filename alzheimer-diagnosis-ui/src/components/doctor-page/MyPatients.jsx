@@ -219,10 +219,11 @@ const MyPatients = () => {
       >
         <DialogTitle>Hasta Formu</DialogTitle>
         {list.length === 0 ? (
-          <CircularProgress color="inherit" />
+          <CircularProgress color="inherit" style={{ padding: "1%" }} />
         ) : (
-          list.map((item) => (
+          list.map((item, index) => (
             <RenderSinglePatientForm
+              key={index}
               question={item.question}
               answer={item.answer}
             />

@@ -54,13 +54,14 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
     console.log(password);
     console.log(tckn);
 
-    const resultTckn = TCNO_REGEX.test(tckn);
-    const resultPassword = PWD_REGEX.test(password);
+    /*const resultTckn = TCNO_REGEX.test(tckn);
+    const resultPassword = PWD_REGEX.test(password);*/
 
-    console.log(resultTckn);
-    console.log(resultPassword);
+    /*console.log(resultTckn);
+    console.log(resultPassword);*/
 
-    if (!(resultPassword && resultTckn)) {
+    /*if (!(resultPassword && resultTckn)) {*/
+    if (false) {
       setSnackbar({
         open: true,
         vertical: "top",

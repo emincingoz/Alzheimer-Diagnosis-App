@@ -23,7 +23,7 @@
 #CMD ["uvicorn", "main:app"]
 #CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
 
-FROM python:3.9
+FROM python:3.10.0
 
 #
 WORKDIR /code
@@ -34,8 +34,13 @@ COPY ./requirements.txt /code/requirements.txt
 #
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-#
-COPY . /code/app
+# Problem and answer
+# https://stackoverflow.com/questions/55313610/importerror-libgl-so-1-cannot-open-shared-object-file-no-such-file-or-directo
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 
 #
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+COPY . /code
+
+#
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
