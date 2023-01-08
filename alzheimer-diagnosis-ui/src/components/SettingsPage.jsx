@@ -126,9 +126,9 @@ const SettingsPage = () => {
   }
 
   function handleUpdateButtonActive() {
-    let flag = false;
+    let flag = true;
     changeableInfos.forEach((info, index) => {
-      if (
+      /*if (
         (info.type === "Cep Telefonu" &&
           info.value === phoneNumber.toString() &&
           info.type === "E-Mail" &&
@@ -143,6 +143,28 @@ const SettingsPage = () => {
         !validPasswordAgain
       ) {
         flag = true;
+      }*/
+
+      if (
+        (info.type === "Cep Telefonu" &&
+          info.value !== phoneNumber.toString() &&
+          validPhoneNumber) ||
+        (info.type === "E-Mail" && info.value !== email && validEmail) ||
+        ((info.type === "Şifre" || info.type === "Şifrenizi Tekrar Giriniz") &&
+          info.value !== password &&
+          validPassword &&
+          info.value !== passwordAgain &&
+          validPasswordAgain &&
+          password === passwordAgain)
+      ) {
+        if (
+          validPhoneNumber &&
+          validEmail &&
+          ((validPassword && validPasswordAgain) ||
+            (password === "" && passwordAgain === ""))
+        ) {
+          flag = false;
+        }
       }
     });
 
