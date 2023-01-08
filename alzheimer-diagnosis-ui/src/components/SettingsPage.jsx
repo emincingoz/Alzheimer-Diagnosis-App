@@ -171,6 +171,11 @@ const SettingsPage = () => {
     return flag;
   }
 
+  // TODO: fhgfhgfhg
+  function updateUserInfos() {
+
+  }
+
   function handleLogout() {
     localStorage.removeItem("user");
     localStorage.removeItem("accToken");
@@ -203,6 +208,7 @@ const SettingsPage = () => {
                   ? { backgroundColor: "#d9d9d9", color: "black" }
                   : {}
               }
+              onClick={updateUserInfos()}
             >
               Güncelle
             </Button>

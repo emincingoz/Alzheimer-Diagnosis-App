@@ -45,8 +45,10 @@ jwt:
       forgetPassword: forgetPassword
       changePassword: changePassword
 
-#prediction-service:
-#    upload-mri-uri: "http://127.0.0.1/upload-mri-file/"
-
+# When using Docker python service
 prediction-service:
-  upload-mri-uri: "http://127.0.0.1:8000/upload-mri-file/"
+    upload-mri-uri: "http://127.0.0.1/upload-mri-file/"
+
+# When using locally python service
+#prediction-service:
+#  upload-mri-uri: "http://127.0.0.1:8000/upload-mri-file/"

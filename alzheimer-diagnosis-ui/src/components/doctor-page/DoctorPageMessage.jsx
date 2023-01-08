@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 // TODO:: change directory, i mean extract these components to general space
 import MessageBubble from "../patient-page/MessageBubble";
 import MessageContact from "../patient-page/MessageContact";
 import IconButton from "@mui/material/IconButton";
-import SendIcon from "@mui/icons-material/Send";
-import { TextField } from "@mui/material";
 // TODO:: exctract this css file also general space
 import "../patient-page/styles/PatientPageMessage.css";
 import sendIcon from "../../assets/images/message-send-icon.png";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import Box from "@mui/material/Box";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
 import axios from "../../services/axios";
@@ -20,12 +17,10 @@ import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import { blue } from "@mui/material/colors";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { SignalCellularNull } from "@mui/icons-material";
+import bgr from "../../assets/images/chat-bgr-last.jpg";
 
 import { over } from "stompjs";
 import SockJS from "sockjs-client";
-import { counter } from "@fortawesome/fontawesome-svg-core";
-import { useCallback } from "react";
 
 const DOCTOR_BASE_URL = "/api/doctor";
 const GET_PATIENTS_URL = DOCTOR_BASE_URL + "/get-allpatients";
@@ -442,7 +437,31 @@ const DoctorPageMessage = () => {
             </div>
           </div>
         ) : (
-          <div>nope burası boş</div>
+          <div style={{ margin: "2.5% auto" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: "auto",
+              }}
+            >
+              <img src={bgr} alt="" />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: "auto",
+                opacity: "0.65",
+              }}
+            >
+              <p>
+                Bir kullanıcı seçtikten sonra mesajlarınız burada görünecektir.
+              </p>
+            </div>
+          </div>
         )}
       </>
     </div>
