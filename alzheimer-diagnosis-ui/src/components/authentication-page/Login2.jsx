@@ -65,7 +65,10 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
   };
 
   const handleLoginButton = async (e) => {
-    /*const resultTckn = TCNO_REGEX.test(tckn);
+    /*console.log(password);
+    console.log(tckn);
+
+    const resultTckn = TCNO_REGEX.test(tckn);
     const resultPassword = PWD_REGEX.test(password);
 
     console.log(resultTckn);
@@ -96,8 +99,8 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
         }
       );
 
-      console.log(JSON.stringify(response?.data));
-      console.log(JSON.stringify(response));
+      /*console.log(JSON.stringify(response?.data));
+      console.log(JSON.stringify(response));*/
 
       const token = response?.data?.data.token;
       const roles = response?.data?.data.roles;
@@ -108,13 +111,13 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
       localStorage.setItem("accToken", JSON.stringify(token));
       localStorage.setItem("roles", JSON.stringify(roles));
 
-      console.log(token);
+      /*console.log(token);
       console.log(roles);
 
       console.log("tckn: ", tckn);
       console.log("pass: ", password);
       console.log("roles: ", roles);
-      console.log("token: ", token);
+      console.log("token: ", token);*/
 
       let userInfo = { tckn: tckn, roles: roles };
       localStorage.setItem("user", JSON.stringify(userInfo));
@@ -124,7 +127,6 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
       // Navigate to home page if login is successfull
       //navigate(from, { replace: true });
       navigate("/");
-      console.log("why");
     } catch (e) {
       if (e.response?.status === 409) {
         setSnackbar({
@@ -158,7 +160,7 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
     setDialog(false);
   };
   const HandleSendEmailButton = async (e) => {
-    const resultTcno = TCNO_REGEX.test(tcno);
+    /*const resultTcno = TCNO_REGEX.test(tcno);
     const resultEmail = EMAIL_REGEX.test(email);
 
     if (!(resultTcno && resultEmail)) {
@@ -166,12 +168,11 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
         open: true,
         vertical: "top",
         horizontal: "right",
-        message: "Kullanıcı Bilgileri Hatalı. Tekrar Giriniz.",
+        message: "Kullanıcı Bilgileri Hatalı. Tekrar Deneyiniz.",
         status: "error",
       });
       return;
-    }
-    const er = null;
+    }*/
     try {
       const response = await axios.post(
         FORGOT_PASSWORD_URL,
@@ -184,19 +185,25 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
           withCredentials: true,
         }
       );
-    } catch (e) {
-      er = e;
+
       setSnackbar({
         open: true,
         vertical: "top",
         horizontal: "right",
-        message: "Kullanıcı Bilgileri Hatalı. Tekrar Giriniz.",
+        message:
+          "Şifre sıfırlama maili gönderildi, maillerinizi kontrol ediniz.",
+        status: "success",
+      });
+    } catch (e) {
+      setSnackbar({
+        open: true,
+        vertical: "top",
+        horizontal: "right",
+        message: "Kullanıcı Bilgileri Hatalı. Tekrar Deneyiniz.",
         status: "error",
       });
     }
-    if (er == null) {
-      handleDialogClose();
-    }
+    handleDialogClose();
   };
 
   return (
