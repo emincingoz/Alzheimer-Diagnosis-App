@@ -113,6 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS,"/message-app/**").permitAll()
                 .antMatchers("/api/message-contact/**").permitAll()
+                .antMatchers("/api/user/forgotPassword/**").permitAll()
 
                 .anyRequest().authenticated();
 

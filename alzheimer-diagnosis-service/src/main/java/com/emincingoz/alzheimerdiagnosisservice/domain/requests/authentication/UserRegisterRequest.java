@@ -1,4 +1,4 @@
-package com.emincingoz.alzheimerdiagnosisservice.domain.requests;
+package com.emincingoz.alzheimerdiagnosisservice.domain.requests.authentication;
 
 import lombok.*;
 

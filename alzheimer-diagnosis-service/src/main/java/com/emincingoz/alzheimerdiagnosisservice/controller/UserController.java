@@ -1,6 +1,7 @@
 package com.emincingoz.alzheimerdiagnosisservice.controller;
 
-import com.emincingoz.alzheimerdiagnosisservice.domain.requests.UserRegisterRequest;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.ForgotPasswordRequest;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.authentication.UserRegisterRequest;
 import com.emincingoz.alzheimerdiagnosisservice.manager.user.IUserService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,10 @@ public class UserController {
     @GetMapping("get-user-infos/{tckn}")
     public ResponseEntity<?> getUserInfosByTckn(@PathVariable("tckn") String tckn) throws InstanceNotFoundException {
         return ResponseEntity.ok(userService.getUserInfosByTckn(tckn));
+    }
+
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) throws UnirestException {
+        return userService.forgotPassword(forgotPasswordRequest);
     }
 }

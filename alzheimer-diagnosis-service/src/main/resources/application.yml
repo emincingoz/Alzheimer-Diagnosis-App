@@ -30,6 +30,17 @@ spring:
         default_schema: rest
     hibernate:
       ddl-auto: update
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: onlinealzheimerdiagnosis.ada@gmail.com
+    password: mzloncvxeuoygjlm
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 # expiration: 600
 jwt:

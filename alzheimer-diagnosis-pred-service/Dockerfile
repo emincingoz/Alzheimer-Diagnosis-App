@@ -39,6 +39,17 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 RUN apt-get update
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 
+#RUN apt-get update && apt-get install -y wget
+
+#RUN apt-get install gdown
+
+# Download deep learnin model from drive and copy to model folder
+#https://drive.google.com/uc?id=1-25Zjx9fOZigbO4Xks4bOFmKYYC-0LjY&export=download
+#RUN gdown https://drive.google.com/uc?id=1-25Zjx9fOZigbO4Xks4bOFmKYYC-0LjY&export=download
+
+#RUN mkdir -p /code/model
+#COPY prototype_model.h5 /code/model
+
 #
 COPY . /code
 
