@@ -11,19 +11,33 @@ import "./styles/Login.css";
 import PersonIcon from "@mui/icons-material/Person";
 import InputAdornment from "@mui/material/InputAdornment";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import EmailIcon from "@mui/icons-material/Email";
 import useAuth from "../../hooks/useAuth";
+import DialogTitle from "@mui/material/DialogTitle";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
 
 const BASE_URL = "/api/auth";
 const LOGIN_URL = BASE_URL + "/login";
+const BASE_URL2 = "/api/user";
+const FORGOT_PASSWORD_URL = BASE_URL2 + "/forgotPassword";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
 const TCNO_REGEX = /^[1-9]{1}[0-9]{9}[02468]{1}$/;
+const EMAIL_REGEX = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
 const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
   // Tc No
   const [tckn, setTckn] = useState("");
   const [validTckn, setValidTckn] = useState(false);
   const [tcknFocus, setTcknFocus] = useState(false);
+
+  const [tcno, setTcno] = useState("");
+  const [tcnoFocus, setTcnoFocus] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailFocus, setEmailFocus] = useState(false);
+  const [dialog, setDialog] = useState(false);
 
   const { setAuth } = useAuth();
 
@@ -51,17 +65,16 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
   };
 
   const handleLoginButton = async (e) => {
-    console.log(password);
+    /*console.log(password);
     console.log(tckn);
 
-    /*const resultTckn = TCNO_REGEX.test(tckn);
-    const resultPassword = PWD_REGEX.test(password);*/
+    const resultTckn = TCNO_REGEX.test(tckn);
+    const resultPassword = PWD_REGEX.test(password);
 
-    /*console.log(resultTckn);
-    console.log(resultPassword);*/
+    console.log(resultTckn);
+    console.log(resultPassword);
 
-    /*if (!(resultPassword && resultTckn)) {*/
-    if (false) {
+    if (!(resultPassword && resultTckn)) {
       setSnackbar({
         open: true,
         vertical: "top",
@@ -70,7 +83,7 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
         status: "error",
       });
       return;
-    }
+    }*/
 
     try {
       const response = await axios.post(
@@ -86,8 +99,8 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
         }
       );
 
-      console.log(JSON.stringify(response?.data));
-      console.log(JSON.stringify(response));
+      /*console.log(JSON.stringify(response?.data));
+      console.log(JSON.stringify(response));*/
 
       const token = response?.data?.data.token;
       const roles = response?.data?.data.roles;
@@ -98,13 +111,13 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
       localStorage.setItem("accToken", JSON.stringify(token));
       localStorage.setItem("roles", JSON.stringify(roles));
 
-      console.log(token);
+      /*console.log(token);
       console.log(roles);
 
       console.log("tckn: ", tckn);
       console.log("pass: ", password);
       console.log("roles: ", roles);
-      console.log("token: ", token);
+      console.log("token: ", token);*/
 
       let userInfo = { tckn: tckn, roles: roles };
       localStorage.setItem("user", JSON.stringify(userInfo));
@@ -114,7 +127,6 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
       // Navigate to home page if login is successfull
       //navigate(from, { replace: true });
       navigate("/");
-      console.log("why");
     } catch (e) {
       if (e.response?.status === 409) {
         setSnackbar({
@@ -138,6 +150,60 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
 
   const handleSignUpButton = () => {
     navigate("/register");
+  };
+
+  const handleDialogOpen = () => {
+    setDialog(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialog(false);
+  };
+  const HandleSendEmailButton = async (e) => {
+    /*const resultTcno = TCNO_REGEX.test(tcno);
+    const resultEmail = EMAIL_REGEX.test(email);
+
+    if (!(resultTcno && resultEmail)) {
+      setSnackbar({
+        open: true,
+        vertical: "top",
+        horizontal: "right",
+        message: "Kullanıcı Bilgileri Hatalı. Tekrar Deneyiniz.",
+        status: "error",
+      });
+      return;
+    }*/
+    try {
+      const response = await axios.post(
+        FORGOT_PASSWORD_URL,
+        JSON.stringify({
+          tcno: tcno,
+          email: email,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+
+      setSnackbar({
+        open: true,
+        vertical: "top",
+        horizontal: "right",
+        message:
+          "Şifre sıfırlama maili gönderildi, maillerinizi kontrol ediniz.",
+        status: "success",
+      });
+    } catch (e) {
+      setSnackbar({
+        open: true,
+        vertical: "top",
+        horizontal: "right",
+        message: "Kullanıcı Bilgileri Hatalı. Tekrar Deneyiniz.",
+        status: "error",
+      });
+    }
+    handleDialogClose();
   };
 
   return (
@@ -172,16 +238,6 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
           }}
         />
 
-        {/*<CustomTextField
-          id="tckno"
-          label="TC-Kimlik No"
-          setState={setTckn}
-          setFocus={setTcknFocus}
-          validProp={validTckn}
-          focusProp={tcknFocus}
-          //helperText=" Gerçek bir Tc-Kimlik numarası girmelisiniz"
-        />*/}
-
         <TextField
           placeholder="Şifre"
           className="textField"
@@ -206,27 +262,12 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
             ),
           }}
         />
-
-        {/*<CustomTextField
-          id="password"
-          label="Şifre"
-          setState={setPassword}
-          setFocus={setPasswordFocus}
-          validProp={validPassword}
-          focusProp={passwordFocus}
-          //helperText=" Şifre en az 6 karakterli olmalı"
-          type="password"
-        />*/}
-
+        <div>
+          <p className="forgot-password">
+            <Link onClick={handleDialogOpen}>Şifremi unuttum</Link>
+          </p>
+        </div>
         <br></br>
-        {/*<Button
-          className="signUpButton"
-          disabled={tckn === "" || password === "" ? true : false}
-          variant="outlined"
-          onClick={handleLogin}
-        >
-          Giriş Yap
-        </Button>*/}
         <div className="buttons">
           <Button
             style={{
@@ -283,6 +324,74 @@ const Login2 = (/*{ setLoggedIn, setAccToken, accToken }*/) => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+      <Dialog open={dialog} onClose={handleDialogClose}>
+        <DialogTitle align="center">Şifre Yenileme</DialogTitle>
+        <TextField
+          placeholder="TC Kimlik No"
+          className="textField"
+          id="tcno"
+          margin="normal"
+          style={{ marginLeft: "15px", marginRight: "15px" }}
+          variant="outlined"
+          type="text"
+          autoComplete="off"
+          size="small"
+          inputProps={{ style: { fontSize: 14 } }} // font size of input text
+          InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
+          onChange={(e) => setTcno(e.target.value)}
+          required
+          onFocus={() => setTcnoFocus(true)}
+          onBlur={() => setTcnoFocus(false)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <PersonIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          placeholder="E-mail"
+          className="textField"
+          id="email"
+          margin="normal"
+          style={{ marginLeft: "15px", marginRight: "15px" }}
+          variant="outlined"
+          type="text"
+          autoComplete="off"
+          size="small"
+          inputProps={{ style: { fontSize: 14 } }} // font size of input text
+          InputLabelProps={{ style: { fontSize: 14 } }} // font size of input label
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          onFocus={() => setEmailFocus(true)}
+          onBlur={() => setEmailFocus(false)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <div className="buttons">
+          <Button
+            style={{
+              borderRadius: "25px",
+              marginBottom: "10px",
+              marginTop: "20px",
+              marginLeft: "27%",
+              backgroundColor: "#d9d9d9",
+              color: "black",
+            }}
+            disabled={tcno === "" || email === "" ? true : false}
+            variant="outlined"
+            onClick={HandleSendEmailButton}
+          >
+            E-mail Gönder
+          </Button>
+        </div>
+      </Dialog>
     </div>
   );
 };

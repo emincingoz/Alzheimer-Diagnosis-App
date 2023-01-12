@@ -2,17 +2,19 @@ package com.emincingoz.alzheimerdiagnosisservice.manager.user;
 
 import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.ErrorResult;
 import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.SuccessResult;
+import com.emincingoz.alzheimerdiagnosisservice.domain.dtos.email.EmailDTO;
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.ForgotPasswordRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.user.UserInfoGetResponse;
-import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleModel;
 import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleValidator;
+import com.emincingoz.alzheimerdiagnosisservice.manager.email.IEmailService;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IUserRepository;
 import com.emincingoz.alzheimerdiagnosisservice.core.utils.BusinessRules;
 import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.Result;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
-import com.emincingoz.alzheimerdiagnosisservice.domain.requests.UserRegisterRequest;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.authentication.UserRegisterRequest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -23,8 +25,10 @@ import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
 
 import javax.management.InstanceNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserManager implements IUserService {
@@ -32,12 +36,15 @@ public class UserManager implements IUserService {
     private final IUserRepository userRepository;
     private final ModelMapper modelMapper;
     private final NationalityPeopleValidator nationalityPeopleValidator;
+    private final IEmailService emailService;
 
     public UserManager(@Qualifier("fakeNationalityPeopleValidator") NationalityPeopleValidator nationalityPeopleValidator,
                        IUserRepository userRepository,
+                       IEmailService emailService,
                        ModelMapper modelMapper) {
         this.nationalityPeopleValidator = nationalityPeopleValidator;
         this.userRepository = userRepository;
+        this.emailService = emailService;
         this.modelMapper = modelMapper;
     }
 
@@ -75,8 +82,6 @@ public class UserManager implements IUserService {
 
         user.setRoles(List.of(userAuthority));
 
-        System.out.println(user.toString());
-
         userRepository.save(user);
         return new ResponseEntity<>(new SuccessResult(UserMessageConstants.USER_REGISTER_SUCCESS), HttpStatus.ACCEPTED);
     }
@@ -99,6 +104,51 @@ public class UserManager implements IUserService {
         return userInfo;
     }
 
+    @Transactional
+    @Override
+    public ResponseEntity<?> forgotPassword(ForgotPasswordRequest forgotPasswordRequest) throws UnirestException {
+        Result ruleResult = BusinessRules.run(isUserExists(forgotPasswordRequest.getTcno()));
+        if (ruleResult == null)
+            return new ResponseEntity<>(ruleResult, HttpStatus.CONFLICT);
+
+        String tc = forgotPasswordRequest.getTcno();
+        try {
+            UserInfoGetResponse userInfos = getUserInfosByTckn(tc);
+
+            // User email not found
+            if (!forgotPasswordRequest.getEmail().equals(userInfos.getEmail()))
+                return new ResponseEntity<>(ruleResult, HttpStatus.CONFLICT);
+
+            String newPassword = randomPasswordGenerator();
+
+
+            String emailRecipient = userInfos.getEmail();
+            String emailMessageBody = "Yeni şifreniz: "+ newPassword + " \n\nLütfen şifrenizi kimseyle paylaşmayınız ve en yakın zamanda değiştiriniz";
+            String emailSubject = "Şifre Yenileme";
+
+            EmailDTO emailDTO = new EmailDTO();
+            emailDTO.setRecipient(emailRecipient);
+            emailDTO.setMessageBody(emailMessageBody);
+            emailDTO.setSubject(emailSubject);
+
+            Optional<User> user = userRepository.findByTckn(tc);
+
+            PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+            String encodedNewPassword = encoder.encode(newPassword).substring(8);
+
+            if (user.isPresent()) {
+                user.get().setPassword(encodedNewPassword);
+                userRepository.save(user.get());
+            }
+
+            Result emailResult = emailService.forgotPasswordSendEmail(emailDTO);
+            return ResponseEntity.ok(emailResult);
+        }
+        catch (InstanceNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Result isUserExists(String tckn) {
         Optional<User> user = userRepository.findByTckn(tckn);
 
@@ -106,5 +156,12 @@ public class UserManager implements IUserService {
             return new ErrorResult(UserMessageConstants.USER_ALREADY_EXISTS);
 
         return new SuccessResult();
+    }
+
+    private String randomPasswordGenerator() {
+        UUID uuid = UUID.randomUUID();
+        String newPassword = uuid.toString().substring(0, 8);
+
+        return newPassword;
     }
 }
