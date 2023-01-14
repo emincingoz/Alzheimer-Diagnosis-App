@@ -18,7 +18,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.management.InstanceNotFoundException;
+
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.doctor.PredictionResultResponse;
 import com.emincingoz.alzheimerdiagnosisservice.manager.questionForm.IUserFormQuestionService;
 import com.emincingoz.alzheimerdiagnosisservice.manager.user.IUserService;
@@ -60,9 +62,9 @@ public class DoctorManager implements IDoctorService {
         try {
             Files.write(fileNamePath, file.getBytes());
             PredictionResultResponse pred;
-                        pred=sendUploadedImageToPredictionService(file, String.valueOf(fileNamePath));
-                        SuccessDataResult dataResult2 = new SuccessDataResult(pred);
-                        return new ResponseEntity<>(dataResult2, HttpStatus.CREATED);
+            pred = sendUploadedImageToPredictionService(file, String.valueOf(fileNamePath));
+            SuccessDataResult dataResult2 = new SuccessDataResult(pred);
+            return new ResponseEntity<>(dataResult2, HttpStatus.CREATED);
         } catch (
                 IOException ex) {
             return new ResponseEntity<>("Image is not uploaded", HttpStatus.BAD_REQUEST);
@@ -74,7 +76,8 @@ public class DoctorManager implements IDoctorService {
 
         List<User> patientList = doctorRepository.findAllByRole(UserRolesEnum.PATIENT);
 
-        List<PatientsGetResponse> patientsGetResponses = modelMapper.map(patientList, new TypeToken<List<PatientsGetResponse>>() {}.getType());
+        List<PatientsGetResponse> patientsGetResponses = modelMapper.map(patientList, new TypeToken<List<PatientsGetResponse>>() {
+        }.getType());
 
         System.out.println(patientsGetResponses.toString());
 
@@ -82,14 +85,14 @@ public class DoctorManager implements IDoctorService {
     }
 
     @Override
-   public Result getPatientForms(String patientTckn) throws InstanceNotFoundException {
+    public Result getPatientForms(String patientTckn) throws InstanceNotFoundException {
 
-                       List<FormQuestionGetResponse> response = userFormQuestionService.getAllQuestionByUserTckn(patientTckn);
+        List<FormQuestionGetResponse> response = userFormQuestionService.getAllQuestionByUserTckn(patientTckn);
 
-                       return new SuccessDataResult<>(response);
-            }
+        return new SuccessDataResult<>(response);
+    }
 
-            private void makeDirectoryIfNotExist() {
+    private void makeDirectoryIfNotExist() {
         File directory = new File(imageDirectory);
         if (!directory.exists()) {
             directory.mkdir();
@@ -116,49 +119,46 @@ public class DoctorManager implements IDoctorService {
         System.out.println("response: " + response);
 
         // Delete image file
-               f.delete();
+        f.delete();
 
-                       PredictionResultResponse pred;
-                String res="";
-               res=response.getBody();
-               assert res != null;
-               pred=predictionResultParser(res);
-               System.out.println("name: " + pred.getPredClassName());
-               System.out.println("value: " + pred.getPredValue());
-               return pred;
-           }
+        PredictionResultResponse pred;
+        String res = "";
+        res = response.getBody();
+        assert res != null;
+        pred = predictionResultParser(res);
+        System.out.println("name: " + pred.getPredClassName());
+        System.out.println("value: " + pred.getPredValue());
+        return pred;
+    }
 
-            private PredictionResultResponse predictionResultParser(String res) {
-                StringBuilder predName= new StringBuilder();
-                StringBuilder predValueS= new StringBuilder();
-               for(int i=0;i<res.length();i++)
-                   {
-                                if(res.charAt(i)=='n' && res.charAt(i+1)=='a')
-                      {
-                                    for(int j=i+7;j<res.length();j++)
-                            {
-                                       if(res.charAt(j)=='"')
-                                   break;
-                            else
-                               predName.append(res.charAt(j));
-                       }
-                   }
-               }
-               for(int i=0;i<res.length();i++)
-                    {
-                               if(res.charAt(i)=='v' && res.charAt(i+1)=='a')
-                        {
-                                    for(int j=i+7;j<res.length();j++)
-                            {
-                                        if(res.charAt(j)=='}')
-                                    break;
-                            else
-                               predValueS.append(res.charAt(j));
-                       }}}
-               double predValueD=0.0;
-                predValueD=Double.parseDouble(predValueS.toString());
-                PredictionResultResponse pred = new PredictionResultResponse("",0.0);
-                pred.setPredClassName(predName.toString());
-                pred.setPredValue(predValueD);
-                return pred;}
+    private PredictionResultResponse predictionResultParser(String res) {
+        StringBuilder predName = new StringBuilder();
+        StringBuilder predValueS = new StringBuilder();
+        for (int i = 0; i < res.length(); i++) {
+            if (res.charAt(i) == 'n' && res.charAt(i + 1) == 'a') {
+                for (int j = i + 7; j < res.length(); j++) {
+                    if (res.charAt(j) == '"')
+                        break;
+                    else
+                        predName.append(res.charAt(j));
+                }
+            }
+        }
+        for (int i = 0; i < res.length(); i++) {
+            if (res.charAt(i) == 'v' && res.charAt(i + 1) == 'a') {
+                for (int j = i + 7; j < res.length(); j++) {
+                    if (res.charAt(j) == '}')
+                        break;
+                    else
+                        predValueS.append(res.charAt(j));
+                }
+            }
+        }
+        double predValueD = 0.0;
+        predValueD = Double.parseDouble(predValueS.toString());
+        PredictionResultResponse pred = new PredictionResultResponse("", 0.0);
+        pred.setPredClassName(predName.toString());
+        pred.setPredValue(predValueD);
+        return pred;
+    }
 }

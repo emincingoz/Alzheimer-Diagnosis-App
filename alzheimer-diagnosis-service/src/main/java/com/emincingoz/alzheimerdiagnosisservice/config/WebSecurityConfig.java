@@ -109,11 +109,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/message-app/**").permitAll()
 
-                .antMatchers(HttpMethod.OPTIONS,"/ws/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS,"/user/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS,"/message-app/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/ws/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/user/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/message-app/**").permitAll()
                 .antMatchers("/api/message-contact/**").permitAll()
                 .antMatchers("/api/user/forgotPassword/**").permitAll()
+                .antMatchers("/api/user/update-user-infos/**").permitAll()
 
                 .anyRequest().authenticated();
 
@@ -159,7 +160,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer(){
+    public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {

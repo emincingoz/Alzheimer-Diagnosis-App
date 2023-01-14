@@ -7,6 +7,7 @@ import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.ForgotPasswordRequest;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.user.UpdateUserInfoRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.user.UserInfoGetResponse;
 import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleValidator;
 import com.emincingoz.alzheimerdiagnosisservice.manager.email.IEmailService;
@@ -123,7 +124,7 @@ public class UserManager implements IUserService {
 
 
             String emailRecipient = userInfos.getEmail();
-            String emailMessageBody = "Yeni şifreniz: "+ newPassword + " \n\nLütfen şifrenizi kimseyle paylaşmayınız ve en yakın zamanda değiştiriniz";
+            String emailMessageBody = "Yeni şifreniz: " + newPassword + " \n\nLütfen şifrenizi kimseyle paylaşmayınız ve en yakın zamanda değiştiriniz";
             String emailSubject = "Şifre Yenileme";
 
             EmailDTO emailDTO = new EmailDTO();
@@ -143,10 +144,35 @@ public class UserManager implements IUserService {
 
             Result emailResult = emailService.forgotPasswordSendEmail(emailDTO);
             return ResponseEntity.ok(emailResult);
-        }
-        catch (InstanceNotFoundException e) {
+        } catch (InstanceNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public ResponseEntity<?> updateUserInfos(UpdateUserInfoRequest updateUserInfoRequest) throws UnirestException {
+
+        String tc = updateUserInfoRequest.getTcno();
+        String phoneNumber = updateUserInfoRequest.getPhoneNumber();
+        String email = updateUserInfoRequest.getEmail();
+        String password = updateUserInfoRequest.getPassword();
+
+        Optional<User> user = userRepository.findByTckn(tc);
+
+        if (user.isPresent()) {
+            if (!phoneNumber.equals("") && !email.equals("")) {
+                user.get().setPhoneNumber(phoneNumber);
+                user.get().setEmail(email);
+            }
+            if (!password.equals("")) {
+                PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+                String encodedPassword = passwordEncoder.encode(password).substring(8);
+                user.get().setPassword(encodedPassword);
+            }
+            userRepository.save(user.get());
+        }
+
+        return ResponseEntity.ok(new SuccessResult());
     }
 
     private Result isUserExists(String tckn) {

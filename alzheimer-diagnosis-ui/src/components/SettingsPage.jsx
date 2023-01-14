@@ -10,6 +10,7 @@ import useAuth from "../hooks/useAuth";
 
 const BASE_URL = "/api/user";
 const GET_USER_INFOS_URL = BASE_URL + "/get-user-infos";
+const UPDATE_USER_INFOS = BASE_URL + "/update-user-infos";
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,24}$/;
 const PHONE_NUMBER_REGEX =
@@ -38,6 +39,8 @@ const SettingsPage = () => {
   useEffect(() => {
     getUserInfos();
   }, []);
+
+  const [tcno, setTcno] = useState("");
 
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
@@ -75,7 +78,8 @@ const SettingsPage = () => {
       tokenWithoutBearer.substring(1, tokenWithoutBearer.length - 1);
 
     let tckn = JSON.parse(localStorage.getItem("user")).tckn;
-    console.log("myTckns: " + tckn);
+
+    setTcno(tckn);
 
     try {
       const response = await axios.get(GET_USER_INFOS_URL + "/" + tckn, {
@@ -171,10 +175,36 @@ const SettingsPage = () => {
     return flag;
   }
 
-  // TODO: fhgfhgfhg
-  function updateUserInfos() {
-
-  }
+  const updateUserInfos = async (e) => {
+    if (
+      validPhoneNumber ||
+      validEmail ||
+      (validPassword && validPasswordAgain && password === passwordAgain)
+    ) {
+      if (
+        validPhoneNumber &&
+        validEmail &&
+        ((validPassword && validPasswordAgain) ||
+          (password === "" && passwordAgain === ""))
+      ) {
+        try {
+          const response = await axios.post(
+            UPDATE_USER_INFOS,
+            JSON.stringify({
+              tcno: tcno,
+              phoneNumber: phoneNumber,
+              email: email,
+              password: password,
+            }),
+            {
+              headers: { "Content-Type": "application/json" },
+              withCredentials: true,
+            }
+          );
+        } catch (e) {}
+      }
+    }
+  };
 
   function handleLogout() {
     localStorage.removeItem("user");
@@ -208,7 +238,7 @@ const SettingsPage = () => {
                   ? { backgroundColor: "#d9d9d9", color: "black" }
                   : {}
               }
-              onClick={updateUserInfos()}
+              onClick={updateUserInfos}
             >
               Güncelle
             </Button>
