@@ -1,10 +1,8 @@
 package com.emincingoz.alzheimerdiagnosisservice.controller;
 
-import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.admin.AdminChangeDoctorInfoRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.admin.AdminNewDoctorRequest;
 import com.emincingoz.alzheimerdiagnosisservice.manager.admin.IAdminService;
-import com.emincingoz.alzheimerdiagnosisservice.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,12 +1,11 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.patient;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.Result;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.SuccessDataResult;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.Result;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.SuccessDataResult;
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
-import com.emincingoz.alzheimerdiagnosisservice.domain.responses.FormQuestionGetResponse;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.patient.DoctorsGetResponse;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IPatientRepository;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IUserAuthorityRepository;

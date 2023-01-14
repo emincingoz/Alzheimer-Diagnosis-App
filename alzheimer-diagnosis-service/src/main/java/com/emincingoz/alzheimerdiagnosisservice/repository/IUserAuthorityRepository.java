@@ -1,7 +1,6 @@
 package com.emincingoz.alzheimerdiagnosisservice.repository;
 
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;
-import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
 import org.springframework.data.jpa.repository.JpaRepository;
 

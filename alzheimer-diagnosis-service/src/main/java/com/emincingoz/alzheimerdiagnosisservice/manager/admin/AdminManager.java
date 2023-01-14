@@ -1,16 +1,14 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.admin;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.BusinessRules;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.*;
+import com.emincingoz.alzheimerdiagnosisservice.utils.BusinessRules;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.*;
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.admin.AdminChangeDoctorInfoRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.admin.AdminNewDoctorRequest;
-import com.emincingoz.alzheimerdiagnosisservice.domain.responses.doctor.PatientsGetResponse;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.user.UserInfoGetResponse;
-import com.emincingoz.alzheimerdiagnosisservice.manager.user.UserMessageConstants;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IAdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,7 +19,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.InstanceNotFoundException;
 import java.util.List;
 import java.util.Optional;
 

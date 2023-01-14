@@ -1,7 +1,7 @@
-package com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.fake;
+package com.emincingoz.alzheimerdiagnosisservice.nationalityPeopleValidator.fake;
 
-import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleModel;
-import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleValidator;
+import com.emincingoz.alzheimerdiagnosisservice.nationalityPeopleValidator.NationalityPeopleModel;
+import com.emincingoz.alzheimerdiagnosisservice.nationalityPeopleValidator.NationalityPeopleValidator;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;

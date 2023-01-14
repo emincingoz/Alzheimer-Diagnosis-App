@@ -1,4 +1,4 @@
-package com.emincingoz.alzheimerdiagnosisservice.core.utils.results;
+package com.emincingoz.alzheimerdiagnosisservice.utils.results;
 
 public class ErrorDataResult<T> extends DataResult {
     public ErrorDataResult(Object data, String message) {

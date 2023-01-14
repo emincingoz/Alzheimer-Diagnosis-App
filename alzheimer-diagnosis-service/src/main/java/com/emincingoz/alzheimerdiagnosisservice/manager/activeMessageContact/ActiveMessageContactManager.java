@@ -1,6 +1,6 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.activeMessageContact;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.*;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.*;
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.ActiveMessageContact;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;

@@ -1,7 +1,6 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.questionForm;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.Result;
-import com.emincingoz.alzheimerdiagnosisservice.domain.requests.userFormQuestion.FormQuestionListRequest;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.Result;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.userFormQuestion.FormSubmitRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.FormQuestionGetResponse;
 

@@ -1,9 +1,11 @@
 package com.emincingoz.alzheimerdiagnosisservice.domain.model;
 
-import com.emincingoz.alzheimerdiagnosisservice.config.FormQuestionConfig;
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @Entity

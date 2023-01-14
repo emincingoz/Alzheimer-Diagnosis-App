@@ -1,4 +1,4 @@
-package com.emincingoz.alzheimerdiagnosisservice.core.utils.results;
+package com.emincingoz.alzheimerdiagnosisservice.utils.results;
 
 public class SuccessDataResult<T> extends DataResult {
 

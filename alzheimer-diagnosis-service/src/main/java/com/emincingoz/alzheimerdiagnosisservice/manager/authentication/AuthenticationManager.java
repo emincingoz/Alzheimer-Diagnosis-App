@@ -1,12 +1,11 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.authentication;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.BusinessRules;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.*;
+import com.emincingoz.alzheimerdiagnosisservice.utils.BusinessRules;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.*;
 import com.emincingoz.alzheimerdiagnosisservice.domain.dtos.authentication.RefreshTokenDTO;
 import com.emincingoz.alzheimerdiagnosisservice.domain.dtos.authentication.TokenDTO;
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
-import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.authentication.UserLoginRequest;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IUserRepository;
 import com.emincingoz.alzheimerdiagnosisservice.security.JwtTokenProvider;

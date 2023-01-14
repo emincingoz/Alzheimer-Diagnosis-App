@@ -1,7 +1,7 @@
-package com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.kpspublic;
+package com.emincingoz.alzheimerdiagnosisservice.nationalityPeopleValidator.kpspublic;
 
-import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleModel;
-import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleValidator;
+import com.emincingoz.alzheimerdiagnosisservice.nationalityPeopleValidator.NationalityPeopleModel;
+import com.emincingoz.alzheimerdiagnosisservice.nationalityPeopleValidator.NationalityPeopleValidator;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
