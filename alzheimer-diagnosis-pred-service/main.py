@@ -5,7 +5,7 @@ import pathlib
 from predict import *
 
 app = FastAPI()
-test_image_path = '../alzheimer-diagnosis-pred-service/images/'
+test_image_path = 'images/'
 
 @app.post("/upload-mri-file/")
 async def create_upload_file(file: UploadFile):

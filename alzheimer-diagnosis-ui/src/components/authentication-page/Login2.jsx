@@ -1,12 +1,10 @@
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 //import useAuth from "../../hooks/useAuth";
 import { Button, TextField, Snackbar, Alert } from "@mui/material";
-import CustomTextField from "./custom/CustomTextField";
 import axios from "../../services/axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { HttpStatusCode } from "axios";
 import "./styles/Login.css";
 import PersonIcon from "@mui/icons-material/Person";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -15,8 +13,6 @@ import EmailIcon from "@mui/icons-material/Email";
 import useAuth from "../../hooks/useAuth";
 import DialogTitle from "@mui/material/DialogTitle";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
 
 const BASE_URL = "/api/auth";
 const LOGIN_URL = BASE_URL + "/login";

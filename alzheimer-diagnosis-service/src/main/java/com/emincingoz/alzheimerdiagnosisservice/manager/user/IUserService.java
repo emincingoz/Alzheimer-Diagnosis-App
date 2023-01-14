@@ -3,6 +3,7 @@ package com.emincingoz.alzheimerdiagnosisservice.manager.user;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.ForgotPasswordRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.authentication.UserRegisterRequest;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.user.UpdateUserInfoRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.user.UserInfoGetResponse;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.http.ResponseEntity;
@@ -18,4 +19,6 @@ public interface IUserService {
     UserInfoGetResponse getUserInfosByTckn(String tckn) throws InstanceNotFoundException;
 
     ResponseEntity<?> forgotPassword(ForgotPasswordRequest forgotPasswordRequest) throws UnirestException;
+
+    ResponseEntity<?> updateUserInfos(UpdateUserInfoRequest updateUserInfoRequest) throws UnirestException;
 }

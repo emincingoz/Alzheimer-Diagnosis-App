@@ -2,6 +2,7 @@ package com.emincingoz.alzheimerdiagnosisservice.controller;
 
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.ForgotPasswordRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.authentication.UserRegisterRequest;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.user.UpdateUserInfoRequest;
 import com.emincingoz.alzheimerdiagnosisservice.manager.user.IUserService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,10 @@ public class UserController {
     @PostMapping("/forgotPassword")
     public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) throws UnirestException {
         return userService.forgotPassword(forgotPasswordRequest);
+    }
+
+    @PostMapping("/update-user-infos")
+    public ResponseEntity<?> updateUserInfos(@RequestBody UpdateUserInfoRequest updateUserInfoRequest) throws UnirestException {
+        return userService.updateUserInfos(updateUserInfoRequest);
     }
 }
