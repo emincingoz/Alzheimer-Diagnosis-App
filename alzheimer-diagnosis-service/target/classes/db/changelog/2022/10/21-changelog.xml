@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="ada221021-0001" author="emin.cingoz">
+        <createTable tableName="ada_authority" schemaName="rest">
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ada_authority_pkey"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="ada_user_authority" schemaName="rest">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ada_user_authority_pkey"/>
+            </column>
+            <column name="authority_name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ada_user_authority_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="ada221021-00011" author="emin.cingoz">
+        <insert tableName="ada_authority" schemaName="rest">
+            <column name="name" value="ADMIN" />
+        </insert>
+        <insert tableName="ada_authority" schemaName="rest">
+            <column name="name" value="DOCTOR" />
+        </insert>
+        <insert tableName="ada_authority" schemaName="rest">
+            <column name="name" value="PATIENT" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="ada221021-0002" author="emin.cingoz">
+        <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="ada_user_authority" baseTableSchemaName="rest"
+                             constraintName="fk4psxl0jtx6nr7rhqbynr6itoc" deferrable="false"
+                             initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                             referencedColumnNames="name" referencedTableName="ada_authority"
+                             referencedTableSchemaName="rest"/>
+    </changeSet>
+    
+    <changeSet id="ada221021-0003" author="emin.cingoz">
+        <addColumn tableName="ada_user" schemaName="rest">
+            <column name="refresh_token_expiration_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="refresh_token" type="varchar(36)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="ada221021-0004" author="emin.cingoz">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="ada_user_authority" baseTableSchemaName="rest"
+                                 constraintName="fk_user_id" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="ada_user" referencedTableSchemaName="rest"/>
+    </changeSet>
+</databaseChangeLog>
