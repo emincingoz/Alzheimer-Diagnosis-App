@@ -1,7 +1,7 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.email;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.Result;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.SuccessResult;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.Result;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.SuccessResult;
 import com.emincingoz.alzheimerdiagnosisservice.domain.dtos.email.EmailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

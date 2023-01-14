@@ -1,13 +1,11 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.questionForm;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.Result;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.SuccessDataResult;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.SuccessResult;
-import com.emincingoz.alzheimerdiagnosisservice.domain.dtos.userFormQuestion.ListUserFormQuestionDTO;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.Result;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.SuccessDataResult;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.SuccessResult;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.FormQuestion;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserFormQuestion;
-import com.emincingoz.alzheimerdiagnosisservice.domain.requests.userFormQuestion.FormQuestionListRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.userFormQuestion.FormSubmitRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.FormQuestionGetResponse;
 import com.emincingoz.alzheimerdiagnosisservice.manager.user.IUserService;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.management.InstanceNotFoundException;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

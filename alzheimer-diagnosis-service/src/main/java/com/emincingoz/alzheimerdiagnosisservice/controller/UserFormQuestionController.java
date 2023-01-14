@@ -1,6 +1,5 @@
 package com.emincingoz.alzheimerdiagnosisservice.controller;
 
-import com.emincingoz.alzheimerdiagnosisservice.domain.requests.userFormQuestion.FormQuestionListRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.userFormQuestion.FormSubmitRequest;
 import com.emincingoz.alzheimerdiagnosisservice.manager.questionForm.IUserFormQuestionService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.management.InstanceNotFoundException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/user-form-question")

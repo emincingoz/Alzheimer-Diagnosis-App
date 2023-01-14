@@ -1,29 +1,29 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.user;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.ErrorResult;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.SuccessResult;
+import com.emincingoz.alzheimerdiagnosisservice.utils.BusinessRules;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.ErrorResult;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.Result;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.SuccessResult;
 import com.emincingoz.alzheimerdiagnosisservice.domain.dtos.email.EmailDTO;
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.Authority;
+import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.UserAuthority;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.ForgotPasswordRequest;
+import com.emincingoz.alzheimerdiagnosisservice.domain.requests.authentication.UserRegisterRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.requests.user.UpdateUserInfoRequest;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.user.UserInfoGetResponse;
-import com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator.NationalityPeopleValidator;
+import com.emincingoz.alzheimerdiagnosisservice.nationalityPeopleValidator.NationalityPeopleValidator;
 import com.emincingoz.alzheimerdiagnosisservice.manager.email.IEmailService;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IUserRepository;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.BusinessRules;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.Result;
-import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
-import com.emincingoz.alzheimerdiagnosisservice.domain.requests.authentication.UserRegisterRequest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.modelmapper.ModelMapper;
 
 import javax.management.InstanceNotFoundException;
 import javax.transaction.Transactional;

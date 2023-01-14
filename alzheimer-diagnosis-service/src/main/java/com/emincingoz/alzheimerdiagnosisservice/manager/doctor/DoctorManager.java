@@ -1,10 +1,15 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.doctor;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.DataResult;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.SuccessDataResult;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.DataResult;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.Result;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.SuccessDataResult;
 import com.emincingoz.alzheimerdiagnosisservice.domain.enums.UserRolesEnum;
 import com.emincingoz.alzheimerdiagnosisservice.domain.model.User;
+import com.emincingoz.alzheimerdiagnosisservice.domain.responses.FormQuestionGetResponse;
 import com.emincingoz.alzheimerdiagnosisservice.domain.responses.doctor.PatientsGetResponse;
+import com.emincingoz.alzheimerdiagnosisservice.domain.responses.doctor.PredictionResultResponse;
+import com.emincingoz.alzheimerdiagnosisservice.manager.questionForm.IUserFormQuestionService;
+import com.emincingoz.alzheimerdiagnosisservice.manager.user.IUserService;
 import com.emincingoz.alzheimerdiagnosisservice.repository.IDoctorRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
@@ -20,20 +25,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.management.InstanceNotFoundException;
-
-import com.emincingoz.alzheimerdiagnosisservice.domain.responses.doctor.PredictionResultResponse;
-import com.emincingoz.alzheimerdiagnosisservice.manager.questionForm.IUserFormQuestionService;
-import com.emincingoz.alzheimerdiagnosisservice.manager.user.IUserService;
-import com.emincingoz.alzheimerdiagnosisservice.domain.responses.FormQuestionGetResponse;
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.Result;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 package com.emincingoz.alzheimerdiagnosisservice.manager.patient;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.Result;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.Result;
 
 public interface IPatientService {
 

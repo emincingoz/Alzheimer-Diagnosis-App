@@ -1,6 +1,6 @@
-package com.emincingoz.alzheimerdiagnosisservice.core.utils;
+package com.emincingoz.alzheimerdiagnosisservice.utils;
 
-import com.emincingoz.alzheimerdiagnosisservice.core.utils.results.Result;
+import com.emincingoz.alzheimerdiagnosisservice.utils.results.Result;
 
 public class BusinessRules {
     public static Result run(Result ... rules) {

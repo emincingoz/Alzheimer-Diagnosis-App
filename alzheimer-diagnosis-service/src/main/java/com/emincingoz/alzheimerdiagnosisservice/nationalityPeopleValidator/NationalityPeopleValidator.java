@@ -1,4 +1,4 @@
-package com.emincingoz.alzheimerdiagnosisservice.infrastructor.nationalityPeopleValidator;
+package com.emincingoz.alzheimerdiagnosisservice.nationalityPeopleValidator;
 
 import com.mashape.unirest.http.exceptions.UnirestException;
 
